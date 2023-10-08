@@ -16,6 +16,11 @@ const router = createRouter({
       name: 'Use', // name名称大驼峰
       component: () => import('@/views/Use.vue'), // 懒加载
     },
+    {
+      path: '/group-composition', // path路径名称小驼峰
+      name: 'GroupComposition', // name名称大驼峰
+      component: () => import('@/views/CompanyDetails/GroupComposition.vue'), // 懒加载
+    },
   ],
 });
 
