@@ -63,5 +63,17 @@ module.exports = {
     'no-case-declarations': ['off'],
     'vue/comment-directive': 0,
     'vue/multi-word-component-names': 0,
+    "vue/html-self-closing": [
+      "error",
+      {
+        html: {
+          void: "always",
+          normal: "never",
+          component: "always"
+        },
+        svg: "always",
+        math: "always"
+      }
+    ],
   },
 };

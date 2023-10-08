@@ -51,7 +51,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
-      port: 4211,
+      port: 4212,
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
