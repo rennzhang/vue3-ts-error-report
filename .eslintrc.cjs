@@ -20,7 +20,7 @@ module.exports = {
     'no-unused-vars': ['warn'], // 禁止出现未使用过的变量
     'no-var': 2, // 禁止使用var
     quotes: ['off'], // 强制使用一致的反勾号、双引号或单引号
-    indent: ['error', 2, { SwitchCase: 1, ignoredNodes: ['TemplateLiteral'] }], // 设置缩进为4,临时
+    // indent: ['error', 2, { SwitchCase: 1, ignoredNodes: ['TemplateLiteral'] }], // 设置缩进为4,临时
     'arrow-spacing': ['off'], // 强制箭头函数的箭头前后使用一致的空格
     'object-curly-spacing': ['off'], // 强制在大括号中使用一致的空格
     'comma-dangle': ['off'], // 要求或禁止末尾逗号
@@ -63,17 +63,17 @@ module.exports = {
     'no-case-declarations': ['off'],
     'vue/comment-directive': 0,
     'vue/multi-word-component-names': 0,
-    "vue/html-self-closing": [
-      "error",
+    'vue/html-self-closing': [
+      'error',
       {
         html: {
-          void: "always",
-          normal: "never",
-          component: "always"
+          void: 'always',
+          normal: 'never',
+          component: 'always',
         },
-        svg: "always",
-        math: "always"
-      }
+        svg: 'always',
+        math: 'always',
+      },
     ],
   },
 };
