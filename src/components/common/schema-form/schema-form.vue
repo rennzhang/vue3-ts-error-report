@@ -36,7 +36,7 @@
                   </span>
                 </div>
               </template>
-              <d-tips v-if="formItem.tips" end :title="handleFnAttr(formItem, 'tips')" />
+              <NTips v-if="formItem.tips" end :title="handleFnAttr(formItem, 'tips')" />
               <slot name="itemBottom" v-bind="{ ...formItem, value: formModel[formItem.field], ...exposeFormState }"></slot>
             </n-form-item>
           </n-spin>
@@ -77,6 +77,7 @@ import { useFormLayout } from './hooks/useFormLayout';
 import { useFormEvents } from './hooks/useFormEvents';
 import { cloneDeep } from 'lodash-es';
 import { clearObject } from '@/utils';
+import NTips from '@/components/common/n-tips/index.vue';
 const useForm = Form.useForm;
 
 export default defineComponent({
