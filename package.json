@@ -17,7 +17,9 @@
   },
   "dependencies": {
     "@nancal-icon/icons-vue": "^0.2.20-base",
+    "@vueuse/core": "^10.5.0",
     "axios": "^1.4.0",
+    "lodash-es": "^4.17.21",
     "lodash.debounce": "^4.0.8",
     "lodash.kebabcase": "^4.1.1",
     "lodash.throttle": "^4.1.1",
@@ -35,6 +37,7 @@
     "@nancal/nancal-unplugin-vue-components": "^0.0.8",
     "@rushstack/eslint-patch": "^1.2.0",
     "@tsconfig/node18": "^2.0.1",
+    "@types/lodash-es": "^4.17.6",
     "@types/lodash.debounce": "^4.0.7",
     "@types/lodash.kebabcase": "^4.1.7",
     "@types/lodash.throttle": "^4.1.7",

@@ -70,4 +70,10 @@ declare global {
    */
   var gvUtil: any;
   var ofRx: Function;
+
+  declare type Nullable<T> = T | null;
+
+  declare type NonNullable<T> = T extends null | undefined ? never : T;
+
+  declare type Recordable<T = {}> = T & Record<string, any>;
 }

@@ -3,6 +3,7 @@ node_modules
 /dist
 .idea
 package-lock.json
+pnpm-lock.yaml
 
 # local env files
 .env.local
@@ -21,3 +22,6 @@ yarn.lock
 *.njsproj
 *.sln
 *.sw?
+types/auto-import.d.ts
+types/components.d.ts
+.eslintrc-auto-import.json
