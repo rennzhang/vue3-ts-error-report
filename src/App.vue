@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <RouterView class="routerWrap" />
+    <div class="routerWrap">
+      <RouterView />
+    </div>
   </div>
 </template>
 
