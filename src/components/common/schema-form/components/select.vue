@@ -1,11 +1,5 @@
 <template>
-  <n-select v-model:value="modelValue" v-bind="binds" v-on="{ ...formItem.events }">
-    <template v-for="option in options" :key="option.value">
-      <n-select-option :value="option.value" :disabled="option.disabled">
-        {{ option.label }}
-      </n-select-option>
-    </template>
-  </n-select>
+  <n-select v-model:value="modelValue" v-bind="binds" v-on="{ ...formItem.events }" :options="options" />
 </template>
 <script lang="ts">
 import { defineComponent, type PropType, computed, type ComputedRef } from 'vue';

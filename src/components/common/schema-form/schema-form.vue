@@ -69,7 +69,6 @@ import { Form, Spin } from 'n-designv3';
 // import Form from "n-designv3/lib/form/Form";
 import { isString, isFunction } from '@/utils/is';
 import components from './components';
-import { getDefaultTipsPrefix } from './hooks/useFormDefaults';
 import { useFormValues } from './hooks/useFormValues';
 import { useFormRules } from './hooks/useFormRules';
 import { useFormItem } from './hooks/useFormItem';
@@ -101,13 +100,43 @@ export default defineComponent({
     submit: (values: any, clearForm: () => void) => true,
     cancel: (clearForm: () => void) => true,
   },
-  expose: ['formModel', 'rules', 'formItems', 'validateInfos', 'validate', 'resetFields', 'validateField', 'clearValidate', 'clearForm', 'updateFormModel', 'handleSubmit'],
+  expose: [
+    'formModel',
+    'rules',
+    'formItems',
+    'validateInfos',
+    'validate',
+    'resetFields',
+    'validateField',
+    'clearValidate',
+    'clearForm',
+    'updateFormModel',
+    'handleSubmit',
+    '__INIT_EVENT__',
+  ],
   setup(props, { emit }) {
+    const formItemsRef = ref<FormItem[]>(null);
+
+    const schemaFormState = reactive({
+      // 表单实例
+      formInstance: getCurrentInstance(),
+      formSchema: computed(() => props.formSchema),
+      formModel: (unref(props.formSchema.formItem) as FormItem[]).reduce((previousValue: any, currentValue: any) => {
+        previousValue[currentValue.field] = currentValue.value;
+        return previousValue;
+      }, {}),
+      allFormItem: [],
+      getterProps: computed((): any => {
+        return { ...props } as any;
+      }),
+      getterAllFormItem: computed<FormItem[]>(() => {
+        return unref(formItemsRef) || (props.formSchema.formItem as FormItem[]);
+      }),
+    }) as unknown as SchemaFormCompState;
+
     // a-form
     const schemaAntFormRef = ref<InstanceType<typeof Form>>()!;
-    // 表单实例
-    const formInstance = getCurrentInstance();
-    const formItemsRef = ref<any>(null);
+
     // 表单项
     const formModel = reactive(
       (unref(props.formSchema.formItem) as FormItem[]).reduce((previousValue: any, currentValue: any) => {
@@ -116,29 +145,19 @@ export default defineComponent({
       }, {})
     );
     provide('schemaFormModel', formModel);
-    const { getFormSchema, getFormItem, getAllFormItem, getProps } = useFormValues({
-      props,
-      formModel,
-      formInstance,
-      formItemsRef,
-    });
-    const { formItemLayout, getOperateLayout } = useFormLayout({ props, getProps });
+    const { getFormSchema, getFormItem } = useFormValues(schemaFormState);
+    const { formItemLayout, getOperateLayout } = useFormLayout(schemaFormState);
     const { getComponent, isShowFormItem, updateFormItem, handleFnAttr } = useFormItem({
-      getAllFormItem,
       formItemsRef,
-      formInstance,
-      formModel,
+      schemaFormState,
     });
-    useFormEvents({ props, formModel, updateFormItem });
+
+    useFormEvents({ updateFormItem, schemaFormState });
 
     const { getRules } = useFormRules({
-      props,
+      schemaFormState,
       isShowFormItem,
       getFormItem,
-      getAllFormItem,
-      getDefaultTipsPrefix,
-      formInstance,
-      formModel,
     });
 
     const rulesRef = getRules();
@@ -173,7 +192,7 @@ export default defineComponent({
     async function handleSubmit(e?: Event): Promise<any> {
       e && e.preventDefault();
 
-      const { submitFunc } = unref(getProps).formSchema;
+      const { submitFunc } = schemaFormState.formSchema;
       if (submitFunc && isFunction(submitFunc)) {
         await submitFunc();
         return;
@@ -226,7 +245,7 @@ export default defineComponent({
     const exposeFormState = {
       formModel,
       rules: rulesRef,
-      formItems: unref(getAllFormItem),
+      formItems: unref(schemaFormState.getterAllFormItem),
       validateInfos,
       validate,
       resetFields,
@@ -249,7 +268,7 @@ export default defineComponent({
       getComponent,
       handleCancel,
       formItemsRef,
-      getAllFormItem,
+      getAllFormItem: schemaFormState.getterAllFormItem,
       getFormSchema,
       isShowFormItem,
       handleFnAttr,
