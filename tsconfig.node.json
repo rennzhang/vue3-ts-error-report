@@ -1,20 +1,10 @@
 {
   "extends": "@tsconfig/node18/tsconfig.json",
-  "include": [
-    "./package.json",
-    "vite.config.*",
-    "vitest.config.*",
-    "cypress.config.*",
-    "nightwatch.conf.*",
-    "playwright.config.*",
-    "types/global.d.ts",
-  ],
+  "include": ["./package.json", "vite.config.*", "vitest.config.*", "cypress.config.*", "nightwatch.conf.*", "playwright.config.*", "types/global.d.ts"],
   "compilerOptions": {
     "resolveJsonModule": true,
     "composite": true,
     "module": "ESNext",
-    "types": [
-      "node"
-    ]
+    "types": ["node"]
   }
 }
