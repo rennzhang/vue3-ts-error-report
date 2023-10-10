@@ -1,10 +1,24 @@
 <template>
-  <n-select v-model:value="modelValue" v-bind="binds" v-on="{ ...formItem.events }" :options="options" />
+  <n-select
+    v-model:value="modelValue"
+    label-in-value
+    :filter-option="false"
+    :not-found-content="searching ? undefined : null"
+    :options="options"
+    v-bind="binds"
+    showSearch
+    @search="onSearch"
+  >
+    <template v-if="searching" #notFoundContent>
+      <n-spin size="small" />
+    </template>
+  </n-select>
 </template>
 <script lang="ts">
 import { defineComponent, type PropType, computed, type ComputedRef } from 'vue';
 import { Select, type SelectProps } from 'n-designv3';
 import { getComponentProps } from './utils';
+import { debounce } from 'lodash-es';
 
 export default defineComponent({
   components: {
@@ -26,6 +40,8 @@ export default defineComponent({
   },
   emits: ['update:value'],
   setup(props, { emit }) {
+    const formState = inject('schemaFormState') as SchemaFormState;
+
     const modelValue = computed({
       get: () => {
         if ((props.formItem.props as SelectProps)?.mode == 'multiple') {
@@ -36,10 +52,18 @@ export default defineComponent({
       set: val => emit('update:value', val),
     });
 
-    const options = computed(() => {
-      return unref(props.formItem.options);
-    }) as ComputedRef<OptionItem[]>;
+    const searching = ref(false);
+    const options = ref<OptionItem[]>();
+
+    const onSearch = debounce(async (value: string) => {
+      searching.value = true;
+      const res = await props.formItem?.searchRequest?.(value, formState);
+      options.value = res as OptionItem[];
+      searching.value = false;
+    }, 300);
     return {
+      onSearch,
+      searching,
       modelValue,
       options,
       binds: getComponentProps(props?.formItem),

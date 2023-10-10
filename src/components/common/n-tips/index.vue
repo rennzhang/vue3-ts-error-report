@@ -34,7 +34,7 @@
 /**
  * 表单项后面的问号鼠标悬浮提示
  */
-import { useSlots, useAttrs, PropType } from 'vue';
+import { useSlots, useAttrs, type PropType } from 'vue';
 import { useTimeoutFn } from '@vueuse/core';
 import { isArray } from 'lodash-es';
 const slots = useSlots();
