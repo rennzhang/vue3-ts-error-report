@@ -2,7 +2,7 @@ import { isFunction, isBoolean, isObject, isArray } from '@/utils/is';
 import { merge, uniqBy } from 'lodash-es';
 import type { Ref } from 'vue';
 type IProps = {
-  formItemsRef: Ref<FormItem[]>;
+  formItemsRef: Ref<FormItem[] | undefined>;
   schemaFormState: SchemaFormCompState;
 };
 export const useFormItem = ({ formItemsRef, schemaFormState }: IProps) => {
@@ -39,7 +39,7 @@ export const useFormItem = ({ formItemsRef, schemaFormState }: IProps) => {
     }
     const newFormItem: FormItem[] = [];
     updateData.forEach(item => {
-      unref(schemaFormState.getterAllFormItem).forEach((val: FormItem) => {
+      schemaFormState.getAllFormItem().forEach((val: FormItem) => {
         if (val.field === item.field) {
           const newSchema = merge(val, item);
 

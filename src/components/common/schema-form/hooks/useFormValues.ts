@@ -3,7 +3,7 @@ import { isFunction, isAsyncFunction } from '@/utils/is';
 import { useTimeoutFn } from '@vueuse/core';
 export const useFormValues = (schemaFormState: SchemaFormCompState) => {
   // 异步设置默认数据
-  unref(schemaFormState.getterAllFormItem).forEach(async (item: FormItem) => {
+  schemaFormState.getAllFormItem().forEach(async (item: FormItem) => {
     // 是否需要loading
     if (Object.prototype.hasOwnProperty.call(item, 'loading')) {
       item.loading = true;
@@ -37,7 +37,7 @@ export const useFormValues = (schemaFormState: SchemaFormCompState) => {
   });
   const formItemMap = computed(() => {
     const map: any = {};
-    unref(schemaFormState.getterAllFormItem).forEach((item: FormItem) => {
+    schemaFormState.getAllFormItem().forEach((item: FormItem) => {
       map[item.field] = item;
     });
     return map;

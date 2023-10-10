@@ -8,7 +8,7 @@ type FormRulesParams = {
 export const useFormRules = ({ isShowFormItem, getFormItem, schemaFormState }: FormRulesParams) => {
   const getRules = () => {
     return computed(() => {
-      const ruleItems = unref(schemaFormState.getterAllFormItem).filter((item: FormItem) => isShowFormItem(item));
+      const ruleItems = schemaFormState.getAllFormItem().filter((item: FormItem) => isShowFormItem(item));
       const rules: any = reactive({});
       ruleItems.map((item: FormItem) => {
         rules[item.field] =
