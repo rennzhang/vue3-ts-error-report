@@ -10,7 +10,7 @@
                 <template #title>添加</template>
                 <plus-square-outlined @click="AddCompanyDrawerRef?.openDrawer()" />
               </n-tooltip>
-              <n-tips title="sdkfldslf;dsk" icon-color="#333" />
+              <gv-tips title="sdkfldslf;dsk" icon-color="#333" />
               <n-tooltip>
                 <template #title>刷新</template>
                 <sync-outlined @click="getList" />
