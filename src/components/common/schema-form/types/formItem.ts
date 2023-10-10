@@ -11,6 +11,7 @@ export type FormItemPropsMap = {
   inputPassword: InputProps;
   textarea: TextAreaProps;
   select: SelectProps;
+  selectSearch: SelectProps;
   treeSelect: TreeSelectProps;
   radio: RadioProps;
   checkbox: CheckboxProps;
@@ -60,6 +61,7 @@ declare interface FormItemBase<T> extends Partial<FormItemProps> {
 
   loading?: ProxyData<boolean>; // 异步数据是否加载
 
+  searchRequest?: (val: string, formState: Pick<SchemaFormState<T>, 'formModel' | 'formItem'>) => Promise<ProxyData<OptionItem[]>>;
   asyncValue?: (formState: Pick<SchemaFormState<T>, 'formModel' | 'formItem'>) => Promise<any>; // 异步数据
   asyncOptions?: (formState: Pick<SchemaFormState<T>, 'formModel' | 'formItem'>) => Promise<ProxyData<OptionItem[]>> | ProxyData<OptionItem[]>; // 异步选项的数据
   isShow?: ((formState: Pick<SchemaFormState<T>, 'formModel' | 'formItem'>) => boolean) | boolean; // 是否隐藏表单项

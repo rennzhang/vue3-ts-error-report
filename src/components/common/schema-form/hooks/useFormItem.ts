@@ -8,6 +8,8 @@ type IProps = {
 export const useFormItem = ({ formItemsRef, schemaFormState }: IProps) => {
   // 获取组件名称
   const getComponent = (type: string) => {
+    console.log(type.toLowerCase());
+
     return type ? 'schema-form-' + type.toLowerCase() : null;
   };
 

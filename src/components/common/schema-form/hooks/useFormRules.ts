@@ -1,5 +1,5 @@
 import { isBoolean } from '@/utils/is';
-import { getDefaultTipsPrefix } from '../hooks/useFormDefaults';
+import { getDefaultTipsPrefix } from './useFormDefaults';
 
 type FormRulesParams = {
   [key: string]: any;

@@ -52,6 +52,7 @@ declare global {
     updateFormModel: (formData: Recordable, isClear?: boolean) => void;
     formItems: FormItem[];
     handleSubmit: () => Promise<any>;
+    updateFormItem: (data: Partial<FormItem<any>> | Partial<FormItem<any>>[]) => Promise<void>;
   }
 
   declare type SchemaFormRef<T = any> = Nullable<SchemaFormState<T>>;

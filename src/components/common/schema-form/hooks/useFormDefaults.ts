@@ -7,6 +7,7 @@ export const getDefaultTipsPrefix = (type: FormItem['type']) => {
     case 'textarea':
       return '请输入';
     case 'select':
+    case 'selectSearch':
     case 'radio':
     case 'checkbox':
       return '请选择';

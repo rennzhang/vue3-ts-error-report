@@ -254,6 +254,7 @@ export default defineComponent({
       clearForm,
       updateFormModel,
       handleSubmit,
+      updateFormItem,
     };
 
     provide('schemaFormState', exposeFormState);
