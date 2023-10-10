@@ -1,5 +1,5 @@
 import { lowerFirst } from 'lodash-es';
-import type { UpdateFormItemFn } from '../types/componentAttr';
+import type { UpdateFormItemFn } from '../types/compAttrs';
 import type { SchemaFormItemEvents } from '../types/formItem';
 
 type IProps = {

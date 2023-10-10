@@ -1,10 +1,11 @@
 export const useFormLayout = ({ formSchema, getterProps }: SchemaFormCompState) => {
   // 表单布局
-  const formItemLayout = reactive({
+  const defaultLayout = reactive<SchemaFormLayout>({
     labelCol: { sm: { span: 5 }, xs: { span: 24 } },
     wrapperCol: { sm: { span: 17 }, xs: { span: 24 } },
-    ...unref(formSchema).formItemLayout,
+    ...unref(formSchema.formItemLayout),
   });
+
   const getOperateLayout = () => {
     const { formItemLayout } = unref(getterProps).formSchema;
     const xs = { span: 24 };
@@ -19,7 +20,7 @@ export const useFormLayout = ({ formSchema, getterProps }: SchemaFormCompState) 
   };
 
   return {
-    formItemLayout,
+    formItemLayout: defaultLayout as SchemaFormLayout,
     getOperateLayout,
   };
 };
