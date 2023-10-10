@@ -10,6 +10,7 @@
                 <template #title>添加</template>
                 <plus-square-outlined @click="AddCompanyDrawerRef?.openDrawer()" />
               </n-tooltip>
+              <n-tips title="sdkfldslf;dsk" icon-color="#333" />
               <n-tooltip>
                 <template #title>刷新</template>
                 <sync-outlined @click="getList" />
@@ -49,8 +50,11 @@
   <CompanyDetailsDrawer ref="CompanyDetailsDrawerRef" />
 </template>
 <script lang="ts" setup>
+// import { usePage1Store } from './store';
 import AddCompanyDrawer from './Components/AddCompanyDrawer.vue';
 import CompanyDetailsDrawer from './Components/CompanyDetailsDrawer.vue';
+import { isObject } from '@/utils/is';
+// const page1Store = usePage1Store();
 
 const AddCompanyDrawerRef = ref<typeof AddCompanyDrawer>();
 const CompanyDetailsDrawerRef = ref<typeof CompanyDetailsDrawer>();

@@ -11,6 +11,7 @@ export type FormItemPropsMap = {
   inputPassword: InputProps;
   textarea: TextAreaProps;
   select: SelectProps;
+  selectSearch: SelectProps;
   treeSelect: TreeSelectProps;
   radio: RadioProps;
   checkbox: CheckboxProps;
@@ -37,6 +38,11 @@ declare interface EventParams {
   [key: string]: any;
 }
 
+export interface SchemaFormItemEvents {
+  [key: string]: (EventParams: EventParams) => any;
+  // onChange
+}
+
 declare interface FormItemBase<T> extends Partial<FormItemProps> {
   slotName?: string;
   component?: Component;
@@ -46,10 +52,7 @@ declare interface FormItemBase<T> extends Partial<FormItemProps> {
   label?: string; // 表单标签
   value?: any; // 表单默认值
   props?: FormItemMergeProps['props'] | ((formState: SchemaFormState<T>) => FormItemMergeProps['props']);
-  events?: {
-    [key: string]: (EventParams: EventParams) => any;
-    // onChange
-  }; // 事件对象，例如：{ mousedown: doThis, mouseup: doThat } 将会动态绑定为：v-on="{ mousedown: doThis, mouseup: doThat }"
+  events?: SchemaFormItemEvents; // 事件对象，例如：{ mousedown: doThis, mouseup: doThat } 将会动态绑定为：v-on="{ mousedown: doThis, mouseup: doThat }"
   rules?: Rule[]; // 表单验证规则
   dynamicRules?: (formState: SchemaFormState<T>) => ProxyData<Rule[]>;
 
@@ -58,6 +61,7 @@ declare interface FormItemBase<T> extends Partial<FormItemProps> {
 
   loading?: ProxyData<boolean>; // 异步数据是否加载
 
+  searchRequest?: (val: string, formState: Pick<SchemaFormState<T>, 'formModel' | 'formItem'>) => Promise<ProxyData<OptionItem[]>>;
   asyncValue?: (formState: Pick<SchemaFormState<T>, 'formModel' | 'formItem'>) => Promise<any>; // 异步数据
   asyncOptions?: (formState: Pick<SchemaFormState<T>, 'formModel' | 'formItem'>) => Promise<ProxyData<OptionItem[]>> | ProxyData<OptionItem[]>; // 异步选项的数据
   isShow?: ((formState: Pick<SchemaFormState<T>, 'formModel' | 'formItem'>) => boolean) | boolean; // 是否隐藏表单项
@@ -67,6 +71,7 @@ declare interface FormItemBase<T> extends Partial<FormItemProps> {
   help?: string;
   extra?: any;
   tips?: ((formState: SchemaFormState<T>) => string | string[]) | (string | string[]); // 表单项后面的问号提示
+  __INIT_EVENTS__?: boolean;
 }
 
 export type FormItem<T = any> =

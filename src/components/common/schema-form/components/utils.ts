@@ -1,4 +1,4 @@
-import { getDefaultTipsPrefix } from './../hooks/useFormDefaults';
+import { getDefaultTipsPrefix } from '../hooks/useFormDefaults';
 import { isFunction } from '@/utils/is';
 const getPlaceholder = (type: FormItem['type'], label?: string) => {
   return getDefaultTipsPrefix(type) + label;

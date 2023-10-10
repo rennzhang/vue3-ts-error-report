@@ -19,7 +19,27 @@ declare global {
         trigger?: 'blur' | 'change' | string['blur' | 'change'];
       };
 
-  declare interface SchemaFormState<T = any> {
+  type SchemaFormLayout = {
+    labelCol?: FormProps['labelCol'];
+    wrapperCol?: FormProps['wrapperCol'];
+  };
+
+  declare type SchemaFormCompProps = {
+    formSchema: FormSchema;
+  };
+
+  declare type SchemaFormModel = Recordable;
+  declare type SchemaFormInstance = ComponentInternalInstance;
+
+  declare type SchemaFormCompState = {
+    formInstance: SchemaFormInstance;
+    allFormItem: FormItem[];
+    formModel: SchemaFormModel;
+    formSchema: FormSchema;
+    getterAllFormItem: ComputedRef<FormItem[]>;
+    getterProps: ComputedRef<SchemaFormCompProps>;
+  };
+  declare interface SchemaFormState<T = SchemaFormModel> {
     formModel: T;
     rules: Rule[];
     formItem: FormItem;
@@ -32,6 +52,7 @@ declare global {
     updateFormModel: (formData: Recordable, isClear?: boolean) => void;
     formItems: FormItem[];
     handleSubmit: () => Promise<any>;
+    updateFormItem: (data: Partial<FormItem<any>> | Partial<FormItem<any>>[]) => Promise<void>;
   }
 
   declare type SchemaFormRef<T = any> = Nullable<SchemaFormState<T>>;
@@ -53,7 +74,7 @@ declare global {
     /**
      * 表单布局，参考https://www.antdv.com/components/grid-cn/#Col
      */
-    formItemLayout?: object; // 表单布局
+    formItemLayout?: SchemaFormLayout; // 表单布局
     // watchCallback?: (watchKeys: string[], { dynamicForm, formModel }) => any;
     submitFunc?: () => Promise<any>;
     showAction?: boolean;
