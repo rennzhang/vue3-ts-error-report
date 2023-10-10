@@ -8,7 +8,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Checkbox: typeof import('./../src/components/common/schema-form/components/checkbox.vue')['default']
-    CodemirrorDemo: typeof import('./../src/components/common/schema-form/demo/codemirror-demo.vue')['default']
     DatePicker: typeof import('./../src/components/common/schema-form/components/datePicker.vue')['default']
     DeleteOutlined: typeof import('@nancal-icon/icons-vue')['DeleteOutlined']
     Demo: typeof import('./../src/components/common/schema-form/demo/index.vue')['default']
@@ -34,7 +33,6 @@ declare module 'vue' {
     NRadioGroup: typeof import('n-designv3/es')['RadioGroup']
     NRangePicker: typeof import('n-designv3/es')['RangePicker']
     NSelect: typeof import('n-designv3/es')['Select']
-    NSelectOption: typeof import('n-designv3/es')['SelectOption']
     NSpace: typeof import('n-designv3/es')['Space']
     NSpin: typeof import('n-designv3/es')['Spin']
     NSwitch: typeof import('n-designv3/es')['Switch']
@@ -52,6 +50,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SchemaForm: typeof import('./../src/components/common/schema-form/schema-form.vue')['default']
     Select: typeof import('./../src/components/common/schema-form/components/select.vue')['default']
+    SelectSearch: typeof import('./../src/components/common/schema-form/components/selectSearch.vue')['default']
     Switch: typeof import('./../src/components/common/schema-form/components/switch.vue')['default']
     SyncOutlined: typeof import('@nancal-icon/icons-vue')['SyncOutlined']
     Text: typeof import('./../src/components/common/schema-form/components/text.vue')['default']
