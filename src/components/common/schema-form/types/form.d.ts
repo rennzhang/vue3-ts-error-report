@@ -32,12 +32,12 @@ declare global {
   declare type SchemaFormInstance = ComponentInternalInstance;
 
   declare type SchemaFormCompState = {
-    formInstance: SchemaFormInstance;
-    allFormItem: FormItem[];
+    formInstance: ComponentInternalInstance | null;
     formModel: SchemaFormModel;
-    formSchema: FormSchema;
-    getterAllFormItem: ComputedRef<FormItem[]>;
-    getterProps: ComputedRef<SchemaFormCompProps>;
+    formSchema: FormSchema<any>;
+    // getterAllFormItem: FormItem[];
+    getAllFormItem: () => FormItem[];
+    getterProps: SchemaFormCompProps;
   };
   declare interface SchemaFormState<T = SchemaFormModel> {
     formModel: T;

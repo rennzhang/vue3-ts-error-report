@@ -2,7 +2,7 @@
   <n-form ref="schemaAntFormRef" v-bind="formItemLayout" class="schema-form">
     <div class="relative">
       <div v-if="getFormSchema.disabled" class="mask-lock-layer"></div>
-      <template v-for="formItem in getAllFormItem" :key="formItem.field">
+      <template v-for="formItem in formItems" :key="formItem.field">
         <template v-if="isShowFormItem(formItem)">
           <n-spin :spinning="formItem.loading || false">
             <n-form-item
@@ -36,8 +36,8 @@
                   </span>
                 </div>
               </template>
-              <NTips v-if="formItem.tips" end :title="handleFnAttr(formItem, 'tips')" />
-              <slot name="itemBottom" v-bind="{ ...formItem, value: formModel[formItem.field], ...exposeFormState }"></slot>
+              <GvTips v-if="formItem.tips" end :title="handleFnAttr(formItem, 'tips')" />
+              <slot name="itemBottom" v-bind="{ ...formItem, value: formModel[formItem.field], ...exposeFormState }"> </slot>
             </n-form-item>
           </n-spin>
         </template>
@@ -62,8 +62,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, getCurrentInstance, ref, type PropType } from 'vue';
-import { Form, Spin } from 'n-designv3';
+import { defineComponent, reactive, getCurrentInstance, ref, type PropType, type ComponentInternalInstance } from 'vue';
+import { Form, Spin, type FormInstance } from 'n-designv3';
 // 源码调试
 // import { Spin } from "n-designv3";
 // import Form from "n-designv3/lib/form/Form";
@@ -76,7 +76,7 @@ import { useFormLayout } from './hooks/useFormLayout';
 import { useFormEvents } from './hooks/useFormEvents';
 import { cloneDeep } from 'lodash-es';
 import { clearObject } from '@/utils';
-import NTips from '@/components/common/n-tips/index.vue';
+import GvTips from '@/components/common/GvTips/index.vue';
 const useForm = Form.useForm;
 
 export default defineComponent({
@@ -115,27 +115,29 @@ export default defineComponent({
     '__INIT_EVENT__',
   ],
   setup(props, { emit }) {
-    const formItemsRef = ref<FormItem[]>(null);
+    const formItemsRef = ref<FormItem[]>();
 
     const schemaFormState = reactive({
-      // 表单实例
-      formInstance: getCurrentInstance(),
-      formSchema: computed(() => props.formSchema),
+      formSchema: computed(() => props.formSchema) as unknown as FormSchema,
       formModel: (unref(props.formSchema.formItem) as FormItem[]).reduce((previousValue: any, currentValue: any) => {
         previousValue[currentValue.field] = currentValue.value;
         return previousValue;
-      }, {}),
-      allFormItem: [],
-      getterProps: computed((): any => {
-        return { ...props } as any;
-      }),
-      getterAllFormItem: computed<FormItem[]>(() => {
-        return unref(formItemsRef) || (props.formSchema.formItem as FormItem[]);
-      }),
-    }) as unknown as SchemaFormCompState;
+      }, {}) as SchemaFormModel,
+      getterProps: computed(() => {
+        return { ...props };
+      }) as unknown as SchemaFormCompProps,
+      getAllFormItem: () => {
+        if (formItemsRef.value?.length) {
+          return unref(formItemsRef) || [];
+        } else {
+          return props.formSchema.formItem as FormItem[];
+        }
+      },
+      // 表单实例
+      formInstance: getCurrentInstance(),
+    }) as SchemaFormCompState;
 
-    // a-form
-    const schemaAntFormRef = ref<InstanceType<typeof Form>>()!;
+    const schemaAntFormRef = ref<FormInstance>();
 
     // 表单项
     const formModel = reactive(
@@ -245,7 +247,8 @@ export default defineComponent({
     const exposeFormState = {
       formModel,
       rules: rulesRef,
-      formItems: unref(schemaFormState.getterAllFormItem),
+      formItems: computed(schemaFormState.getAllFormItem),
+      getAllFormItem: schemaFormState.getAllFormItem,
       validateInfos,
       validate,
       resetFields,
@@ -269,7 +272,7 @@ export default defineComponent({
       getComponent,
       handleCancel,
       formItemsRef,
-      getAllFormItem: schemaFormState.getterAllFormItem,
+      // getAllFormItem: schemaFormState.getAllFormItem,
       getFormSchema,
       isShowFormItem,
       handleFnAttr,
@@ -287,6 +290,7 @@ export default defineComponent({
     display: flex;
   }
 }
+
 .mask-lock-layer {
   position: absolute;
   width: 100%;
@@ -296,6 +300,7 @@ export default defineComponent({
   background: rgba(255, 255, 255, 0.4);
   cursor: not-allowed;
 }
+
 :deep(.dnt-tips) {
   z-index: 2;
 }
@@ -304,12 +309,15 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   .extra-text {
     word-break: keep-all;
     color: rgba(0, 0, 0, 0.7);
+
     &.prefix-text {
       margin-right: 8px;
     }
+
     &.suffix-text {
       margin-left: 8px;
     }
