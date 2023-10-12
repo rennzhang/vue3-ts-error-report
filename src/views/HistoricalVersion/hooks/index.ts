@@ -1,4 +1,4 @@
-import { getHistoryList } from '@/api/history';
+import { requestCommonGetHistoryList } from '@/api/common/index';
 import { omit } from 'lodash-es';
 interface DataItem {
   key: number;
@@ -37,7 +37,7 @@ export const useTable = () => {
   ];
   const tableData = ref<DataItem[]>([]);
   const getList = async () => {
-    const data = <any>await getHistoryList({
+    const data = <any>await requestCommonGetHistoryList({
       className: 'CompanyItem',
       thisObj: {
         objId: '1704055851523801088',
@@ -67,16 +67,16 @@ export const useDataCompare = (objArray: any, labelData: any) => {
   const commonValues = <any>{};
   const result = <any>[];
   // 找出所有对象中相同字段的共有值
-  Object.keys(objArray[0]).forEach(key => {
+  Object.keys(objArray[0]).forEach((key) => {
     const firstObjValue = objArray[0][key];
-    if (objArray.every(obj => obj[key] === firstObjValue)) {
+    if (objArray.every((obj) => obj[key] === firstObjValue)) {
       commonValues[key] = firstObjValue;
     }
   });
   // 遍历每个对象，只保留不是共有值的字段
-  objArray.forEach(obj => {
+  objArray.forEach((obj) => {
     const filteredObj = <any>{};
-    Object.keys(obj).forEach(key => {
+    Object.keys(obj).forEach((key) => {
       if (obj[key] !== commonValues[key]) {
         filteredObj[key] = obj[key];
       }
@@ -84,7 +84,7 @@ export const useDataCompare = (objArray: any, labelData: any) => {
     result.push(filteredObj);
   });
   //
-  result.forEach(item =>
+  result.forEach((item) =>
     columns.push({
       title: item.sequence,
       dataIndex: `sequence_${item.sequence}`,
@@ -95,12 +95,12 @@ export const useDataCompare = (objArray: any, labelData: any) => {
   );
   let compareItem = mapFields(result[0], labelData.value);
   console.log(compareItem, 'compareItem');
-  const comparDataSource = compareItem.map(item => {
+  const comparDataSource = compareItem.map((item) => {
     let newItem = <any>{
       compareItem: item.name,
     };
-    result.forEach(ite => {
-      Object.keys(ite).forEach(key => {
+    result.forEach((ite) => {
+      Object.keys(ite).forEach((key) => {
         if (item.code === key) {
           newItem[`sequence_${ite.sequence}`] = ite[item.code];
         }
@@ -129,7 +129,7 @@ const mapFields = (sourceObject: any, fieldMaps: any) => {
     'companyParent',
     'companyParent',
   ]);
-  fieldMaps.forEach(fieldMap => {
+  fieldMaps.forEach((fieldMap) => {
     const { code } = fieldMap;
     if (newSourceObject[code]) {
       result.push({

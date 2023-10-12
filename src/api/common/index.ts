@@ -6,3 +6,6 @@ export const requestCommonSetUpGetInfoDialog = (params: SetUpGetInfoParams) =>
 
 export const requestCommonQueryAgent = (params: QueryAgentParams) =>
   http.post<any, any>(`/acnsvr/CompanyItem/QueryAgent`, params);
+export const requestCommonGetHistoryList = (params: any) => http.post('/acnsvr/CompanyItem/GetAllSequence', params);
+// 根据历史列表id查询 对应的label
+export const requestCommonGetLabel = (params: any) => http.post('/agentdesigner/classAttribute/listData', params);

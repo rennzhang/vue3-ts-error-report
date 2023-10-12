@@ -1,7 +1,15 @@
 <template>
   <div class="history-version">
     <div><n-button type="primary" class="btn-compare" @click="handCompare" :disabled="isLoading">比较</n-button></div>
-    <n-table :row-selection="rowSelectionConfig" :loading="isLoading" :columns="columns" :data-source="tableData" rowKey="objId" :pagination="false" :scroll="{ x: '100%' }">
+    <n-table
+      :row-selection="rowSelectionConfig"
+      :loading="isLoading"
+      :columns="columns"
+      :data-source="tableData"
+      rowKey="objId"
+      :pagination="false"
+      :scroll="{ x: '100%' }"
+    >
       <template #bodyCell="{ column, text }">
         <template v-if="column.dataIndex === 'name'">
           <a>{{ text }}</a>
@@ -20,14 +28,19 @@
         </template>
       </template>
     </n-table>
-    <CompareDrawer ref="CompareDrawerRef" :selectRowsData="selectRowsData" :comparColumns="comparColumnsData" :comparDataSource="comparDataSourceData" />
+    <CompareDrawer
+      ref="CompareDrawerRef"
+      :selectRowsData="selectRowsData"
+      :comparColumns="comparColumnsData"
+      :comparDataSource="comparDataSourceData"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useTable, useDataCompare } from './hooks';
 import CompareDrawer from './Components/CompareDrawer.vue';
-import { getLabel } from '@/api/history';
+import { requestCommonGetLabel } from '@/api/common/index';
 import { type ColumnProps } from 'n-designv3/lib/table';
 const { columns, tableData } = useTable();
 const CompareDrawerRef = ref<typeof CompareDrawer>();
@@ -39,7 +52,7 @@ const labelData = ref([]);
 const getLabelKey = async () => {
   //获取比较时的key值
   isLoading.value = true;
-  let data: any = await getLabel({
+  let data: any = await requestCommonGetLabel({
     classCode: 'CompanyItem',
     serviceCode: 'nalsvr',
   });

@@ -224,3 +224,9 @@ interface Condition {
   value: string;
   compare: string;
 }
+export interface RootObject {
+  code: string;
+  thisObj: ThisObj;
+}
+
+interface ThisObj {}
