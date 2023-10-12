@@ -3,7 +3,13 @@ require('@rushstack/eslint-patch/modern-module-resolution');
 
 module.exports = {
   root: true,
-  extends: ['plugin:vue/vue3-essential', 'eslint:recommended', '@vue/eslint-config-typescript', '@vue/eslint-config-prettier/skip-formatting', '.eslintrc-auto-import.json'],
+  extends: [
+    'plugin:vue/vue3-essential',
+    'eslint:recommended',
+    '@vue/eslint-config-typescript',
+    '@vue/eslint-config-prettier/skip-formatting',
+    '.eslintrc-auto-import.json',
+  ],
   parserOptions: {
     ecmaVersion: 'latest',
   },
@@ -41,7 +47,7 @@ module.exports = {
     'no-restricted-syntax': 0, // 禁用特定的语法
     eqeqeq: 0, // 要求使用 === 和 !==
     'no-underscore-dangle': 0, // 禁止标识符中有悬空下划线
-    'arrow-parens': 0, // 要求箭头函数的参数使用圆括号
+    'arrow-parens': 'always', // 要求箭头函数的参数使用圆括号
     'object-curly-newline': 0, // 强制大括号内换行符的一致性
     'no-plusplus': 0, // 禁用一元操作符 ++ 和 --
     'no-lonely-if': 0, // 禁止 if 作为唯一的语句出现在 else 语句中

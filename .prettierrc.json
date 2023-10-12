@@ -1,10 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/prettierrc",
-  "arrowParens": "avoid",
   "bracketSpacing": true,
   "htmlWhitespaceSensitivity": "css",
   "insertPragma": false,
-  "printWidth": 180,
+  "printWidth": 120,
+  "arrowParens": "always",
   "proseWrap": "always",
   "quoteProps": "as-needed",
   "requirePragma": false,
