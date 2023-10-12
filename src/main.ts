@@ -17,3 +17,4 @@ setupStore(app);
 setupRouter(app);
 setupI18n(app);
 app.mount('#app');
+
