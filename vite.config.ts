@@ -56,6 +56,14 @@ export default defineConfig(({ mode }) => {
         'Access-Control-Allow-Origin': '*',
       },
       proxy: {
+        '/levault/svr': {
+          target: 'http://192.168.5.60:13738/',
+          changeOrigin: true,
+          rewrite: url => url.replace(/^\/levault\/svr/, ''),
+          // bypass: () => {}
+        },
+        // '/levault': `http://192.168.5.60:13738/`,
+        // '/levault': `http://192.168.5.60:16290/`,
         '/levault': `${VITE_BASE_API}/`,
       },
     },
