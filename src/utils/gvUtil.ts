@@ -8,7 +8,7 @@ const util = {
   mode: VITE_APP_ENV,
   origin: window.location.origin,
   hostname,
-  baseUrl: `/`,
+  baseUrl: `/nalsvr`,
   t: i18n.global.t,
   appParams: {}, // iframe 通信参数
   appOrigin: '', // iframe 通信域名
@@ -28,7 +28,7 @@ const util = {
 };
 
 // wujie 合并使用无界传入的util
-export const gvUtil: any = window?.__POWERED_BY_WUJIE__ ? Object.assign(util, window?.$wujie?.props?.util) : util;
+export const gvUtil: any = window?.__POWERED_BY_WUJIE__ ? Object.assign(window?.$wujie?.props?.util,util) : util;
 
 // 注册全局变量
 window.gvUtil = gvUtil;
