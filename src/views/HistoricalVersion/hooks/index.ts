@@ -37,6 +37,7 @@ export const useTable = () => {
   ];
   const tableData = ref<DataItem[]>([]);
   const getList = async () => {
+    const objId = window.$wujie.props.params.record.objId;
     const data = <any>await requestCommonGetHistoryList({
       className: 'CompanyItem',
       thisObj: {
@@ -54,6 +55,13 @@ export const useTable = () => {
 };
 //比较版本之间的字段的差别
 export const useDataCompare = (objArray: any, labelData: any) => {
+  if (objArray.length < 2) {
+    return {
+      comparColumns: [],
+      comparData: [],
+      comparDataSource: [],
+    };
+  }
   let columns = [
     {
       title: '版本',
@@ -81,6 +89,10 @@ export const useDataCompare = (objArray: any, labelData: any) => {
         filteredObj[key] = obj[key];
       }
     });
+    if (filteredObj['companyAddress']) {
+      const address = JSON.parse(filteredObj['companyAddress']);
+      filteredObj['companyAddress'] = address[0]?.rel_officialAddress;
+    }
     result.push(filteredObj);
   });
   //
@@ -118,8 +130,8 @@ const mapFields = (sourceObject: any, fieldMaps: any) => {
   let result = <any>[];
   const newSourceObject = omit(sourceObject, [
     'tenantId',
-    'website',
-    'taxNo',
+    // 'website',
+    // 'taxNo',
     'owner',
     'originObjId',
     'objId',
@@ -127,7 +139,11 @@ const mapFields = (sourceObject: any, fieldMaps: any) => {
     'modifier',
     'creator',
     'companyParent',
-    'companyParent',
+    // 'companyParent',
+    // 'accountHolder',
+    'addressNo',
+    'checkedOut',
+    'className',
   ]);
   fieldMaps.forEach((fieldMap) => {
     const { code } = fieldMap;
