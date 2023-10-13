@@ -1,8 +1,22 @@
 <template>
   <div class="drawer-container">
-    <n-drawer v-model:visible="visible" :width="300" :closable="false" :mask="false" @close="closeDrawer" :get-container="container">
+    <n-drawer
+      v-model:visible="visible"
+      width="40%"
+      :closable="false"
+      :mask="false"
+      class="drawer-container-box"
+      @close="closeDrawer"
+      :get-container="container"
+    >
       <template #title> 版本比较 </template>
-      <n-table :columns="$props.comparColumns" :data-source="$props.comparDataSource" :pagination="false" :scroll="{ x: '100%' }" style="word-break: break-all">
+      <n-table
+        :columns="$props.comparColumns"
+        :data-source="$props.comparDataSource"
+        :pagination="false"
+        :scroll="{ x: '100%', y: scrollY() }"
+        style="word-break: break-all"
+      >
         <template #bodyCell="{ column, text }">
           <template v-if="column.dataIndex === 'name'">
             <a>{{ text }}</a>
@@ -17,6 +31,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import { message } from 'n-designv3';
 let props = defineProps({
   selectRowsData: {
     type: Array,
@@ -36,6 +51,19 @@ const container = document.querySelector('.history-version');
 const openDrawer = () => {
   visible.value = true;
 };
+const scrollY = () => {
+  return document.querySelector('.drawer-container-box')
+    ? document.querySelector('.drawer-container-box').offsetHeight - 150
+    : 'auto';
+};
+// watch(
+//   () => props.selectRowsData,
+//   () => {
+//     message.warning({
+//       content: () => '至少选择两项进行比较',
+//     });
+//   }
+// );
 const closeDrawer = () => {
   visible.value = false;
 };
@@ -62,5 +90,14 @@ defineExpose({
 }
 .nl-drawer {
   position: absolute !important;
+}
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #bfbfbf;
+  border-radius: 4px;
 }
 </style>

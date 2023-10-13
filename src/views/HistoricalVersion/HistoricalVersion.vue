@@ -39,6 +39,7 @@
 
 <script setup lang="ts">
 import { useTable, useDataCompare } from './hooks';
+import { message } from 'n-designv3';
 import CompareDrawer from './Components/CompareDrawer.vue';
 import { requestCommonGetLabel } from '@/api/common/index';
 import { type ColumnProps } from 'n-designv3/lib/table';
@@ -60,7 +61,19 @@ const getLabelKey = async () => {
   isLoading.value = false;
 };
 getLabelKey();
+const scrollY = () => {
+  return document.querySelector('.history-version')
+    ? document.querySelector('.history-version').offsetHeight - 100
+    : 'auto';
+};
 const handCompare = () => {
+  console.log(selectRowsData.value.length, 'selectRowsData');
+  if (selectRowsData.value.length < 2) {
+    message.warning({
+      content: () => '至少选择两项进行比较',
+    });
+    return;
+  }
   if (CompareDrawerRef.value.visible) {
     //如果已经打开，重复点击禁止重复调用
     return false;
@@ -70,6 +83,7 @@ const handCompare = () => {
 const rowSelectionConfig = {
   type: 'checkbox',
   onChange: (selectedRowKeys: any, selectedRows: any) => {
+    console.log(selectedRowKeys, 'selectKeys');
     const { comparColumns, comparData, comparDataSource } = useDataCompare(selectedRows, labelData); //比较是否有相同值的字段，如果有则自动不显示
     selectRowsData.value = comparData as any;
     comparColumnsData.value = comparColumns;
