@@ -24,4 +24,4 @@ export const insertCompanyTree = (params: AddCompanyParams) =>
 
 // 从集团结构树中删除公司
 export const deleteCompanyForGroup = (params: DeleteCompanyParams) =>
-  http.post<any, HttpRes<GroupCompanyRecord>>(`${GETWAY}/usrsvr/Usr/GetUserInfoByToken`, params);
+  http.post<any, HttpRes<GroupCompanyRecord>>(`${GETWAY}/CompanyItemRelation/DeleteCompanyTree`, params);

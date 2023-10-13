@@ -29,18 +29,8 @@ interface Iconclass {
   sourceName?: any;
   langPrefix?: any;
 }
-export interface SetUpGetInfoResponse {
-  mfail: string;
-  msg: string;
-  data: Data;
-  errors?: any;
-}
 
-interface Data {
-  scheme: Scheme;
-}
-
-interface Scheme {
+export interface SetUpGetInfoScheme {
   apis: Api[];
   form: Form[];
   btnListConfig: BtnListConfig[];

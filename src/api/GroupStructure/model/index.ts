@@ -13,22 +13,18 @@ interface GroupCommonParams<T extends DefaultThisObj> {
 }
 
 interface AddCompanyThisObj {
-  company_code: string;
-  parent_id: string;
-}
-
-interface ValidateCompanyThisObj {
-  company_code: string;
-  parent_id: string;
-  user_id: string;
+  companyCode: string;
+  parentId: string;
+  userId: string;
 }
 
 export type AddCompanyParams = GroupCommonParams<AddCompanyThisObj>;
 export type QueryGroupParams = GroupCommonParams<DefaultThisObj>;
-export type ValidateCompanyParams = GroupCommonParams<ValidateCompanyThisObj>;
-export type DeleteCompanyParams = GroupCommonParams<{ obj_id: string }>;
+export type ValidateCompanyParams = GroupCommonParams<AddCompanyThisObj>;
+export type DeleteCompanyParams = GroupCommonParams<{ objId: string }>;
 
 export interface GroupCompanyRecord {
+  code?: string;
   companyObjId: string;
   className: string;
   container?: any;

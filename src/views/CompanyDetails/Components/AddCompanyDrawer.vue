@@ -1,87 +1,119 @@
 <template>
   <n-drawer title="添加企业" v-model:visible="showAddDrawer" width="40%">
-    添加企业 123
-    <schema-form ref="schemaFormRef" :formSchema="formSchema" />
+    <!-- <div class="select-body" ref="selectBodyRef"> -->
+    <schema-form ref="schemaFormRef" :formSchema="formSchema" v-if="showAddDrawer" />
+    <!-- </div> -->
+    <template #footer>
+      <div class="flex justify-end">
+        <n-button style="margin-right: 8px" @click="showAddDrawer = false">取消</n-button>
+        <n-button type="primary" @click="onAdd">确定</n-button>
+      </div>
+    </template>
   </n-drawer>
 </template>
 
 <script lang="ts" setup>
+import { insertCompanyTree, type GroupCompanyRecord, validateInsertCompanyTreePre } from '@/api/GroupStructure';
+import { requestCommonQueryAgent } from '@/api/common';
+import { message } from 'n-designv3';
+type FormData = {
+  companyCode: string;
+};
+
+const emit = defineEmits<{
+  (event: 'refresh'): void;
+}>();
+const ready = ref(false);
+onMounted(() => {
+  ready.value = true;
+});
 const showAddDrawer = ref(false);
+const selectBodyRef = ref<HTMLDivElement>();
+const schemaFormRef = ref<SchemaFormRef<FormData>>();
 
-const schemaFormRef = ref<SchemaFormRef>();
-
-const formSchema = reactive<FormSchema>({
+const formSchema = reactive<FormSchema<FormData>>({
   formItem: [
     {
-      field: 'catalogName',
-      type: 'input',
-      label: '目录名称',
-      tips: '目录名称不能为空',
-      events: {
-        onChange: val => {
-          console.log('change', val);
-        },
-      },
-    },
-    {
-      field: 'user',
+      field: 'companyCode',
       type: 'selectSearch',
-      label: '选择用户',
-      searchRequest: async value => {
-        return fetch('https://randomuser.me/api/?results=' + value)
-          .then(response => response.json())
-          .then(async body => {
-            const data = body.results.map((user: any) => ({
-              label: `${user.name.first} ${user.name.last}`,
-              value: user.login.username,
-            }));
-            return data;
-          });
-      },
-    },
-    // {
-    //   field: 'parentId',
-    //   type: 'select',
-    //   label: '归属目录',
-    //   options: [
-    //     { label: '选项1', value: '1' },
-    //     { label: '选项2', value: '2' },
-    //     { label: '选项3', value: '3' },
-    //   ],
-    //   props: {
-    //     labelInValue: true,
-    //   },
-    //   events: {
-    //     onChange: val => {
-    //       console.log('change', val);
-    //     },
-    //     blur: val => {
-    //       console.log('blur', val);
-    //     },
-    //     // onBlur: val => {
-    //     //   console.log('onBlur', val);
-    //     // },
-    //   },
-    // },
-    {
-      field: 'catalogDesc',
-      type: 'textarea',
-      label: '目录描述',
-      required: false,
-      events: {
-        onChange: val => {
-          console.log('change', val);
-        },
+      label: '搜索公司',
+      // props: {
+      //   getPopupContainer: () => selectBodyRef.value,
+      // },
+      searchRequest: async (value) => {
+        return requestCommonQueryAgent({
+          queryArgs: {
+            condition: [{ key: 'companyName', value: value, compare: 'LIKE' }],
+            page: { pageNo: 1, pageSize: 9999 },
+            sort: { sortBy: 'createAt', sortOrder: 'desc' },
+            attrSet: [
+              'code',
+              'companyName',
+              'companyAlias',
+              'companyLevel',
+              'companyCategory',
+              'companyProperty',
+              'companyMarket',
+              'companyParent',
+              'companyCeditNo',
+              'displayCreator',
+              'displayModifier',
+              'objId',
+              'className',
+            ],
+          },
+          condition: { companyName: value },
+          className: 'CompanyItem',
+        }).then((res) => {
+          return (
+            res?.data?.data?.map((item: any) => ({
+              label: item.companyName,
+              value: item.code,
+              ...item,
+            })) || []
+          );
+        });
       },
     },
   ],
   required: true,
-  // showAction: false,
+  showAction: false,
   formData: {},
 });
 
-const openDrawer = (record?: any) => {
+const parentRecord = ref<GroupCompanyRecord>();
+
+const openDrawer = (record?: GroupCompanyRecord) => {
+  if (!record) parentRecord.value = window?.$wujie?.props?.params?.record;
+  else parentRecord.value = record;
   showAddDrawer.value = true;
+};
+
+const onAdd = async () => {
+  const { user } = window?.$wujie?.props || {};
+
+  const formData = await schemaFormRef.value?.validate();
+
+  const parentCompanyCode = parentRecord.value?.companyCode || parentRecord.value?.code;
+  const insertCompanyParams = {
+    className: 'CompanyItemRelation',
+    thisObj: {
+      companyCode: formData!.companyCode,
+      // 如果是顶级企业，parentId 为 0
+      parentId: formData!.companyCode == parentCompanyCode ? '0' : parentRecord.value!.objId,
+      userId: user!.userId,
+    },
+  };
+  const validateRes = await validateInsertCompanyTreePre(insertCompanyParams);
+
+  if (validateRes.mfail !== '0') return;
+  insertCompanyTree(insertCompanyParams).then((res) => {
+    if (res.mfail === '0') {
+      message.success('添加成功');
+      showAddDrawer.value = false;
+      emit('refresh');
+    }
+  });
 };
 
 defineExpose({
