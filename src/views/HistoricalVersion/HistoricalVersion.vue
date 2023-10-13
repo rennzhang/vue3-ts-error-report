@@ -67,7 +67,7 @@ const scrollY = () => {
     : 'auto';
 };
 const handCompare = () => {
-  console.log(selectRowsData.value.length, 'selectRowsData');
+  // console.log(selectRowsData.value.length, 'selectRowsData');
   if (selectRowsData.value.length < 2) {
     message.warning({
       content: () => '至少选择两项进行比较',
@@ -83,7 +83,7 @@ const handCompare = () => {
 const rowSelectionConfig = {
   type: 'checkbox',
   onChange: (selectedRowKeys: any, selectedRows: any) => {
-    console.log(selectedRowKeys, 'selectKeys');
+    // console.log(selectedRowKeys, 'selectKeys');
     const { comparColumns, comparData, comparDataSource } = useDataCompare(selectedRows, labelData); //比较是否有相同值的字段，如果有则自动不显示
     selectRowsData.value = comparData as any;
     comparColumnsData.value = comparColumns;
