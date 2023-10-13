@@ -4,15 +4,19 @@
       <template #headerCell="{ column }">
         <template v-if="column.dataIndex === 'operation'">
           <span>
-            {{ column.title }}
             <n-space>
+              {{ column.title }}
               <n-tooltip v-if="!tableData?.length">
                 <template #title>添加</template>
-                <plus-square-outlined @click="AddCompanyDrawerRef?.openDrawer()" />
+                <plus-square-outlined
+                  @click="AddCompanyDrawerRef?.openDrawer()"
+                  class="align-middle"
+                  style="vertical-align: middle"
+                />
               </n-tooltip>
               <n-tooltip>
                 <template #title>刷新</template>
-                <sync-outlined @click="getList" />
+                <sync-outlined @click="getList()" class="align-middle" style="vertical-align: middle" />
               </n-tooltip>
             </n-space>
           </span>
@@ -105,3 +109,8 @@ nextTick(() => {
   // AddCompanyDrawerRef.value?.openDrawer({});
 });
 </script>
+<style>
+.nl-table-cell {
+  line-height: 40px;
+}
+</style>
