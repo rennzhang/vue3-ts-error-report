@@ -106,7 +106,6 @@ export const useDataCompare = (objArray: any, labelData: any) => {
     })
   );
   let compareItem = mapFields(result[0], labelData.value);
-  console.log(compareItem, 'compareItem');
   const comparDataSource = compareItem.map((item) => {
     let newItem = <any>{
       compareItem: item.name,
@@ -144,6 +143,8 @@ const mapFields = (sourceObject: any, fieldMaps: any) => {
     'addressNo',
     'checkedOut',
     'className',
+    'lastUpdate',
+    'superseded',
   ]);
   fieldMaps.forEach((fieldMap) => {
     const { code } = fieldMap;
