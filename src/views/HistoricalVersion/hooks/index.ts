@@ -144,6 +144,7 @@ const mapFields = (sourceObject: any, fieldMaps: any) => {
     'checkedOut',
     'className',
     'lastUpdate',
+    'superseded',
   ]);
   fieldMaps.forEach((fieldMap) => {
     const { code } = fieldMap;
