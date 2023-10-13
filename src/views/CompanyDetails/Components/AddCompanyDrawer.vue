@@ -96,7 +96,7 @@ const openDrawer = (record?: GroupCompanyRecord) => {
     parentId = '0';
   } else {
     parentRecord.value = record;
-    parentId = parentCompanyCode.value;
+    parentId = parentRecord.value.objId;
   }
   showAddDrawer.value = true;
 };
