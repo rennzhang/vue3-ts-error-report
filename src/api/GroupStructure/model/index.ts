@@ -13,6 +13,7 @@ interface GroupCommonParams<T extends DefaultThisObj> {
 }
 
 interface AddCompanyThisObj {
+  curCompanyCode: string;
   companyCode: string;
   parentId: string;
   userId: string;

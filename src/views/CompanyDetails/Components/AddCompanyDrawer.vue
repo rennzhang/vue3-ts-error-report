@@ -13,7 +13,12 @@
 </template>
 
 <script lang="ts" setup>
-import { insertCompanyTree, type GroupCompanyRecord, validateInsertCompanyTreePre } from '@/api/GroupStructure';
+import {
+  insertCompanyTree,
+  type GroupCompanyRecord,
+  validateInsertCompanyTreePre,
+  type ValidateCompanyParams,
+} from '@/api/GroupStructure';
 import { requestCommonQueryAgent } from '@/api/common';
 import { message } from 'n-designv3';
 type FormData = {
@@ -82,10 +87,17 @@ const formSchema = reactive<FormSchema<FormData>>({
 });
 
 const parentRecord = ref<GroupCompanyRecord>();
+const parentCompanyCode = computed(() => parentRecord.value?.companyCode || parentRecord.value?.code || '');
 
+let parentId = '';
 const openDrawer = (record?: GroupCompanyRecord) => {
-  if (!record) parentRecord.value = window?.$wujie?.props?.params?.record;
-  else parentRecord.value = record;
+  if (!record) {
+    parentRecord.value = window?.$wujie?.props?.params?.record;
+    parentId = '0';
+  } else {
+    parentRecord.value = record;
+    parentId = parentCompanyCode.value;
+  }
   showAddDrawer.value = true;
 };
 
@@ -94,13 +106,12 @@ const onAdd = async () => {
 
   const formData = await schemaFormRef.value?.validate();
 
-  const parentCompanyCode = parentRecord.value?.companyCode || parentRecord.value?.code;
-  const insertCompanyParams = {
+  const insertCompanyParams: ValidateCompanyParams = {
     className: 'CompanyItemRelation',
     thisObj: {
       companyCode: formData!.companyCode,
-      // 如果是顶级企业，parentId 为 0
-      parentId: formData!.companyCode == parentCompanyCode ? '0' : parentRecord.value!.objId,
+      curCompanyCode: parentCompanyCode.value,
+      parentId,
       userId: user!.userId,
     },
   };
