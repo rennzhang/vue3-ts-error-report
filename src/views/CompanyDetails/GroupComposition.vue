@@ -57,12 +57,17 @@ const AddCompanyDrawerRef = ref<typeof AddCompanyDrawer>();
 
 import { useTable } from './hooks';
 import { requestCommonSetUpGetInfoDialog } from '@/api/common';
+import { createVNode } from 'vue';
 const { loading, columns, tableData, getList } = useTable();
 
 const showDeleteConfirm = (record: GroupCompanyRecord) => {
   Modal.confirm({
-    title: '提示',
-    content: '确定 删除 选中数据吗?',
+    title: '确定删除选中数据吗?',
+    content: createVNode(
+      'span',
+      { style: { color: 'red' } },
+      `该操作会同时删除【${record.companyName || '选中公司'}】以及所有子公司，是否确认删除？`
+    ),
     okText: '确定',
     cancelText: '取消',
     async onOk() {
