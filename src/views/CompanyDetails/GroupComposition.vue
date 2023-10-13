@@ -8,11 +8,15 @@
               {{ column.title }}
               <n-tooltip v-if="!tableData?.length">
                 <template #title>添加</template>
-                <plus-square-outlined @click="AddCompanyDrawerRef?.openDrawer()" class="align-middle" />
+                <plus-square-outlined
+                  @click="AddCompanyDrawerRef?.openDrawer()"
+                  class="align-middle"
+                  style="vertical-align: middle"
+                />
               </n-tooltip>
               <n-tooltip>
                 <template #title>刷新</template>
-                <sync-outlined @click="getList()" class="align-middle" />
+                <sync-outlined @click="getList()" class="align-middle" style="vertical-align: middle" />
               </n-tooltip>
             </n-space>
           </span>
