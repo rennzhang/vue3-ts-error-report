@@ -8,7 +8,7 @@ const util = {
   mode: VITE_APP_ENV,
   origin: window.location.origin,
   hostname,
-  baseUrl: `/nalsvr`,
+  baseUrl: `/front-svr/nalsvr`,
   t: i18n.global.t,
   appParams: {}, // iframe 通信参数
   appOrigin: '', // iframe 通信域名
