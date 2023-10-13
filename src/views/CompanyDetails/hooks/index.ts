@@ -1,11 +1,10 @@
-import { Modal } from 'n-designv3';
-interface DataItem {
-  key: number;
-  companyName: string;
-  address: string;
-  children?: DataItem[];
-}
+import { getGroupTree, type GroupCompanyRecord } from '@/api/GroupStructure';
+
 export const useTable = () => {
+  console.log('window?.$wujie?.props', window?.$wujie?.props);
+  const { params } = window?.$wujie?.props || {};
+
+  const loading = ref(false);
   const columns = [
     {
       title: '企业名称',
@@ -19,74 +18,30 @@ export const useTable = () => {
     },
   ];
 
-  const tableData = ref<DataItem[]>([]);
+  const tableData = ref<GroupCompanyRecord[]>([]);
 
-  const getList = () => {
-    setTimeout(() => {
-      tableData.value = [
-        {
-          key: 1,
-          companyName: '能科',
-          address: 'New York No. 1 Lake Park',
-          children: [
-            {
-              key: 11,
-              companyName: '瑞元',
-              address: 'New York No. 1 Lake Park',
-            },
-            {
-              key: 12,
-              companyName: '能科子公司1',
-              address: 'New York No. 1 Lake Park',
-            },
-          ],
-        },
-        {
-          key: 2,
-          companyName: '北京银行',
-          address: 'New York No. 1 Lake Park',
-          children: [
-            {
-              key: 21,
-              companyName: '北京银行科技',
-              address: 'New York No. 1 Lake Park',
-            },
-            {
-              key: 22,
-              companyName: '北京银行分公司1',
-              address: 'New York No. 1 Lake Park',
-            },
-          ],
-        },
-      ];
-    }, 1500);
+  const getList = async () => {
+    loading.value = true;
+    const { record } = params || {};
+    const res = await getGroupTree({
+      className: 'CompanyItemRelation',
+      thisObj: {
+        companyCode: record.code,
+      },
+    })
+      .then((res) => {
+        tableData.value = res.data;
+      })
+      .finally(() => {
+        loading.value = false;
+      });
   };
 
   getList();
   return {
+    loading,
     columns,
     tableData,
     getList,
-  };
-};
-
-export const useOperation = () => {
-  const showDeleteConfirm = () => {
-    Modal.confirm({
-      title: '提示',
-      content: '确定 删除 选中数据吗?',
-      okText: '确定',
-      cancelText: '取消',
-      onOk() {
-        console.log('OK');
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
-    });
-  };
-
-  return {
-    showDeleteConfirm,
   };
 };

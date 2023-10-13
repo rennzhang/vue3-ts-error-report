@@ -78,7 +78,6 @@ import { cloneDeep } from 'lodash-es';
 import { clearObject } from '@/utils';
 import GvTips from '@/components/common/GvTips/index.vue';
 const useForm = Form.useForm;
-
 export default defineComponent({
   name: 'SchemaForm',
   components: {
@@ -91,7 +90,7 @@ export default defineComponent({
     formSchema: {
       // 动态验证表单
       required: true,
-      type: Object as PropType<FormSchema>,
+      type: Object as PropType<any>,
     },
   },
   // emits: ["ready", "submit", "cancel"],
@@ -117,12 +116,16 @@ export default defineComponent({
   setup(props, { emit }) {
     const formItemsRef = ref<FormItem[]>();
 
-    const schemaFormState = reactive({
-      formSchema: computed(() => props.formSchema) as unknown as FormSchema,
-      formModel: (unref(props.formSchema.formItem) as FormItem[]).reduce((previousValue: any, currentValue: any) => {
+    // 表单项
+    const formModel = reactive(
+      (unref(props.formSchema.formItem) as unknown as FormItem[]).reduce((previousValue: any, currentValue: any) => {
         previousValue[currentValue.field] = currentValue.value;
         return previousValue;
-      }, {}) as SchemaFormModel,
+      }, {}) as SchemaFormModel
+    );
+    const schemaFormState = reactive({
+      formSchema: computed(() => props.formSchema),
+      formModel,
       getterProps: computed(() => {
         return { ...props };
       }) as unknown as SchemaFormCompProps,
@@ -130,7 +133,7 @@ export default defineComponent({
         if (formItemsRef.value?.length) {
           return unref(formItemsRef) || [];
         } else {
-          return props.formSchema.formItem as FormItem[];
+          return props.formSchema.formItem as unknown as FormItem[];
         }
       },
       // 表单实例
@@ -139,13 +142,6 @@ export default defineComponent({
 
     const schemaAntFormRef = ref<FormInstance>();
 
-    // 表单项
-    const formModel = reactive(
-      (unref(props.formSchema.formItem) as FormItem[]).reduce((previousValue: any, currentValue: any) => {
-        previousValue[currentValue.field] = currentValue.value;
-        return previousValue;
-      }, {})
-    );
     provide('schemaFormModel', formModel);
     const { getFormSchema, getFormItem } = useFormValues(schemaFormState);
     const { formItemLayout, getOperateLayout } = useFormLayout(schemaFormState);

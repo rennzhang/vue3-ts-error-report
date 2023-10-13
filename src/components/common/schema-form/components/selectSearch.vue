@@ -1,14 +1,5 @@
 <template>
-  <n-select
-    v-model:value="modelValue"
-    label-in-value
-    :filter-option="false"
-    :not-found-content="searching ? undefined : null"
-    :options="options"
-    v-bind="binds"
-    showSearch
-    @search="onSearch"
-  >
+  <n-select v-model:value="modelValue" :filter-option="false" :not-found-content="searching ? undefined : null" :options="options" v-bind="binds" showSearch @search="onSearch">
     <template v-if="searching" #notFoundContent>
       <n-spin size="small" />
     </template>
