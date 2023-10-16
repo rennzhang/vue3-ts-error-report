@@ -4,15 +4,19 @@
       <template #headerCell="{ column }">
         <template v-if="column.dataIndex === 'operation'">
           <span>
-            {{ column.title }}
             <n-space>
+              {{ column.title }}
               <n-tooltip v-if="!tableData?.length">
                 <template #title>添加</template>
-                <plus-square-outlined @click="AddCompanyDrawerRef?.openDrawer()" />
+                <plus-square-outlined
+                  @click="AddCompanyModalRef?.openDrawer()"
+                  class="align-middle"
+                  style="vertical-align: middle"
+                />
               </n-tooltip>
               <n-tooltip>
                 <template #title>刷新</template>
-                <sync-outlined @click="getList" />
+                <sync-outlined @click="getList()" class="align-middle" style="vertical-align: middle" />
               </n-tooltip>
             </n-space>
           </span>
@@ -34,7 +38,7 @@
             </n-tooltip>
             <n-tooltip>
               <template #title>添加</template>
-              <plus-square-outlined @click="AddCompanyDrawerRef?.openDrawer(record)" />
+              <plus-square-outlined @click="AddCompanyModalRef?.openDrawer(record)" />
             </n-tooltip>
             <n-tooltip>
               <template #title>删除</template>
@@ -45,15 +49,14 @@
       </template>
     </n-table>
   </div>
-  <AddCompanyDrawer ref="AddCompanyDrawerRef" @refresh="getList" />
-  <CompanyDetailsDrawer ref="CompanyDetailsDrawerRef" />
+  <AddCompanyModal ref="AddCompanyModalRef" @refresh="getList" />
 </template>
 <script lang="ts" setup>
 import { deleteCompanyForGroup, type GroupCompanyRecord } from '@/api/GroupStructure';
-import AddCompanyDrawer from './Components/AddCompanyDrawer.vue';
+import AddCompanyModal from './Components/AddCompanyModal.vue';
 import { Modal, message } from 'n-designv3';
 
-const AddCompanyDrawerRef = ref<typeof AddCompanyDrawer>();
+const AddCompanyModalRef = ref<typeof AddCompanyModal>();
 
 import { useTable } from './hooks';
 import { requestCommonSetUpGetInfoDialog } from '@/api/common';
@@ -102,6 +105,11 @@ const showDetails = (record: GroupCompanyRecord) => {
 };
 
 nextTick(() => {
-  // AddCompanyDrawerRef.value?.openDrawer({});
+  // AddCompanyModalRef.value?.openDrawer({});
 });
 </script>
+<style>
+.nl-table-cell {
+  line-height: 40px;
+}
+</style>

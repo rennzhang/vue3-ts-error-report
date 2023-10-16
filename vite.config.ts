@@ -56,11 +56,17 @@ export default defineConfig(({ mode }) => {
         'Access-Control-Allow-Origin': '*',
       },
       proxy: {
-        '/levault/svr': {
+        '/front-svr/api/': {
           // target: 'http://192.168.5.60:13738/',
           target: 'http://192.168.50.178/',
           changeOrigin: true,
-          rewrite: url => url.replace(/^\/levault\/svr/, ''),
+          rewrite: (url) => url.replace('/front-svr/api', ''),
+          // bypass: () => {}
+        },
+        '/front-svr/levault/': {
+          target: `${VITE_BASE_API}/`,
+          changeOrigin: true,
+          rewrite: (url) => url.replace('/front-svr', ''),
           // bypass: () => {}
         },
         '/levault': `${VITE_BASE_API}/`,
@@ -115,11 +121,11 @@ function codeCompressPlugin(compress: ViteCompression): Plugin | Plugin[] | null
     { k: 'both', v: [gz, br] },
   ];
   const plugins: Plugin[] = [];
-  codeList.forEach(item => {
+  codeList.forEach((item) => {
     if (compress.includes(item.k)) {
       if (compress.includes('clear')) {
         if (Array.isArray(item.v)) {
-          item.v.forEach(vItem => {
+          item.v.forEach((vItem) => {
             plugins.push(compressPlugin(Object.assign(vItem, { deleteOriginFile: true })));
           });
         } else {
@@ -127,7 +133,7 @@ function codeCompressPlugin(compress: ViteCompression): Plugin | Plugin[] | null
         }
       } else {
         if (Array.isArray(item.v)) {
-          item.v.forEach(vItem => {
+          item.v.forEach((vItem) => {
             plugins.push(compressPlugin(vItem));
           });
         } else {

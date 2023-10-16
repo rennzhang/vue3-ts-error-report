@@ -1,19 +1,27 @@
 <template>
-  <n-drawer title="添加企业" v-model:visible="showAddDrawer" width="40%">
+  <n-modal title="添加企业" v-model:visible="showAddDrawer" width="40%">
     <!-- <div class="select-body" ref="selectBodyRef"> -->
-    <schema-form ref="schemaFormRef" :formSchema="formSchema" v-if="showAddDrawer" />
     <!-- </div> -->
+    <!-- <div class="bg-black h-200"></div> -->
+
+    <schema-form ref="schemaFormRef" :formSchema="formSchema" v-if="showAddDrawer" />
+    <!-- <div class="bg-black h-500"></div> -->
     <template #footer>
       <div class="flex justify-end">
         <n-button style="margin-right: 8px" @click="showAddDrawer = false">取消</n-button>
         <n-button type="primary" @click="onAdd">确定</n-button>
       </div>
     </template>
-  </n-drawer>
+  </n-modal>
 </template>
 
 <script lang="ts" setup>
-import { insertCompanyTree, type GroupCompanyRecord, validateInsertCompanyTreePre } from '@/api/GroupStructure';
+import {
+  insertCompanyTree,
+  type GroupCompanyRecord,
+  validateInsertCompanyTreePre,
+  type ValidateCompanyParams,
+} from '@/api/GroupStructure';
 import { requestCommonQueryAgent } from '@/api/common';
 import { message } from 'n-designv3';
 type FormData = {
@@ -37,9 +45,6 @@ const formSchema = reactive<FormSchema<FormData>>({
       field: 'companyCode',
       type: 'selectSearch',
       label: '搜索公司',
-      // props: {
-      //   getPopupContainer: () => selectBodyRef.value,
-      // },
       searchRequest: async (value) => {
         return requestCommonQueryAgent({
           queryArgs: {
@@ -84,8 +89,7 @@ const formSchema = reactive<FormSchema<FormData>>({
 const parentRecord = ref<GroupCompanyRecord>();
 
 const openDrawer = (record?: GroupCompanyRecord) => {
-  if (!record) parentRecord.value = window?.$wujie?.props?.params?.record;
-  else parentRecord.value = record;
+  parentRecord.value = record;
   showAddDrawer.value = true;
 };
 
@@ -94,13 +98,12 @@ const onAdd = async () => {
 
   const formData = await schemaFormRef.value?.validate();
 
-  const parentCompanyCode = parentRecord.value?.companyCode || parentRecord.value?.code;
-  const insertCompanyParams = {
+  const insertCompanyParams: ValidateCompanyParams = {
     className: 'CompanyItemRelation',
     thisObj: {
       companyCode: formData!.companyCode,
-      // 如果是顶级企业，parentId 为 0
-      parentId: formData!.companyCode == parentCompanyCode ? '0' : parentRecord.value!.objId,
+      curCompanyCode: window?.$wujie?.props?.params?.record.code,
+      parentId: parentRecord.value?.objId || '0',
       userId: user!.userId,
     },
   };
@@ -122,4 +125,8 @@ defineExpose({
 });
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.select-encase-body-123 {
+  margin-top: 56px;
+}
+</style>

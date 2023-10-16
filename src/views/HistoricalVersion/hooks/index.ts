@@ -73,7 +73,7 @@ export const useDataCompare = (objArray: any, labelData: any) => {
       minWidth: 150,
     },
   ];
-  const commonValues = <any>{};
+  // const commonValues = <any>{};
   // 找出所有对象中相同字段的共有值
   // Object.keys(objArray[0]).forEach((key) => {
   //   const firstObjValue = objArray[0][key];
@@ -96,7 +96,7 @@ export const useDataCompare = (objArray: any, labelData: any) => {
   //   result.push(filteredObj);
   // });
   //-------------
-  let oneItem = objArray[0];
+  // let oneItem = objArray[0];
   const commonKeys = findCommonKeys(objArray);
   let newObjArray = cloneDeep(objArray);
   const result = newObjArray.map((item, index) => {
