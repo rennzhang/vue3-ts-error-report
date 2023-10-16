@@ -37,11 +37,11 @@ export const useTable = () => {
   ];
   const tableData = ref<DataItem[]>([]);
   const getList = async () => {
-    const objId = window.$wujie.props.params.record.objId;
+    // const objId = window.$wujie.props.params.record.objId;
     const data = <any>await requestCommonGetHistoryList({
       className: 'CompanyItem',
       thisObj: {
-        objId: objId,
+        objId: '1704055851523801088',
       },
     });
     tableData.value = data.data;
@@ -75,27 +75,28 @@ export const useDataCompare = (objArray: any, labelData: any) => {
   const commonValues = <any>{};
   const result = <any>[];
   // 找出所有对象中相同字段的共有值
-  Object.keys(objArray[0]).forEach((key) => {
-    const firstObjValue = objArray[0][key];
-    if (objArray.every((obj) => obj[key] === firstObjValue)) {
-      commonValues[key] = firstObjValue;
-    }
-  });
-  // 遍历每个对象，只保留不是共有值的字段
-  objArray.forEach((obj) => {
-    const filteredObj = <any>{};
-    Object.keys(obj).forEach((key) => {
-      if (obj[key] !== commonValues[key]) {
-        filteredObj[key] = obj[key];
-      }
-    });
-    if (filteredObj['companyAddress']) {
-      const address = JSON.parse(filteredObj['companyAddress']);
-      filteredObj['companyAddress'] = address[0]?.rel_officialAddress;
-    }
-    result.push(filteredObj);
-  });
-  //
+  // Object.keys(objArray[0]).forEach((key) => {
+  //   const firstObjValue = objArray[0][key];
+  //   if (objArray.every((obj) => obj[key] === firstObjValue)) {
+  //     commonValues[key] = firstObjValue;
+  //   }
+  // });
+  // // 遍历每个对象，只保留不是共有值的字段
+  // objArray.forEach((obj) => {
+  //   const filteredObj = <any>{};
+  //   Object.keys(obj).forEach((key) => {
+  //     if (obj[key] !== commonValues[key]) {
+  //       filteredObj[key] = obj[key];
+  //     }
+  //   });
+  //   if (filteredObj['companyAddress']) {
+  //     const address = JSON.parse(filteredObj['companyAddress']);
+  //     filteredObj['companyAddress'] = address[0]?.rel_officialAddress;
+  //   }
+  //   result.push(filteredObj);
+  // });
+  //-------------
+  //------------
   result.forEach((item) =>
     columns.push({
       title: item.sequence,
