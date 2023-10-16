@@ -1,5 +1,6 @@
 import { requestCommonGetHistoryList } from '@/api/common/index';
-import { omit } from 'lodash-es';
+import { cloneDeep, omit } from 'lodash-es';
+import { clone } from 'ramda';
 interface DataItem {
   key: number;
   companyName: string;
@@ -67,13 +68,12 @@ export const useDataCompare = (objArray: any, labelData: any) => {
       title: '版本',
       dataIndex: 'compareItem',
       key: 'compareItem',
-      width: 100,
+      width: 110,
       fixed: true,
+      minWidth: 150,
     },
   ];
-  // const commonValues = {};
   const commonValues = <any>{};
-  const result = <any>[];
   // 找出所有对象中相同字段的共有值
   // Object.keys(objArray[0]).forEach((key) => {
   //   const firstObjValue = objArray[0][key];
@@ -96,6 +96,15 @@ export const useDataCompare = (objArray: any, labelData: any) => {
   //   result.push(filteredObj);
   // });
   //-------------
+  let oneItem = objArray[0];
+  const commonKeys = findCommonKeys(objArray);
+  let newObjArray = cloneDeep(objArray);
+  const result = newObjArray.map((item, index) => {
+    const newItem = omit(item, commonKeys);
+    const companyAddress = JSON.parse(item.companyAddress);
+    newItem.companyAddress = companyAddress.map((item) => item.rel_officialAddress).join();
+    return newItem;
+  });
   //------------
   result.forEach((item) =>
     columns.push({
@@ -149,7 +158,7 @@ const mapFields = (sourceObject: any, fieldMaps: any) => {
   ]);
   fieldMaps.forEach((fieldMap) => {
     const { code } = fieldMap;
-    if (newSourceObject[code]) {
+    if (newSourceObject.hasOwnProperty(code)) {
       result.push({
         code: fieldMap['code'],
         name: fieldMap['name'],
@@ -157,4 +166,18 @@ const mapFields = (sourceObject: any, fieldMaps: any) => {
     }
   });
   return result;
+};
+const findCommonKeys = (objects) => {
+  const commonKeys = {};
+
+  // 遍历第一个对象的所有键
+  Object.keys(objects[0]).forEach((key) => {
+    // 检查所有对象中该键的值是否相同
+    if (objects.every((obj) => obj[key] === objects[0][key])) {
+      // 如果相同，将该键加入结果对象中
+      commonKeys[key] = objects[0][key];
+    }
+  });
+  // 将结果对象的键转化为数组
+  return Object.keys(commonKeys);
 };
