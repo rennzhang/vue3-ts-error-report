@@ -87,17 +87,9 @@ const formSchema = reactive<FormSchema<FormData>>({
 });
 
 const parentRecord = ref<GroupCompanyRecord>();
-const parentCompanyCode = computed(() => parentRecord.value?.companyCode || parentRecord.value?.code || '');
 
-let parentId = '';
 const openDrawer = (record?: GroupCompanyRecord) => {
-  if (!record) {
-    parentRecord.value = window?.$wujie?.props?.params?.record;
-    parentId = '0';
-  } else {
-    parentRecord.value = record;
-    parentId = parentRecord.value.objId;
-  }
+  parentRecord.value = record;
   showAddDrawer.value = true;
 };
 
@@ -110,8 +102,8 @@ const onAdd = async () => {
     className: 'CompanyItemRelation',
     thisObj: {
       companyCode: formData!.companyCode,
-      curCompanyCode: parentCompanyCode.value,
-      parentId,
+      curCompanyCode: window?.$wujie?.props?.params?.record.code,
+      parentId: parentRecord.value?.objId || '0',
       userId: user!.userId,
     },
   };
