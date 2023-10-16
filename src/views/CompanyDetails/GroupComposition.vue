@@ -50,7 +50,6 @@
     </n-table>
   </div>
   <AddCompanyDrawer ref="AddCompanyDrawerRef" @refresh="getList" />
-  <CompanyDetailsDrawer ref="CompanyDetailsDrawerRef" />
 </template>
 <script lang="ts" setup>
 import { deleteCompanyForGroup, type GroupCompanyRecord } from '@/api/GroupStructure';

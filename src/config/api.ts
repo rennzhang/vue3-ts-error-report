@@ -2,4 +2,4 @@
 export const GETWAY = '/api';
 
 // 乐仓接口前缀
-export const LCGETWAY = '${LCGETWAY}';
+export const LCGETWAY = '/levault';
