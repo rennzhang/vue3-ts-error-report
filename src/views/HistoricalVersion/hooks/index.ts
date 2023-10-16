@@ -38,11 +38,11 @@ export const useTable = () => {
   ];
   const tableData = ref<DataItem[]>([]);
   const getList = async () => {
-    // const objId = window.$wujie.props.params.record.objId;
+    const objId = window.$wujie.props.params.record.objId;
     const data = <any>await requestCommonGetHistoryList({
       className: 'CompanyItem',
       thisObj: {
-        objId: '1713851253617852416',
+        objId: objId,
       },
     });
     tableData.value = data.data;
