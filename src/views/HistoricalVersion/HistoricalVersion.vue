@@ -41,13 +41,15 @@
 import { useTable, useDataCompare } from './hooks';
 import { message } from 'n-designv3';
 import CompareDrawer from './Components/CompareDrawer.vue';
-import { requestCommonGetLabel } from '@/api/common/index';
+import { requestCommonGetLabel, type HistoryRecord } from '@/api/common/index';
+import type { TableRowSelection } from 'n-designv3/es/table/interface';
 import { type ColumnProps } from 'n-designv3/lib/table';
+
 const { columns, tableData } = useTable();
 const CompareDrawerRef = ref<typeof CompareDrawer>();
-const selectRowsData = ref<ColumnProps[]>([]);
-const comparColumnsData = ref<ColumnProps[]>([]);
-const comparDataSourceData = ref<any[]>([]);
+const selectRowsData = ref<Partial<HistoryRecord>[]>([]);
+const comparColumnsData = ref<ColumnProps<HistoryRecord>[]>([]);
+const comparDataSourceData = ref<HistoryRecord[]>([]);
 const isLoading = ref(false);
 const labelData = ref([]);
 const getLabelKey = async () => {
@@ -61,11 +63,6 @@ const getLabelKey = async () => {
   isLoading.value = false;
 };
 getLabelKey();
-const scrollY = () => {
-  return document.querySelector('.history-version')
-    ? document.querySelector('.history-version').offsetHeight - 100
-    : 'auto';
-};
 const handCompare = () => {
   if (selectRowsData.value.length < 2) {
     message.warning({
@@ -73,17 +70,17 @@ const handCompare = () => {
     });
     return;
   }
-  if (CompareDrawerRef.value.visible) {
+  if (CompareDrawerRef.value?.visible) {
     //如果已经打开，重复点击禁止重复调用
     return false;
   }
   CompareDrawerRef.value?.openDrawer();
 };
-const rowSelectionConfig = {
+
+const rowSelectionConfig: TableRowSelection<HistoryRecord> = {
   type: 'checkbox',
-  onChange: (selectedRowKeys: any, selectedRows: any) => {
-    // console.log(selectedRowKeys, 'selectKeys');
-    const { comparColumns, comparData, comparDataSource } = useDataCompare(selectedRows, labelData); //比较是否有相同值的字段，如果有则自动不显示
+  onChange: (selectedRowKeys: any, selectedRows) => {
+    const { comparColumns, comparData, comparDataSource } = useDataCompare(selectedRows, labelData.value);
     selectRowsData.value = comparData;
     comparColumnsData.value = comparColumns;
     comparDataSourceData.value = comparDataSource;
