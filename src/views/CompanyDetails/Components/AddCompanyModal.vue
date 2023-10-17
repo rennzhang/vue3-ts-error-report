@@ -1,11 +1,6 @@
 <template>
   <n-modal title="添加企业" v-model:visible="showAddDrawer" width="40%">
-    <!-- <div class="select-body" ref="selectBodyRef"> -->
-    <!-- </div> -->
-    <!-- <div class="bg-black h-200"></div> -->
-
     <schema-form ref="schemaFormRef" :formSchema="formSchema" v-if="showAddDrawer" />
-    <!-- <div class="bg-black h-500"></div> -->
     <template #footer>
       <div class="flex justify-end">
         <n-button style="margin-right: 8px" @click="showAddDrawer = false">取消</n-button>
@@ -36,7 +31,6 @@ onMounted(() => {
   ready.value = true;
 });
 const showAddDrawer = ref(false);
-const selectBodyRef = ref<HTMLDivElement>();
 const schemaFormRef = ref<SchemaFormRef<FormData>>();
 
 const formSchema = reactive<FormSchema<FormData>>({
