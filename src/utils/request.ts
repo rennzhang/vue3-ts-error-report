@@ -34,7 +34,7 @@ class Http {
         }
         return config;
       },
-      error => Promise.reject(error)
+      (error) => Promise.reject(error)
     );
     axiosInstance.interceptors.response.use(
       (res: AxiosResponse) => {
@@ -56,7 +56,7 @@ class Http {
         }
         return res.data;
       },
-      error => {
+      (error) => {
         let isInner = useUserStore().from == 'lzos';
         if (error?.response?.status == 401) {
           if (isInner) {
@@ -81,21 +81,26 @@ class Http {
     );
   }
 
-  public request<D, R>(config: AxiosRequestConfig<D>): Promise<R> {
-    return new Promise<R>((resolve, reject) => {
+  public request<R, D = any>(config: AxiosRequestConfig<D>) {
+    return new Promise<{
+      data: R;
+      mfail: string;
+      errors?: string;
+      msg?: string;
+    }>((resolve, reject) => {
       Http.axiosInstance
-        .request<D>(config)
-        .then(res => {
-          resolve(res as R);
+        .request<R>(config)
+        .then((res) => {
+          resolve(res as any);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
   }
 
-  public post<D, R>(url: string, data: D, shade?: boolean): Promise<R> {
-    return this.request<D, R>({
+  public post<R, D = any>(url: string, data: D, shade?: boolean) {
+    return this.request<R, D>({
       method: 'post',
       url,
       data,
@@ -103,8 +108,8 @@ class Http {
     });
   }
 
-  public get<D, R>(url: string, params: D, shade?: boolean): Promise<R> {
-    return this.request<D, R>({
+  public get<R, D = any>(url: string, params: D, shade?: boolean) {
+    return this.request<R, D>({
       method: 'get',
       url,
       params,
