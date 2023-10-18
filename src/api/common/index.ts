@@ -3,12 +3,14 @@ import { LCGETWAY } from '@/config/api';
 import type { SetUpGetInfoParams, SetUpGetInfoScheme, QueryAgentParams } from './model/index';
 
 export const requestCommonSetUpGetInfoDialog = (params: SetUpGetInfoParams) =>
-  http.post<any, HttpRes<{ scheme: SetUpGetInfoScheme }>>(`${LCGETWAY}/acnsvr/CompanyItem/SetUpGetInfoDialog`, params);
+  http.post<{ scheme: SetUpGetInfoScheme }>(`${LCGETWAY}/acnsvr/CompanyItem/SetUpGetInfoDialog`, params);
 
 export const requestCommonQueryAgent = (params: QueryAgentParams) =>
-  http.post<any, any>(`${LCGETWAY}/acnsvr/CompanyItem/QueryAgent`, params);
+  http.post<any>(`${LCGETWAY}/acnsvr/CompanyItem/QueryAgent`, params);
+
 export const requestCommonGetHistoryList = (params: any) =>
   http.post(`${LCGETWAY}/acnsvr/CompanyItem/GetAllSequence`, params);
+
 // 根据历史列表id查询 对应的label
 export const requestCommonGetLabel = (params: any) =>
   http.post(`${LCGETWAY}/agentdesigner/classAttribute/listData`, params);
