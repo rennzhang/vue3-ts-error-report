@@ -61,12 +61,6 @@ const scrollY = () => {
     ? document.querySelector('.drawer-container-box').offsetHeight - 150
     : 'auto';
 };
-watch(
-  () => props.comparDataSource,
-  () => {
-    console.log(props.comparDataSource, 'props.comparDataSource');
-  }
-);
 const closeDrawer = () => {
   visible.value = false;
 };
