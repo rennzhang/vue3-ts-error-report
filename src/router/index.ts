@@ -18,8 +18,8 @@ const router = createRouter({
     },
     {
       path: '/group-composition', // path路径名称小驼峰
-      name: 'GroupComposition', // name名称大驼峰
-      component: () => import('@/views/CompanyDetails/GroupComposition.vue'), // 懒加载
+      name: 'GroupStructure', // name名称大驼峰
+      component: () => import('@/views/GroupStructure/index.vue'), // 懒加载
     },
     {
       path: '/history-version', // path路径名称小驼峰
