@@ -3,7 +3,6 @@
     <div><n-button type="primary" class="btn-compare" @click="handCompare" :disabled="isLoading">比较</n-button></div>
     <n-table
       :row-selection="rowSelectionConfig"
-      :loading="isLoading"
       :columns="columns"
       :data-source="tableData"
       rowKey="objId"
@@ -33,6 +32,7 @@
       :selectRowsData="selectRowsData"
       :comparColumns="comparColumnsData"
       :comparDataSource="comparDataSourceData"
+      :isLoading="isLoading"
     />
   </div>
 </template>
@@ -50,6 +50,7 @@ const CompareDrawerRef = ref<typeof CompareDrawer>();
 const selectRowsData = ref<Partial<HistoryRecord>[]>([]);
 const comparColumnsData = ref<ColumnProps<HistoryRecord>[]>([]);
 const comparDataSourceData = ref<HistoryRecord[]>([]);
+const tableRowSelectData = ref<HistoryRecord[]>([]);
 const isLoading = ref(false);
 const labelData = ref([]);
 const getLabelKey = async () => {
@@ -61,26 +62,36 @@ const getLabelKey = async () => {
   });
   labelData.value = data.data;
   isLoading.value = false;
+  return data.data;
 };
-getLabelKey();
-const handCompare = () => {
+// getLabelKey();
+const handCompare = async () => {
   if (selectRowsData.value.length < 2) {
     message.warning({
       content: () => '至少选择两项进行比较',
     });
     return;
   }
+
   if (CompareDrawerRef.value?.visible) {
     //如果已经打开，重复点击禁止重复调用
     return false;
   }
   CompareDrawerRef.value?.openDrawer();
+  if (!labelData.value.length) {
+    const labelData = await getLabelKey();
+    const { comparColumns, comparData, comparDataSource } = useDataCompare(tableRowSelectData.value, labelData);
+    selectRowsData.value = comparData;
+    comparColumnsData.value = comparColumns;
+    comparDataSourceData.value = comparDataSource;
+  }
 };
 
 const rowSelectionConfig: TableRowSelection<HistoryRecord> = {
   type: 'checkbox',
   onChange: (selectedRowKeys: any, selectedRows) => {
     const { comparColumns, comparData, comparDataSource } = useDataCompare(selectedRows, labelData.value);
+    tableRowSelectData.value = selectedRows;
     selectRowsData.value = comparData;
     comparColumnsData.value = comparColumns;
     comparDataSourceData.value = comparDataSource;
