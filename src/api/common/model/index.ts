@@ -30,11 +30,11 @@ interface Iconclass {
   langPrefix?: any;
 }
 
-export interface SetUpGetInfoScheme {
+export interface SetUpGetInfoScheme<T extends Record<string, any> = any> {
   apis: Api[];
-  form: Form[];
+  form: Form<T>[];
   btnListConfig: BtnListConfig[];
-  values: Values;
+  values: T;
   config: Config;
 }
 
@@ -49,40 +49,6 @@ interface Config {
 interface PopProps {
   width: string;
   title: string;
-}
-
-interface Values {
-  companyAlias?: any;
-  companyParent?: any;
-  code: string;
-  companyArea?: any;
-  openBank?: any;
-  displayName: string;
-  companyName: string;
-  postalCode?: any;
-  mainBusiness?: any;
-  companyBusiness?: any;
-  companyProperty?: any;
-  registeredAddress?: any;
-  companyNational?: any;
-  registeredCapital?: any;
-  secondIndustry?: any;
-  taxNo?: any;
-  companyHoldingRatio?: any;
-  companyCity?: any;
-  website?: any;
-  companyCategory: string;
-  openBankAccount?: any;
-  telephone?: any;
-  industryLabel?: any;
-  companyLegalPerson?: any;
-  companyCeditNo?: any;
-  companyLevel: string;
-  companyAddress: string;
-  objId: string;
-  firstIndustry?: any;
-  customSource?: any;
-  companyMarket?: any;
 }
 
 interface BtnListConfig {
@@ -112,14 +78,14 @@ interface Click {
   url?: any;
 }
 
-interface Form {
+interface Form<T extends Record<string, any> = any> {
   groupOrder: string;
   groupName: string;
-  children: Child[];
+  children: Child<T>[];
   extendProps?: any;
 }
 
-interface Child {
+interface Child<T extends Record<string, any> = any, K extends string = Extract<keyof T, string>> {
   isSort?: any;
   groupOrder: string;
   dataType: string;
@@ -130,7 +96,7 @@ interface Child {
   required: boolean;
   props: Props2;
   groupName: string;
-  field: string;
+  field: K;
   isLov: boolean;
   name: string;
   lov?: Lov;
