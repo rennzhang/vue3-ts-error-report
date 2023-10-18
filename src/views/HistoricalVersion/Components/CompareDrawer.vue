@@ -14,6 +14,7 @@
         :columns="$props.comparColumns"
         :data-source="$props.comparDataSource"
         :pagination="false"
+        :loading="$props.isLoading"
         :scroll="{ x: '100%', y: scrollY() }"
         style="word-break: break-all"
       >
@@ -41,6 +42,10 @@ let props = defineProps({
     type: Array,
     default: <any>[],
   },
+  isLoading: {
+    type: Boolean,
+    default: false,
+  },
   comparDataSource: {
     type: Array,
     default: <any>[],
@@ -56,14 +61,6 @@ const scrollY = () => {
     ? document.querySelector('.drawer-container-box').offsetHeight - 150
     : 'auto';
 };
-// watch(
-//   () => props.selectRowsData,
-//   () => {
-//     message.warning({
-//       content: () => '至少选择两项进行比较',
-//     });
-//   }
-// );
 const closeDrawer = () => {
   visible.value = false;
 };
