@@ -3,7 +3,7 @@
     <div class="title">
       <p>风险控制:华为技术有限公司</p>
     </div>
-    <n-descriptions>
+    <n-descriptions :column="1">
       <n-descriptions-item v-for="(item, index) in listData" :label="item.name" :labelStyle="labelStyle">{{
         item.value
       }}</n-descriptions-item>
@@ -79,10 +79,13 @@ const getParams = (): UrlParams => {
   return obj;
 };
 const params = getParams();
+console.log(params, 'params');
 </script>
 
 <style lang="less" scoped>
 .risk-detail-container {
+  height: 100%;
+  background: #fafafa;
   .title {
     p {
       font-size: 18px;
