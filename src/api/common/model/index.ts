@@ -3,6 +3,68 @@ export interface SetUpGetInfoParams {
   thisObj: ThisObj;
 }
 
+export interface HistoryRecord {
+  accountHolder?: string;
+  checkedOut: number;
+  checkedOutOwner?: string;
+  className: string;
+  code: string;
+  companyAddress: string;
+  companyAlias?: string;
+  companyArea?: string;
+  companyBusiness?: string;
+  companyCategory: string;
+  companyCity?: string;
+  companyHoldingRatio?: string;
+  companyLegalPerson?: string;
+  companyLevel: string;
+  companyMarket?: string;
+  companyName: string;
+  companyNational?: string;
+  companyParent?: string;
+  companyProperty?: string;
+  container?: any;
+  createAt: string;
+  creator: string;
+  customSource?: string;
+  firstIndustry?: string;
+  industryLabel?: string;
+  isGlobal: number;
+  lastUpdate: string;
+  lcmStatus?: any;
+  lifeCycleState: string;
+  mainBusiness?: string;
+  modifier: string;
+  name?: any;
+  objId: string;
+  openBank?: string;
+  openBankAccount?: string;
+  originObjId: string;
+  owner: string;
+  postalCode?: string;
+  project?: any;
+  recycled: string;
+  registeredAddress?: string;
+  registeredCapital?: string;
+  remark?: any;
+  secondIndustry?: string;
+  sequence: number;
+  submitter?: any;
+  superseded: number;
+  taxNo?: string;
+  telephone?: string;
+  tenantId: string;
+  website?: string;
+  companyCeditNo?: string;
+  officialAddress?: any;
+  addressNo?: any;
+  displayName: string;
+  displayClassName: string;
+  displayCreator: string;
+  parentName?: string;
+  displayModifier: string;
+  displaySubmitter?: any;
+}
 interface ThisObj {
   objId: string;
   className: string;
@@ -102,7 +164,51 @@ interface Child<T extends Record<string, any> = any, K extends string = Extract<
   lov?: Lov;
   events?: Events;
 }
-
+interface GetLabDataType {
+  createAt: string;
+  updateAt: string;
+  createUserName: string;
+  updateUserName: string;
+  tenantId?: any;
+  id: string;
+  serviceCode: string;
+  classCode: string;
+  className: string;
+  type: string;
+  compoundAttributeType: string;
+  code: string;
+  relationClassCode?: any;
+  relationAttributeCode?: string;
+  sourceAttributeCode?: string;
+  referenceName: string;
+  name: string;
+  remark?: string;
+  dataType: string;
+  length?: number;
+  initValue?: string;
+  minValue?: string;
+  maxValue?: string;
+  isExtend: string;
+  required: string;
+  isArray: string;
+  isDependent: string;
+  isPk: string;
+  deployStatus: string;
+  source: string;
+  relationTableClassCode?: any;
+  relationTableObjClassCode?: any;
+  relationTableLeftClassCode?: any;
+  relationTableLeftClassName?: any;
+  relationTableRightClassCode?: any;
+  relationTableRightClassName?: any;
+  tableMetaData?: string;
+  tableMetaDataCode?: string;
+  isGlobal: number;
+  langPrefix: string;
+  scale?: number;
+  indexed: string;
+  relationType: string;
+}
 interface Events {
   focus: Focus;
 }

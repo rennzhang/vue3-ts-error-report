@@ -3,7 +3,6 @@
     <div><n-button type="primary" class="btn-compare" @click="handCompare" :disabled="isLoading">比较</n-button></div>
     <n-table
       :row-selection="rowSelectionConfig"
-      :loading="isLoading"
       :columns="columns"
       :data-source="tableData"
       rowKey="objId"
@@ -33,6 +32,7 @@
       :selectRowsData="selectRowsData"
       :comparColumns="comparColumnsData"
       :comparDataSource="comparDataSourceData"
+      :isLoading="isLoading"
     />
   </div>
 </template>
@@ -41,13 +41,16 @@
 import { useTable, useDataCompare } from './hooks';
 import { message } from 'n-designv3';
 import CompareDrawer from './Components/CompareDrawer.vue';
-import { requestCommonGetLabel } from '@/api/common/index';
+import { requestCommonGetLabel, type HistoryRecord } from '@/api/common/index';
+import type { TableRowSelection } from 'n-designv3/es/table/interface';
 import { type ColumnProps } from 'n-designv3/lib/table';
+
 const { columns, tableData } = useTable();
 const CompareDrawerRef = ref<typeof CompareDrawer>();
-const selectRowsData = ref<ColumnProps[]>([]);
-const comparColumnsData = ref<ColumnProps[]>([]);
-const comparDataSourceData = ref<any[]>([]);
+const selectRowsData = ref<Partial<HistoryRecord>[]>([]);
+const comparColumnsData = ref<ColumnProps<HistoryRecord>[]>([]);
+const comparDataSourceData = ref<HistoryRecord[]>([]);
+const tableRowSelectData = ref<HistoryRecord[]>([]);
 const isLoading = ref(false);
 const labelData = ref([]);
 const getLabelKey = async () => {
@@ -59,33 +62,37 @@ const getLabelKey = async () => {
   });
   labelData.value = data.data;
   isLoading.value = false;
+  return data.data;
 };
-getLabelKey();
-const scrollY = () => {
-  return document.querySelector('.history-version')
-    ? document.querySelector('.history-version').offsetHeight - 100
-    : 'auto';
-};
-const handCompare = () => {
-  // console.log(selectRowsData.value.length, 'selectRowsData');
+// getLabelKey();
+const handCompare = async () => {
   if (selectRowsData.value.length < 2) {
     message.warning({
       content: () => '至少选择两项进行比较',
     });
     return;
   }
-  if (CompareDrawerRef.value.visible) {
+
+  if (CompareDrawerRef.value?.visible) {
     //如果已经打开，重复点击禁止重复调用
     return false;
   }
   CompareDrawerRef.value?.openDrawer();
+  if (!labelData.value.length) {
+    const labelData = await getLabelKey();
+    const { comparColumns, comparData, comparDataSource } = useDataCompare(tableRowSelectData.value, labelData);
+    selectRowsData.value = comparData;
+    comparColumnsData.value = comparColumns;
+    comparDataSourceData.value = comparDataSource;
+  }
 };
-const rowSelectionConfig = {
+
+const rowSelectionConfig: TableRowSelection<HistoryRecord> = {
   type: 'checkbox',
-  onChange: (selectedRowKeys: any, selectedRows: any) => {
-    // console.log(selectedRowKeys, 'selectKeys');
-    const { comparColumns, comparData, comparDataSource } = useDataCompare(selectedRows, labelData); //比较是否有相同值的字段，如果有则自动不显示
-    selectRowsData.value = comparData as any;
+  onChange: (selectedRowKeys: any, selectedRows) => {
+    const { comparColumns, comparData, comparDataSource } = useDataCompare(selectedRows, labelData.value);
+    tableRowSelectData.value = selectedRows;
+    selectRowsData.value = comparData;
     comparColumnsData.value = comparColumns;
     comparDataSourceData.value = comparDataSource;
   },

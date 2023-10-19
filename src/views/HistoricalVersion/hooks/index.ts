@@ -1,11 +1,9 @@
-import { requestCommonGetHistoryList } from '@/api/common/index';
-import { omit } from 'lodash-es';
-interface DataItem {
-  key: number;
-  companyName: string;
-  address: string;
-  children?: DataItem[];
-}
+import { requestCommonGetHistoryList, type HistoryRecord } from '@/api/common/index';
+import { cloneDeep, omit } from 'lodash-es';
+export type DataItem = {
+  companyAddress?: string;
+};
+
 export const useTable = () => {
   const columns = [
     {
@@ -37,8 +35,9 @@ export const useTable = () => {
   ];
   const tableData = ref<DataItem[]>([]);
   const getList = async () => {
-    const objId = window.$wujie.props.params.record.objId;
-    const data = <any>await requestCommonGetHistoryList({
+    const objId = window.$wujie?.props.params.record.objId;
+    //'1704055851523801088'
+    const data = await requestCommonGetHistoryList({
       className: 'CompanyItem',
       thisObj: {
         objId: objId,
@@ -54,7 +53,7 @@ export const useTable = () => {
   };
 };
 //比较版本之间的字段的差别
-export const useDataCompare = (objArray: any, labelData: any) => {
+export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<object>) => {
   if (objArray.length < 2) {
     return {
       comparColumns: [],
@@ -67,36 +66,29 @@ export const useDataCompare = (objArray: any, labelData: any) => {
       title: '版本',
       dataIndex: 'compareItem',
       key: 'compareItem',
-      width: 100,
+      width: 110,
       fixed: true,
     },
   ];
-  // const commonValues = {};
-  const commonValues = <any>{};
-  const result = <any>[];
-  // 找出所有对象中相同字段的共有值
-  Object.keys(objArray[0]).forEach((key) => {
-    const firstObjValue = objArray[0][key];
-    if (objArray.every((obj) => obj[key] === firstObjValue)) {
-      commonValues[key] = firstObjValue;
-    }
-  });
-  // 遍历每个对象，只保留不是共有值的字段
-  objArray.forEach((obj) => {
-    const filteredObj = <any>{};
-    Object.keys(obj).forEach((key) => {
-      if (obj[key] !== commonValues[key]) {
-        filteredObj[key] = obj[key];
+  const commonKeys = findCommonKeys(objArray);
+  let newObjArray = cloneDeep(objArray);
+  const result = newObjArray.map((item) => {
+    const newItem = omit(item, commonKeys);
+
+    if (item.companyAddress) {
+      const companyAddress = JSON.parse(item.companyAddress);
+
+      if (companyAddress.length && Array.isArray(companyAddress)) {
+        newItem.companyAddress = companyAddress.map((item) => item.rel_officialAddress).join();
+      } else {
+        newItem.companyAddress = '';
       }
-    });
-    if (filteredObj['companyAddress']) {
-      const address = JSON.parse(filteredObj['companyAddress']);
-      filteredObj['companyAddress'] = address[0]?.rel_officialAddress;
     }
-    result.push(filteredObj);
+
+    return newItem;
   });
-  //
-  result.forEach((item) =>
+  //------------
+  result.forEach((item: any) =>
     columns.push({
       title: item.sequence,
       dataIndex: `sequence_${item.sequence}`,
@@ -105,15 +97,18 @@ export const useDataCompare = (objArray: any, labelData: any) => {
       fixed: false,
     })
   );
-  let compareItem = mapFields(result[0], labelData.value);
-  const comparDataSource = compareItem.map((item) => {
-    let newItem = <any>{
+  let compareItem = mapFields(result[0], labelData);
+  const comparDataSource: any = compareItem.map((item) => {
+    let newItem: {
+      compareItem: any;
+      [key: string]: any;
+    } = {
       compareItem: item.name,
     };
     result.forEach((ite) => {
       Object.keys(ite).forEach((key) => {
         if (item.code === key) {
-          newItem[`sequence_${ite.sequence}`] = ite[item.code];
+          newItem[`sequence_${ite.sequence}`] = (ite as any)[item.code];
         }
       });
     });
@@ -125,12 +120,10 @@ export const useDataCompare = (objArray: any, labelData: any) => {
     comparDataSource: comparDataSource,
   };
 };
-const mapFields = (sourceObject: any, fieldMaps: any) => {
-  let result = <any>[];
+const mapFields = (sourceObject: Partial<HistoryRecord>, fieldMaps: any) => {
+  let result: { code: string; name: string }[] = [];
   const newSourceObject = omit(sourceObject, [
     'tenantId',
-    // 'website',
-    // 'taxNo',
     'owner',
     'originObjId',
     'objId',
@@ -138,17 +131,15 @@ const mapFields = (sourceObject: any, fieldMaps: any) => {
     'modifier',
     'creator',
     'companyParent',
-    // 'companyParent',
-    // 'accountHolder',
     'addressNo',
     'checkedOut',
     'className',
     'lastUpdate',
     'superseded',
   ]);
-  fieldMaps.forEach((fieldMap) => {
+  fieldMaps.forEach((fieldMap: any) => {
     const { code } = fieldMap;
-    if (newSourceObject[code]) {
+    if (newSourceObject.hasOwnProperty(code)) {
       result.push({
         code: fieldMap['code'],
         name: fieldMap['name'],
@@ -156,4 +147,18 @@ const mapFields = (sourceObject: any, fieldMaps: any) => {
     }
   });
   return result;
+};
+const findCommonKeys = (objects: any[]) => {
+  const commonKeys: Record<string, any> = {};
+
+  // 遍历第一个对象的所有键
+  Object.keys(objects[0]).forEach((key) => {
+    // 检查所有对象中该键的值是否相同
+    if (objects.every((obj: any) => obj[key] === objects[0][key])) {
+      // 如果相同，将该键加入结果对象中
+      commonKeys[key] = objects[0][key];
+    }
+  });
+  // 将结果对象的键转化为数组
+  return Object.keys(commonKeys);
 };
