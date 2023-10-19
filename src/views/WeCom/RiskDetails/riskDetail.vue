@@ -14,12 +14,24 @@
 </template>
 
 <script lang="ts" setup>
+interface ListItem {
+  // 定义列表项的属性
+  value: string;
+  name: string;
+  key: string;
+  // 其他属性...
+}
 import { requestCommonSetUpGetInfoDialog } from '@/api/common/index';
-const listData = ref([]);
+const listData = ref<Array<ListItem>>([]);
 const labelStyle = {
   'white-space': 'normal',
 };
-const getRiskDetail = (record: GroupCompanyRecord) => {
+type renderList = {
+  value: string;
+  name: string;
+  key: string;
+};
+const getRiskDetail = () => {
   requestCommonSetUpGetInfoDialog({
     className: 'CompanyRiskWarning',
     thisObj: {
@@ -27,10 +39,9 @@ const getRiskDetail = (record: GroupCompanyRecord) => {
       className: 'CompanyRiskWarning',
     },
   }).then((res) => {
-    console.log(res.data.scheme, 'res-->>');
     const values = res.data.scheme.values;
     const form = res.data.scheme.form[0].children;
-    const renderList = [];
+    const renderList: Array<renderList> = [];
     form.map((item, index) => {
       if (values.hasOwnProperty(item.field)) {
         renderList.push({
@@ -40,11 +51,32 @@ const getRiskDetail = (record: GroupCompanyRecord) => {
         });
       }
     });
-    console.log(listData, 'listData');
     listData.value = renderList;
   });
 };
 getRiskDetail();
+interface UrlParams {
+  [key: string]: string;
+}
+//取url里的参数，返回一个对象
+const getParams = (): UrlParams => {
+  const url: string = window.location.href;
+  const obj: UrlParams = {};
+
+  if (url.lastIndexOf('?') === -1 || url.lastIndexOf('?') === url.length - 1) {
+    return obj;
+  }
+
+  const search: string = url.substring(url.lastIndexOf('?') + 1);
+  const params: string[] = search.split('&');
+
+  for (let i = 0; i < params.length; i++) {
+    const pair: string[] = params[i].split('=');
+    obj[pair[0]] = pair[1];
+  }
+
+  return obj;
+};
 </script>
 
 <style lang="less" scoped>
