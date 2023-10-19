@@ -1,20 +1,32 @@
 <template>
   <div class="p-16">
-    <n-collapse v-model:activeKey="activeKey">
+    <div v-if="isWeCom" class="text-18 font-bold text-black mb-8">
+      <span>{{ route.query.pushType || '新建' }}：</span>
+      <span>{{ currentSchema?.values?.companyName }}</span>
+    </div>
+    <n-collapse v-model:activeKey="activeKey" :bordered="false">
       <n-collapse-panel v-for="item in details" :key="item.name" :header="item.name">
-        <n-descriptions :labelStyle="{ 'min-width': 'min-content' }" class="p-8">
-          <n-descriptions-item v-for="opt in item.options" :label="opt.label">
-            <template v-if="opt.key == 'companyLogo'">
-              <n-empty v-if="!opt?.imgUrl" description="暂无封面" />
-              <n-image :width="200" :src="opt?.imgUrl" v-else />
-            </template>
-            <template v-else-if="opt?.dataSource?.length">
-              <n-table :dataSource="opt.dataSource" :columns="opt.columns" class="w-full mr-24"></n-table>
-            </template>
-            <template v-else>
-              {{ opt.value }}
-            </template>
-          </n-descriptions-item>
+        <n-descriptions :labelStyle="{ 'min-width': 'min-content' }" class="px-16">
+          <template v-for="opt in item.options">
+            <n-descriptions-item :label="opt.label">
+              <template v-if="opt?.dataSource?.length">
+                <n-table
+                  bordered
+                  :dataSource="opt.dataSource"
+                  :columns="opt.columns"
+                  class="w-full mr-24"
+                  :pagination="false"
+                ></n-table>
+              </template>
+              <template v-else-if="opt.key == 'companyLogo'">
+                <n-empty v-if="!opt?.imgUrl" description="暂无封面" />
+                <n-image :width="200" :src="opt?.imgUrl" v-else />
+              </template>
+              <template v-else>
+                {{ opt.value }}
+              </template>
+            </n-descriptions-item>
+          </template>
         </n-descriptions>
       </n-collapse-panel>
     </n-collapse>
@@ -24,7 +36,7 @@
 <script lang="ts" setup>
 import { requestCommonSetUpGetInfoDialog } from '@/api/common';
 import type { SetUpGetInfoScheme } from '@/api/common/model';
-import type { CompanyDetailsValues } from '@/api/common/model/ uncert';
+import type { CompanyDetailsValues } from '@/api/common/model/uncert';
 import type { TableColumnProps } from 'n-designv3';
 
 type DetailsItem = {
@@ -41,10 +53,13 @@ type DetailsGroupRecord = {
   options: DetailsItem[];
 };
 const route = useRoute();
+const isWeCom = computed(() => route.fullPath?.includes('wecom'));
 const details = ref<DetailsGroupRecord[]>([]);
 const activeKey = ref<string[]>([]);
+const currentSchema = ref<SetUpGetInfoScheme<CompanyDetailsValues>>();
 
 const handleSchema = (schema: SetUpGetInfoScheme<CompanyDetailsValues>) => {
+  currentSchema.value = schema;
   details.value = [];
   schema.form.forEach((item) => {
     let options = item.children.map((child) => {
@@ -97,4 +112,8 @@ const getDetailSchema = () => {
 getDetailSchema();
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.nl-collapse-borderless {
+  background: #fafafa;
+}
+</style>

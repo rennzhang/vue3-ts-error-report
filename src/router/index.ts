@@ -26,6 +26,11 @@ const router = createRouter({
       name: 'HistoryVersion', // name名称大驼峰
       component: () => import('@/views/HistoricalVersion/HistoricalVersion.vue'), // 懒加载
     },
+    {
+      path: '/company-details',
+      name: 'companyDetails',
+      component: () => import('@/views/CompanyDetails/index.vue'),
+    },
     ...WeComRoutes,
   ],
 });
