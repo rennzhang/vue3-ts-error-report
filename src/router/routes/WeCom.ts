@@ -8,7 +8,7 @@ export const WeComRoutes: RouteRecordRaw[] = [
       {
         path: '/wecom/company-details',
         name: 'WeComCompanyDetails',
-        component: () => import('@/views/WeCom/CompanyDetails/index.vue'),
+        component: () => import('@/views/CompanyDetails/index.vue'),
       },
       {
         path: '/wecom/risk-details',
