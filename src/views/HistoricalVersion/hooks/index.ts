@@ -35,12 +35,12 @@ export const useTable = () => {
   ];
   const tableData = ref<DataItem[]>([]);
   const getList = async () => {
-    const objId = window.$wujie?.props.params.record.objId;
-    //'1704055851523801088'
+    // const objId = window.$wujie?.props.params.record.objId;
+    //'1704055851523801088'  '1714929505862160384'
     const data = await requestCommonGetHistoryList({
       className: 'CompanyItem',
       thisObj: {
-        objId: objId,
+        objId: '1704055851523801088',
       },
     });
     tableData.value = data.data;
@@ -74,12 +74,10 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
   let newObjArray = cloneDeep(objArray);
   const result = newObjArray.map((item) => {
     const newItem = omit(item, commonKeys);
-
-    if (item.companyAddress) {
-      const companyAddress = JSON.parse(item.companyAddress);
-
+    if (newItem.companyAddress) {
+      const companyAddress = JSON.parse(newItem.companyAddress);
       if (companyAddress.length && Array.isArray(companyAddress)) {
-        newItem.companyAddress = companyAddress.map((item) => item.rel_officialAddress).join();
+        newItem.companyAddress = companyAddress.map((newItem) => newItem.rel_officialAddress).join();
       } else {
         newItem.companyAddress = '';
       }
@@ -136,6 +134,7 @@ const mapFields = (sourceObject: Partial<HistoryRecord>, fieldMaps: any) => {
     'className',
     'lastUpdate',
     'superseded',
+    'displayName',
   ]);
   fieldMaps.forEach((fieldMap: any) => {
     const { code } = fieldMap;
@@ -149,14 +148,26 @@ const mapFields = (sourceObject: Partial<HistoryRecord>, fieldMaps: any) => {
   return result;
 };
 const findCommonKeys = (objects: any[]) => {
-  const commonKeys: Record<string, any> = {};
+  let newObjects = objects.map((item, index) => {
+    let newItem = cloneDeep(item);
+    if (item.companyAddress && JSON.parse(item.companyAddress).length) {
+      const companyAddress = JSON.parse(item.companyAddress);
 
+      if (companyAddress.length && Array.isArray(companyAddress)) {
+        newItem.companyAddress = companyAddress.map((item) => item.rel_officialAddress).join();
+      } else {
+        newItem.companyAddress = '';
+      }
+    }
+    return newItem;
+  });
+  const commonKeys: Record<string, any> = {};
   // 遍历第一个对象的所有键
-  Object.keys(objects[0]).forEach((key) => {
+  Object.keys(newObjects[0]).forEach((key) => {
     // 检查所有对象中该键的值是否相同
-    if (objects.every((obj: any) => obj[key] === objects[0][key])) {
+    if (newObjects.every((obj: any) => obj[key] === newObjects[0][key])) {
       // 如果相同，将该键加入结果对象中
-      commonKeys[key] = objects[0][key];
+      commonKeys[key] = newObjects[0][key];
     }
   });
   // 将结果对象的键转化为数组
