@@ -53,7 +53,7 @@ const getRiskDetail = () => {
     const values = res.data.scheme.values;
     const form = res.data.scheme.form[0].children;
     const renderList: Array<renderList> = [];
-    form.map((item, index) => {
+    form.map((item) => {
       if (values.hasOwnProperty(item.field)) {
         renderList.push({
           name: item.name,
