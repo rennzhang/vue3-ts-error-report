@@ -14,7 +14,7 @@ export const useUserStore = () =>
       tenantId: tenantId || '',
       userId: userId || '',
       isSuperAdmin: !!isSuperAdmin || false,
-      from: 'lzos' || null,
+      from: '' || null,
     }),
     actions: {
       async xGetUserInfo(token: string) {
