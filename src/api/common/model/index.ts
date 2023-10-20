@@ -164,7 +164,7 @@ interface Child<T extends Record<string, any> = any, K extends string = Extract<
   lov?: Lov;
   events?: Events;
 }
-interface GetLabDataType {
+export interface GetLabDataType {
   createAt: string;
   updateAt: string;
   createUserName: string;

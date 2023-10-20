@@ -37,6 +37,8 @@ export function createRouterGuard(router: Router) {
       return;
     }
 
+    
+
     if (whiteList.indexOf(to.path) !== -1) {
       next();
       return;

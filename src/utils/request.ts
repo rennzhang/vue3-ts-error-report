@@ -1,6 +1,7 @@
 import { useUserStore } from '@/store/modules/user';
 import Axios from 'axios';
 import { of, switchMap } from 'rxjs';
+import { getUrlParams } from '@/utils';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 class Http {
@@ -23,6 +24,7 @@ class Http {
   private setInterceptor(axiosInstance: AxiosInstance): void {
     axiosInstance.interceptors.request.use(
       (config: AxiosRequestConfig): any => {
+        const urlParams = getUrlParams();
         const { token, tenantId, userId } = useUserStore();
         if (token) {
           config.headers = {
@@ -30,6 +32,12 @@ class Http {
             token,
             ['user-id']: userId,
             ['tenant-id']: tenantId,
+          };
+        } else if (urlParams?.accessKeyId) {
+          config.headers = {
+            ...config.headers,
+            accessKeyId: urlParams.accessKeyId,
+            accessKeySecret: urlParams.accessKeySecret,
           };
         }
         return config;
@@ -99,21 +107,21 @@ class Http {
     });
   }
 
-  public post<R, D = any>(url: string, data: D, shade?: boolean) {
+  public post<R, D = any>(url: string, data: D, config?: AxiosRequestConfig<D>) {
     return this.request<R, D>({
       method: 'post',
       url,
       data,
-      shade,
+      ...config,
     });
   }
 
-  public get<R, D = any>(url: string, params: D, shade?: boolean) {
+  public get<R, D = any>(url: string, params: D, config?: AxiosRequestConfig<D>) {
     return this.request<R, D>({
       method: 'get',
       url,
       params,
-      shade,
+      ...config,
     });
   }
 }
