@@ -10,7 +10,7 @@
           <n-descriptions :labelStyle="{ 'min-width': 'min-content' }" class="px-16">
             <template v-for="opt in item.options">
               <n-descriptions-item :label="opt.label">
-                <template v-if="opt?.dataSource?.length">
+                <template v-if="opt?.columns">
                   <n-table
                     bordered
                     :dataSource="opt.dataSource"
@@ -74,7 +74,7 @@ const handleSchema = (schema: SetUpGetInfoScheme<CompanyDetailsValues>) => {
       };
 
       // 处理表格数据
-      if (child.dataType == 'table') {
+      if (child.dataType.toLowerCase() === 'table') {
         try {
           result.dataSource = JSON.parse(result.value);
           result.columns = child.props.lineAttribute?.map((col) => ({
