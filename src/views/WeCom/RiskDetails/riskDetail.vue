@@ -33,7 +33,7 @@ import { getUrlParams } from '@/utils';
 const companyName: any = ref('');
 console.log(useRoute, 'useRoute');
 const route = useRoute();
-companyName.value = route.query.companyName || '';
+companyName.value = route.query.companyName || '华为技术有限公司';
 console.log(route.query.companyName, 'toutee');
 const listData = ref<Array<ListItem>>([]);
 type renderList = {
@@ -82,14 +82,15 @@ getRiskDetail();
       font-size: 16px;
       color: #000;
       font-weight: 600;
-      text-align: center;
-      margin-left: -7%;
+      margin-left: 16%;
+      // text-align: center;
+      // margin-left: -7%;
       margin-bottom: 0.5em;
       // margin-top: 3%;
     }
   }
   .nl-descriptions {
-    padding-left: 8%;
+    padding-left: 7%;
     padding-right: 5%;
   }
 }
