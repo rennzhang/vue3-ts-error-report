@@ -7,7 +7,7 @@
       </div>
       <n-collapse v-model:activeKey="activeKey" :bordered="false">
         <n-collapse-panel v-for="item in details" :key="item.name" :header="item.name">
-          <n-descriptions :labelStyle="{ 'min-width': 'min-content' }" class="px-16">
+          <n-descriptions :labelStyle="{ 'white-space': 'normal' }" class="px-16">
             <template v-for="opt in item.options">
               <n-descriptions-item :label="opt.label">
                 <template v-if="opt?.columns">
