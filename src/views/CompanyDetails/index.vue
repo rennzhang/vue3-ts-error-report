@@ -1,36 +1,38 @@
 <template>
-  <div class="p-16">
-    <div v-if="isWeCom" class="text-18 font-bold text-black mb-8">
-      <span>{{ route.query.pushType || '新建' }}：</span>
-      <span>{{ currentSchema?.values?.companyName }}</span>
+  <n-spin :spinning="spinning">
+    <div class="p-16">
+      <div v-if="isWeCom" class="text-18 font-bold text-black mb-8">
+        <span>{{ route.query.pushType }}：</span>
+        <span>{{ currentSchema?.values?.companyName }}</span>
+      </div>
+      <n-collapse v-model:activeKey="activeKey" :bordered="false">
+        <n-collapse-panel v-for="item in details" :key="item.name" :header="item.name">
+          <n-descriptions :labelStyle="{ 'min-width': 'min-content' }" class="px-16">
+            <template v-for="opt in item.options">
+              <n-descriptions-item :label="opt.label">
+                <template v-if="opt?.dataSource?.length">
+                  <n-table
+                    bordered
+                    :dataSource="opt.dataSource"
+                    :columns="opt.columns"
+                    class="w-full mr-24"
+                    :pagination="false"
+                  ></n-table>
+                </template>
+                <template v-else-if="opt.key == 'companyLogo'">
+                  <n-empty v-if="!opt?.imgUrl" description="暂无封面" />
+                  <n-image :width="200" :src="opt?.imgUrl" v-else />
+                </template>
+                <template v-else>
+                  {{ opt.value }}
+                </template>
+              </n-descriptions-item>
+            </template>
+          </n-descriptions>
+        </n-collapse-panel>
+      </n-collapse>
     </div>
-    <n-collapse v-model:activeKey="activeKey" :bordered="false">
-      <n-collapse-panel v-for="item in details" :key="item.name" :header="item.name">
-        <n-descriptions :labelStyle="{ 'min-width': 'min-content' }" class="px-16">
-          <template v-for="opt in item.options">
-            <n-descriptions-item :label="opt.label">
-              <template v-if="opt?.dataSource?.length">
-                <n-table
-                  bordered
-                  :dataSource="opt.dataSource"
-                  :columns="opt.columns"
-                  class="w-full mr-24"
-                  :pagination="false"
-                ></n-table>
-              </template>
-              <template v-else-if="opt.key == 'companyLogo'">
-                <n-empty v-if="!opt?.imgUrl" description="暂无封面" />
-                <n-image :width="200" :src="opt?.imgUrl" v-else />
-              </template>
-              <template v-else>
-                {{ opt.value }}
-              </template>
-            </n-descriptions-item>
-          </template>
-        </n-descriptions>
-      </n-collapse-panel>
-    </n-collapse>
-  </div>
+  </n-spin>
 </template>
 
 <script lang="ts" setup>
@@ -52,6 +54,7 @@ type DetailsGroupRecord = {
   name: string;
   options: DetailsItem[];
 };
+const spinning = ref(false);
 const route = useRoute();
 const isWeCom = computed(() => route.fullPath?.includes('wecom'));
 const details = ref<DetailsGroupRecord[]>([]);
@@ -99,15 +102,20 @@ const handleSchema = (schema: SetUpGetInfoScheme<CompanyDetailsValues>) => {
   });
 };
 const getDetailSchema = () => {
+  spinning.value = true;
   requestCommonSetUpGetInfoDialog({
     className: 'CompanyItem',
     thisObj: {
       objId: (route.query.objId as string) || '',
       className: 'CompanyItem',
     },
-  }).then((res) => {
-    handleSchema(res.data.scheme);
-  });
+  })
+    .then((res) => {
+      handleSchema(res.data.scheme);
+    })
+    .finally(() => {
+      spinning.value = false;
+    });
 };
 getDetailSchema();
 </script>
