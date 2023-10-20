@@ -1,7 +1,7 @@
 <template>
   <div class="risk-detail-container">
     <div class="title">
-      <p>风险控制:华为技术有限公司</p>
+      <p>风险控制：{{ companyName }}</p>
     </div>
     <n-descriptions>
       <n-descriptions-item
@@ -12,8 +12,8 @@
         }"
         >{{ item.value }}</n-descriptions-item
       >
-      <n-descriptions-item label="列入日期">2023/2/28</n-descriptions-item>
-      >
+      <!-- <n-descriptions-item label="列入日期">2023/2/28</n-descriptions-item>
+      > -->
     </n-descriptions>
   </div>
 </template>
@@ -27,6 +27,12 @@ interface ListItem {
   // 其他属性...
 }
 import { requestCommonSetUpGetInfoDialog } from '@/api/common/index';
+import { useRoute } from 'vue-router';
+const companyName: any = ref('');
+console.log(useRoute, 'useRoute');
+const route = useRoute();
+companyName.value = route.query.companyName;
+console.log(route.query.companyName, 'toutee');
 const listData = ref<Array<ListItem>>([]);
 type renderList = {
   value: string;
@@ -65,7 +71,7 @@ getRiskDetail();
   background: #fafafa;
   .title {
     p {
-      font-size: 18px;
+      font-size: 16px;
       color: #000;
       font-weight: 600;
       text-align: center;
