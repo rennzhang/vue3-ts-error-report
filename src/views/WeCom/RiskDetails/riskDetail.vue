@@ -1,7 +1,7 @@
 <template>
   <div class="risk-detail-container">
     <div class="title">
-      <p>风险控制：{{ companyName }}</p>
+      <p>风险预警：{{ companyName }}</p>
     </div>
     <n-descriptions>
       <n-descriptions-item
