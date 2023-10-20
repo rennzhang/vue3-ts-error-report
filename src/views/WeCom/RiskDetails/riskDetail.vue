@@ -9,6 +9,7 @@
         :label="item.name"
         :labelStyle="{
           'white-space': 'normal',
+          'text-align': 'right',
         }"
         >{{ item.value }}</n-descriptions-item
       >
@@ -28,10 +29,11 @@ interface ListItem {
 }
 import { requestCommonSetUpGetInfoDialog } from '@/api/common/index';
 import { useRoute } from 'vue-router';
+import { getUrlParams } from '@/utils';
 const companyName: any = ref('');
 console.log(useRoute, 'useRoute');
 const route = useRoute();
-companyName.value = route.query.companyName;
+companyName.value = route.query.companyName || '';
 console.log(route.query.companyName, 'toutee');
 const listData = ref<Array<ListItem>>([]);
 type renderList = {
@@ -39,11 +41,12 @@ type renderList = {
   name: string;
   key: string;
 };
+const params = getUrlParams();
 const getRiskDetail = () => {
   requestCommonSetUpGetInfoDialog({
     className: 'CompanyRiskWarning',
     thisObj: {
-      objId: '1714570235433975808',
+      objId: params.objId,
       className: 'CompanyRiskWarning',
     },
   }).then((res) => {
@@ -69,17 +72,24 @@ getRiskDetail();
 .risk-detail-container {
   height: 100%;
   background: #fafafa;
+  .nl-descriptions {
+    height: calc(100% - 7%);
+    overflow: auto;
+  }
   .title {
+    padding-top: 3%;
     p {
       font-size: 16px;
       color: #000;
       font-weight: 600;
       text-align: center;
-      margin-top: 3%;
+      margin-left: -7%;
+      margin-bottom: 0.5em;
+      // margin-top: 3%;
     }
   }
   .nl-descriptions {
-    padding-left: 5%;
+    padding-left: 8%;
     padding-right: 5%;
   }
 }
