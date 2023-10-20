@@ -27,7 +27,15 @@ export default defineConfig(({ mode }) => {
       AutoImport({
         dts: 'types/auto-import.d.ts',
         include: [/\.[tj]sx?$/, /\.vue$/],
-        imports: ['vue', 'vue-router', 'vue-i18n', 'pinia'], // 自动导入vue和vue-router相关函数
+        imports: [
+          'vue',
+          'vue-router',
+          'vue-i18n',
+          'pinia',
+          {
+            '@/utils/storage': ['storage'],
+          },
+        ], // 自动导入vue和vue-router相关函数
         eslintrc: {
           enabled: true,
         },

@@ -19,6 +19,7 @@
     "@nancal-icon/icons-vue": "^0.2.20-base",
     "@vueuse/core": "^10.5.0",
     "axios": "^1.4.0",
+    "dayjs": "^1.11.10",
     "lodash-es": "^4.17.21",
     "lodash.debounce": "^4.0.8",
     "lodash.kebabcase": "^4.1.1",
