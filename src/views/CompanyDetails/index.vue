@@ -7,10 +7,10 @@
       </div>
       <n-collapse v-model:activeKey="activeKey" :bordered="false">
         <n-collapse-panel v-for="item in details" :key="item.name" :header="item.name">
-          <n-descriptions :labelStyle="{ 'min-width': 'min-content' }" class="px-16">
+          <n-descriptions :labelStyle="{ 'white-space': 'normal' }" class="px-16">
             <template v-for="opt in item.options">
               <n-descriptions-item :label="opt.label">
-                <template v-if="opt?.dataSource?.length">
+                <template v-if="opt?.columns">
                   <n-table
                     bordered
                     :dataSource="opt.dataSource"
@@ -39,6 +39,7 @@
 import { requestCommonSetUpGetInfoDialog } from '@/api/common';
 import type { SetUpGetInfoScheme } from '@/api/common/model';
 import type { CompanyDetailsValues } from '@/api/common/model/uncert';
+import { matchReg } from '@/utils';
 import type { TableColumnProps } from 'n-designv3';
 
 type DetailsItem = {
@@ -65,7 +66,7 @@ const handleSchema = (schema: SetUpGetInfoScheme<CompanyDetailsValues>) => {
   currentSchema.value = schema;
   details.value = [];
   schema.form.forEach((item) => {
-    let options = item.children.map((child) => {
+    const options = item.children.map((child) => {
       const result: DetailsItem = {
         key: child.field,
         label: child.name,
@@ -73,7 +74,7 @@ const handleSchema = (schema: SetUpGetInfoScheme<CompanyDetailsValues>) => {
       };
 
       // 处理表格数据
-      if (child.field == 'companyAddress') {
+      if (child.dataType.toLowerCase() === 'table') {
         try {
           result.dataSource = JSON.parse(result.value);
           result.columns = child.props.lineAttribute?.map((col) => ({
@@ -83,12 +84,8 @@ const handleSchema = (schema: SetUpGetInfoScheme<CompanyDetailsValues>) => {
         } catch (error) {
           console.log(error);
         }
-      } else if (child.field == 'companyLogo') {
-        try {
-          result.imgUrl = JSON.parse(result.value)?.[0]?.url;
-        } catch (error) {
-          console.log(error);
-        }
+      } else if (child.props.type == 'image') {
+        [result.imgUrl] = matchReg(result.value, 'imgUrl');
       }
 
       return result;

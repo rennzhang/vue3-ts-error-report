@@ -26,18 +26,18 @@ class Http {
       (config: AxiosRequestConfig): any => {
         const urlParams = getUrlParams();
         const { token, tenantId, userId } = useUserStore();
-        if (token) {
+        if (urlParams?.accessKeyId) {
+          config.headers = {
+            ...config.headers,
+            accessKeyId: urlParams.accessKeyId,
+            accessKeySecret: urlParams.accessKeySecret,
+          };
+        } else if (token) {
           config.headers = {
             ...config.headers,
             token,
             ['user-id']: userId,
             ['tenant-id']: tenantId,
-          };
-        } else if (urlParams?.accessKeyId) {
-          config.headers = {
-            ...config.headers,
-            accessKeyId: urlParams.accessKeyId,
-            accessKeySecret: urlParams.accessKeySecret,
           };
         }
         return config;
