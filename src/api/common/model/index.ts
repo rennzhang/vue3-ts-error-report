@@ -233,6 +233,7 @@ interface Props2 {
   lineAttribute?: LineAttribute[];
   lineButton?: any[];
   headButton?: any[];
+  type: string;
 }
 
 interface LineAttribute {
