@@ -5,7 +5,7 @@
     </div>
     <n-descriptions>
       <n-descriptions-item
-        v-for="(item, index) in listData"
+        v-for="item in listData"
         :label="item.name"
         :labelStyle="{
           'white-space': 'normal',

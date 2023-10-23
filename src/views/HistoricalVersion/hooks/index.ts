@@ -1,5 +1,6 @@
 import { requestCommonGetHistoryList, type HistoryRecord } from '@/api/common/index';
 import { cloneDeep, omit } from 'lodash-es';
+import { spec } from 'node:test/reporters';
 export type DataItem = {
   companyAddress?: string;
 };
@@ -35,12 +36,12 @@ export const useTable = () => {
   ];
   const tableData = ref<DataItem[]>([]);
   const getList = async () => {
-    const objId = window.$wujie?.props.params.record.objId;
-    //'1704055851523801088'  ---'1714929505862160384,1714929505862160384'
+    // const objId = window.$wujie?.props.params.record.objId;
+    //'1704055851523801088'  ---'1714929505862160384, ---1714929505862160384'
     const data = await requestCommonGetHistoryList({
       className: 'CompanyItem',
       thisObj: {
-        objId: objId,
+        objId: '1715192483647852544',
       },
     });
     tableData.value = data.data;
@@ -54,6 +55,7 @@ export const useTable = () => {
 };
 //比较版本之间的字段的差别
 export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<object>) => {
+  console.log(objArray, 'objArr-->.');
   if (objArray.length < 2) {
     return {
       comparColumns: [],
@@ -148,11 +150,22 @@ const mapFields = (sourceObject: Partial<HistoryRecord>, fieldMaps: any) => {
   return result;
 };
 const findCommonKeys = (objects: any[]) => {
-  let newObjects = objects.map((item, index) => {
+  const specialField = {
+    //后端字段值有返回null、undfined 与'',这样比较会出问题，所以 给这些特殊设置同意一个值
+    '': '',
+    null: '',
+    undefined: '',
+  };
+  let newObjects = objects.map((item) => {
     let newItem = cloneDeep(item);
+    Object.keys(item).forEach((key) => {
+      //后端字段值有返回null、undfined 与'',这样比较会出问题，所以 给这些特殊设置同意一个值
+      if (specialField.hasOwnProperty(item[key])) {
+        newItem[key] = '';
+      }
+    });
     if (item.companyAddress && JSON.parse(item.companyAddress).length) {
       const companyAddress = JSON.parse(item.companyAddress);
-
       if (companyAddress.length && Array.isArray(companyAddress)) {
         newItem.companyAddress = companyAddress.map((item) => item.rel_officialAddress).join();
       } else {
@@ -161,6 +174,7 @@ const findCommonKeys = (objects: any[]) => {
     }
     return newItem;
   });
+
   const commonKeys: Record<string, any> = {};
   // 遍历第一个对象的所有键
   Object.keys(newObjects[0]).forEach((key) => {
