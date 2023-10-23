@@ -6,13 +6,15 @@ import type {
   QueryAgentParams,
   HistoryRecord,
   GetLabDataType,
+  QueryAgentRes,
 } from './model/index';
 export * from './model';
+export * from './model/uncert';
 export const requestCommonSetUpGetInfoDialog = (params: SetUpGetInfoParams) =>
   http.post<{ scheme: SetUpGetInfoScheme }>(`${LCGETWAY}/acnsvr/CompanyItem/SetUpGetInfoDialog`, params);
 
-export const requestCommonQueryAgent = (params: QueryAgentParams) =>
-  http.post<any>(`${LCGETWAY}/acnsvr/CompanyItem/QueryAgent`, params);
+export const requestCommonQueryAgent = <T = any>(params: QueryAgentParams) =>
+  http.post<QueryAgentRes<T>>(`${LCGETWAY}/acnsvr/CompanyItem/QueryAgent`, params);
 
 export const requestCommonGetHistoryList = (params: any) =>
   http.post<HistoryRecord[]>(`${LCGETWAY}/acnsvr/CompanyItem/GetAllSequence`, params);
