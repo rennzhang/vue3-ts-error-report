@@ -261,14 +261,14 @@ interface Api {
 
 export interface QueryAgentParams<T extends Recordable = {}> {
   queryArgs: QueryArgs<T>;
-  condition: T;
+  condition?: T;
   className: string;
 }
 
 interface QueryArgs<T extends Recordable = {}> {
   condition: T[];
   page: Page;
-  sort: Sort;
+  sort?: Sort;
   attrSet: string[];
 }
 
@@ -287,9 +287,9 @@ interface Condition {
   value: string;
   compare: string;
 }
-export interface RootObject {
-  code: string;
-  thisObj: ThisObj;
-}
 
 interface ThisObj {}
+export interface QueryAgentRes<T = any> {
+  total: string;
+  data: T;
+}

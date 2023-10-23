@@ -6,6 +6,11 @@ export const WeComRoutes: RouteRecordRaw[] = [
     name: 'WeCom',
     children: [
       {
+        path: '/wecom/home',
+        name: 'WeComHome',
+        component: () => import('@/views/WeCom/home/index.vue'),
+      },
+      {
         path: '/wecom/company-details',
         name: 'WeComCompanyDetails',
         component: () => import('@/views/CompanyDetails/index.vue'),
