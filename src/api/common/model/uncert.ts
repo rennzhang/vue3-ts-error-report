@@ -33,3 +33,14 @@ export interface CompanyDetailsValues {
   companyLogo?: string;
   [key: string]: any;
 }
+
+export interface QueryAgentCompanyRecord {
+  code: string;
+  companyName: string;
+  companyAlias?: string;
+  companyLevel: string;
+  objId: string;
+  className: string;
+  displayCreator: string;
+  displayModifier: string;
+}
