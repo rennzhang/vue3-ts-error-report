@@ -26,7 +26,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import PullRefresh from '@/components/common/PullRefresh/index.vue';
 import { requestCommonQueryAgent, QueryAgentCompanyRecord } from '@/api/common';
 const router = useRouter();
 const route = useRoute();
@@ -40,8 +39,6 @@ const lastTotal = ref(0);
 const isAllLoaded = ref(false);
 const loadMore = () => {
   loadMoreTimes.value = loadMoreTimes.value + 1;
-  console.log('loadMoreTimes.value', loadMoreTimes.value);
-
   getList();
 };
 
