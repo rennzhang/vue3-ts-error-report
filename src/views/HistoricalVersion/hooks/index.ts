@@ -111,10 +111,12 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
       return item.compareItem.length;
     });
     let maxLength = Math.max(...strNum);
-    if (maxLength > 6) {
-      width = 150;
-    } else {
+    if (maxLength >= 2 && maxLength <= 4) {
+      width = 75;
+    } else if (maxLength > 4 && maxLength <= 6) {
       width = 110;
+    } else {
+      width = 150;
     }
     return width;
   };
