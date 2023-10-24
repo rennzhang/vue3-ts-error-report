@@ -107,12 +107,12 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
   });
   const computeColunmsWidth = () => {
     let width = 110;
-    let strNum = comparDataSource.map((item, index) => {
+    let strNum = comparDataSource.map((item) => {
       return item.compareItem.length;
     });
     let maxLength = Math.max(...strNum);
     if (maxLength >= 2 && maxLength <= 4) {
-      width = 85;
+      width = 100;
     } else if (maxLength > 4 && maxLength <= 6) {
       width = 110;
     } else {
