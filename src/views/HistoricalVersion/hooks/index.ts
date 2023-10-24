@@ -40,7 +40,7 @@ export const useTable = () => {
     const data = await requestCommonGetHistoryList({
       className: 'CompanyItem',
       thisObj: {
-        objId: objId,
+        objId: '1704055851523801088',
       },
     });
     tableData.value = data.data;
@@ -62,15 +62,16 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
       comparDataSource: [],
     };
   }
-  let columns = [
-    {
-      title: '版本',
-      dataIndex: 'compareItem',
-      key: 'compareItem',
-      width: 110,
-      fixed: true,
-    },
-  ];
+  // const computeColumnsWidth = () => {
+  //   let domArr = document.getElementsByClassName('nl-table-cell-fix-left')
+  //     ? [...document.getElementsByClassName('nl-table-cell-fix-left')]
+  //     : [];
+  //   const width = 110;
+  //   // domArr.forEach((item, index) => {
+  //   //   console.log(item, '===========>>');
+  //   // });
+  // };
+  // computeColumnsWidth();
   const commonKeys = findCommonKeys(objArray);
   let newObjArray = cloneDeep(objArray);
   const result = newObjArray.map((item) => {
@@ -87,15 +88,6 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
     return newItem;
   });
   //------------
-  result.forEach((item: any) =>
-    columns.push({
-      title: item.sequence,
-      dataIndex: `sequence_${item.sequence}`,
-      key: 'sequence',
-      width: 120,
-      fixed: false,
-    })
-  );
   let compareItem = mapFields(result[0], labelData);
   const comparDataSource: any = compareItem.map((item) => {
     let newItem: {
@@ -113,6 +105,38 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
     });
     return newItem;
   });
+  const computeColunmsWidth = () => {
+    let width = 110;
+    let strNum = comparDataSource.map((item, index) => {
+      return item.compareItem.length;
+    });
+    let maxLength = Math.max(...strNum);
+    if (maxLength > 6) {
+      width = 150;
+    } else {
+      width = 110;
+    }
+    return width;
+  };
+  console.log(computeColunmsWidth(), 'computeColunmsWidth');
+  let columns = [
+    {
+      title: '版本',
+      dataIndex: 'compareItem',
+      key: 'compareItem',
+      fixed: true,
+      width: computeColunmsWidth(),
+    },
+  ];
+  result.forEach((item: any) =>
+    columns.push({
+      title: item.sequence,
+      dataIndex: `sequence_${item.sequence}`,
+      key: 'sequence',
+      width: 120,
+      fixed: false,
+    })
+  );
   return {
     comparColumns: columns,
     comparData: result,

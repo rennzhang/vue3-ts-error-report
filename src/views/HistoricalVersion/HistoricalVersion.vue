@@ -103,6 +103,9 @@ const rowSelectionConfig: TableRowSelection<HistoryRecord> = {
 .btn-compare {
   margin: 10px 20px 10px 20px;
 }
+.nl-table-cell {
+  background-color: red !important;
+}
 .history-version {
   width: 100%;
   height: 100%;
