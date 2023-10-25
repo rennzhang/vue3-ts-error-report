@@ -13,8 +13,8 @@
 <script lang="ts" setup>
 import {
   insertCompanyTree,
-  type GroupCompanyRecord,
   validateInsertCompanyTreePre,
+  type GroupCompanyRecord,
   type ValidateCompanyParams,
 } from '@/api/GroupStructure';
 import { requestCommonQueryAgent } from '@/api/common';
