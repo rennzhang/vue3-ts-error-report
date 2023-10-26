@@ -1,10 +1,21 @@
 {
-  "extends": "@tsconfig/node18/tsconfig.json",
-  "include": ["./package.json", "vite.config.*", "vitest.config.*", "cypress.config.*", "nightwatch.conf.*", "playwright.config.*", "types/global.d.ts"],
   "compilerOptions": {
-    "resolveJsonModule": true,
     "composite": true,
+    "skipLibCheck": true,
     "module": "ESNext",
-    "types": ["node"]
-  }
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "types": ["vite/client", "node"]
+  },
+  "include": [
+    "./package.json",
+    "vite.config.*",
+    "uno.config.*",
+    "vitest.config.*",
+    "cypress.config.*",
+    "nightwatch.conf.*",
+    "playwright.config.*",
+    "types/global.d.ts"
+  ],
+  "exclude": []
 }

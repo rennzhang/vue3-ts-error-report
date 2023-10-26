@@ -29,7 +29,6 @@ declare global {
     };
     __POWERED_BY_WUJIE__?: boolean;
     gvUtil: any;
-    ofRx: Function;
   }
 
   /**
@@ -69,7 +68,6 @@ declare global {
    * 全局工具类的类型声明
    */
   var gvUtil: any;
-  var ofRx: Function;
 
   declare type Nullable<T> = T | null;
 

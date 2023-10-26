@@ -1,17 +1,28 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
-    }
-  ],
   "compilerOptions": {
     "baseUrl": ".",
+    "module": "ESNext",
+    "target": "esnext",
+    "lib": ["DOM", "ESNext"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noUnusedLocals": true,
+    "strictNullChecks": true,
+    "jsx": "preserve",
+    "forceConsistentCasingInFileNames": true,
+    "verbatimModuleSyntax": false,
+    "composite": true,
     "paths": {
       "@/*": ["src/*"]
     }
   },
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "include": ["env.d.ts", "src/**/*", "types/*.d.ts", "*.ts", "*.js", "*.vue", "*.json", "*.d.ts"]
 }

@@ -1,3 +1,4 @@
+export * from './uncert';
 export interface SetUpGetInfoParams {
   className: string;
   thisObj: ThisObj;

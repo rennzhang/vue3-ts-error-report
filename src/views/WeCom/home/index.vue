@@ -1,8 +1,8 @@
 <template>
-  <div class="h-[100vh] p-8 flex flex-col">
+  <div class="h-[100vh] p-8px flex flex-col">
     <div class="flex">
       <n-input
-        class="w-full mb-6 bg-white mr-4"
+        class="w-full mb-6px bg-white mr-4px"
         v-model:value="companyName"
         placeholder="输入企业名称搜索"
         @change="onChange"
@@ -11,20 +11,20 @@
         size="large"
       />
 
-      <n-button class="min-w-min !px-4" size="large" @click="onSearch" :loading="loading">
+      <n-button class="min-w-min !px-4px" size="large" @click="onSearch" :loading="loading">
         <template #icon><SearchOutlined /></template>
       </n-button>
       <!-- <n-button type="primary" ghost size="large" @click="reset" :loading="loading">重置</n-button> -->
     </div>
-    <div class="overflow-auto h-full py-6">
+    <div class="overflow-auto h-full py-6px">
       <n-spin :spinning="loading">
         <div class="item" v-for="item in dataList" :key="item.code" @click="viewDetails(item)">
           {{ item.companyName }}
         </div>
-        <div class="text-center py-8" v-if="!isAllLoaded">
+        <div class="text-center py-8px" v-if="!isAllLoaded">
           <n-button type="primary" ghost size="small" @click="loadMore" v-if="!loading">点击加载更多数据</n-button>
         </div>
-        <div v-else class="text-slate-300 text-center py-8">
+        <div v-else class="text-slate-300 text-center py-8px">
           {{ dataList.length ? '已加载全部数据~' : '暂无数据~' }}
         </div>
       </n-spin>
@@ -104,12 +104,12 @@ const getList = () => {
   });
 };
 
-const reset = () => {
-  companyName.value = '';
-  loadMoreTimes.value = 1;
-  isAllLoaded.value = false;
-  getList();
-};
+// const reset = () => {
+//   companyName.value = '';
+//   loadMoreTimes.value = 1;
+//   isAllLoaded.value = false;
+//   getList();
+// };
 
 const viewDetails = (item: QueryAgentCompanyRecord) => {
   console.log('item', item);
