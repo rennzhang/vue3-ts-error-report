@@ -6,6 +6,5 @@ declare module '*.vue' {
   export default component;
 }
 
-// module 'ramda';
 declare module '@/assets/iconfont/iconfont';
 declare module 'vue-i18n';
