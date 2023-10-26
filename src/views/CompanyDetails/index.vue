@@ -1,13 +1,13 @@
 <template>
   <n-spin :spinning="spinning">
-    <div class="p-16">
-      <div v-if="isWeCom" class="text-18 font-bold text-black mb-8">
+    <div class="p-16px">
+      <div v-if="isWeCom" class="text-18px font-bold text-black mb-8px">
         <span>{{ route.query.pushType }}：</span>
         <span>{{ currentSchema?.values?.companyName }}</span>
       </div>
       <n-collapse v-model:activeKey="activeKey" :bordered="false">
         <n-collapse-panel v-for="item in details" :key="item.name" :header="item.name">
-          <n-descriptions :labelStyle="{ 'white-space': 'normal' }" class="px-16">
+          <n-descriptions :labelStyle="{ 'white-space': 'normal' }" class="px-16px">
             <template v-for="opt in item.options">
               <n-descriptions-item :label="opt.label">
                 <template v-if="opt?.columns">
@@ -15,7 +15,7 @@
                     bordered
                     :dataSource="opt.dataSource"
                     :columns="opt.columns"
-                    class="w-full mr-24"
+                    class="w-full mr-24px"
                     :pagination="false"
                   ></n-table>
                 </template>

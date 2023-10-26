@@ -1,5 +1,5 @@
 <template>
-  <div class="p-20">
+  <div class="p-20px">
     <n-table :columns="columns" :data-source="tableData" :loading="loading" rowKey="companyCode">
       <template #headerCell="{ column }">
         <template v-if="column.dataIndex === 'operation'">

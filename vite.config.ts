@@ -11,6 +11,7 @@ import compressPlugin from 'vite-plugin-compression';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import Components from '@nancal/nancal-unplugin-vue-components/vite';
 import { NDesignResolver } from '@nancal/nancal-unplugin-vue-components/resolvers';
+import UnoCSS from 'unocss/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -21,6 +22,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       vueJsx(),
+      UnoCSS(),
       VueI18nPlugin({
         include: resolve(dirname(fileURLToPath(import.meta.url)), './path/to/src/locales/**'),
       }),
