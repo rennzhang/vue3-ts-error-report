@@ -1,8 +1,7 @@
 import { useUserStore } from '@/store/modules/user';
 import Axios from 'axios';
-import { of, switchMap } from 'rxjs';
-import { getUrlParams } from '@/utils';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { getUrlParams } from '@/utils';
 
 class Http {
   constructor() {
@@ -125,10 +124,5 @@ class Http {
     });
   }
 }
-
-// 将api转化为rxjs的observer 以便使用rxjs的操作符
-window.ofRx = (api: Promise<any>) => {
-  return of(0).pipe(switchMap(() => api));
-};
 
 export const http = new Http();

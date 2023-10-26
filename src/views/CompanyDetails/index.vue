@@ -37,8 +37,7 @@
 
 <script lang="ts" setup>
 import { requestCommonSetUpGetInfoDialog } from '@/api/common';
-import type { SetUpGetInfoScheme } from '@/api/common/model';
-import type { CompanyDetailsValues } from '@/api/common/model/uncert';
+import type { CompanyDetailsValues, SetUpGetInfoScheme } from '@/api/common/model';
 import { matchReg } from '@/utils';
 import type { TableColumnProps } from 'n-designv3';
 
