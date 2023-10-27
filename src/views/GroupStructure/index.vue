@@ -24,7 +24,7 @@
       </template>
       <template #bodyCell="{ column, text, record }">
         <template v-if="column.dataIndex === 'companyName'">
-          <span class="inline-flex items-center">
+          <span>
             <folder-outlined />
             <n-divider type="vertical" />
             {{ text }}
