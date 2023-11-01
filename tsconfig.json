@@ -15,6 +15,7 @@
     "forceConsistentCasingInFileNames": true,
     "verbatimModuleSyntax": false,
     "composite": true,
+    "types": ["vite/client", "node"],
     "paths": {
       "@/*": ["src/*"]
     }

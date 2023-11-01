@@ -1,6 +1,21 @@
 import { type RouteRecordRaw } from 'vue-router';
 // 企业微信相关路由
-export const WeComRoutes: RouteRecordRaw[] = [
+export const CompanyInfoRoutes: RouteRecordRaw[] = [
+  {
+    path: '/group-composition', // path路径名称小驼峰
+    name: 'GroupStructure', // name名称大驼峰
+    component: () => import('@/views/GroupStructure/index.vue'), // 懒加载
+  },
+  {
+    path: '/history-version', // path路径名称小驼峰
+    name: 'HistoryVersion', // name名称大驼峰
+    component: () => import('@/views/HistoricalVersion/index.vue'), // 懒加载
+  },
+  {
+    path: '/company-details',
+    name: 'companyDetails',
+    component: () => import('@/views/CompanyDetails/index.vue'),
+  },
   {
     path: '/wecom',
     name: 'WeCom',
