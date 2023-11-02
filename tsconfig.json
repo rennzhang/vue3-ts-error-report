@@ -15,15 +15,26 @@
     "forceConsistentCasingInFileNames": true,
     "verbatimModuleSyntax": false,
     "composite": true,
+    "incremental": true,
     "types": ["vite/client", "node"],
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ],
-  "include": ["env.d.ts", "src/**/*", "types/*.d.ts", "*.ts", "*.js", "*.vue", "*.json", "*.d.ts"]
+  // "references": [
+  //   {
+  //     "path": "./tsconfig.node.json"
+  //   }
+  // ],
+  "include": [
+    "src/**/*",
+    "src/components/**/*",
+    "build/**/*",
+    "types/**/*",
+    "*.ts",
+    "*.js",
+    "*.vue",
+    "*.json",
+    "*.d.ts"
+  ]
 }

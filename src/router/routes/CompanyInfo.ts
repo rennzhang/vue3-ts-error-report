@@ -14,6 +14,9 @@ export const CompanyInfoRoutes: RouteRecordRaw[] = [
   {
     path: '/company-details',
     name: 'companyDetails',
+    props: {
+      className: 'CompanyItem',
+    },
     component: () => import('@/views/CompanyDetails/index.vue'),
   },
   {
