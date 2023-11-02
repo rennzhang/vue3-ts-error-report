@@ -8,3 +8,9 @@ declare module '*.vue' {
 
 declare module '@/assets/iconfont/iconfont';
 declare module 'vue-i18n';
+
+declare module '~pages' {
+  import { RouteRecordRaw } from 'vue-router';
+  const routes: RouteRecordRaw[];
+  export default routes;
+}
