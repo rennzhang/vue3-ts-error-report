@@ -10,7 +10,7 @@ import { message } from 'n-designv3';
 import { requestCommonQueryLOVList, requestCommonUpdateLOVItem, requestCommonCreateLOVItem, LOVRecord } from '../api';
 const schemaFormRef = ref<SchemaFormRef>();
 
-const allLOVList = ref<LOVRecord[]>([]);
+const allLOVList = ref<(LOVRecord & OptionItem)[]>([]);
 
 const getAllLOVList = () => {
   requestCommonQueryLOVList().then((res) => {
@@ -92,13 +92,13 @@ const formSchema = reactive<FormSchema<any>>({
       label: '截断字符',
       value: '、',
     },
-    {
-      field: 'innerPrefix',
-      type: 'input',
-      label: '内部值前缀',
-      tips: "默认使用【自然数】作为内部值，从【1】开始递增；可以设置前缀，生成结果为：'前缀1'、'前缀2'",
-      required: false,
-    },
+    // {
+    //   field: 'innerPrefix',
+    //   type: 'input',
+    //   label: '内部值前缀',
+    //   tips: "默认使用【自然数】作为内部值，从【1】开始递增；可以设置前缀，生成结果为：'前缀1'、'前缀2'",
+    //   required: false,
+    // },
   ],
   required: true,
   // showAction: false,
@@ -112,7 +112,8 @@ const getStaticLovValues = (content: string, splitSymbol: string) => {
     res.push({
       objId: '',
       sort: i + 1,
-      internalValue: i + 1,
+      // internalValue: i + 1,
+      internalValue: contentArr[i],
       externalValue: contentArr[i],
     });
   }
