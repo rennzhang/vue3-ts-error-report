@@ -20,6 +20,11 @@ const router = createRouter({
       name: 'Use', // name名称大驼峰
       component: () => import('@/views/Use.vue'), // 懒加载
     },
+    {
+      path: '/common-details',
+      name: 'commonDetails',
+      component: () => import('@/components/ClassDetails/index.vue'),
+    },
     // 企业信息化相关路由
     ...CompanyInfoRoutes,
     ...routes,

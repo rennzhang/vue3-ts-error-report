@@ -8,8 +8,6 @@ type IProps = {
 export const useFormItem = ({ formItemsRef, schemaFormState }: IProps) => {
   // 获取组件名称
   const getComponent = (type: string) => {
-    console.log(type.toLowerCase());
-
     return type ? 'schema-form-' + type.toLowerCase() : null;
   };
 
@@ -31,14 +29,16 @@ export const useFormItem = ({ formItemsRef, schemaFormState }: IProps) => {
       updateData = [...data];
     }
 
-    const hasField = updateData.every((item: any) => item.type === 'divider' || (Reflect.has(item, 'field') && item.field));
+    const hasField = updateData.every(
+      (item: any) => item.type === 'divider' || (Reflect.has(item, 'field') && item.field)
+    );
 
     if (!hasField) {
       console.error('All children of the form Schema array that need to be updated must contain the `field` field');
       return;
     }
     const newFormItem: FormItem[] = [];
-    updateData.forEach(item => {
+    updateData.forEach((item) => {
       schemaFormState.getAllFormItem().forEach((val: FormItem) => {
         if (val.field === item.field) {
           const newSchema = merge(val, item);
