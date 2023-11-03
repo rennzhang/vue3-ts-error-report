@@ -114,5 +114,5 @@ export function isUrl(path: string): boolean {
 
 /** 判断是否为空的 VNode，可以用于 slot 判断 */
 export function isEmptyVNode(vNodes: VNode | VNode[] | undefined | null): boolean {
-  return !!vNodes && (Array.isArray(vNodes) ? vNodes.every(vNode => !isObject(vNode.type)) : !isObject(vNodes.type));
+  return !!vNodes && (Array.isArray(vNodes) ? vNodes.every((vNode) => !isObject(vNode.type)) : !isObject(vNodes.type));
 }

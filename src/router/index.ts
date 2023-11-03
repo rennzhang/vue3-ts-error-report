@@ -1,7 +1,11 @@
 import type { App } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import { createRouterGuard } from './guard';
-import { WeComRoutes } from './routes/WeCom';
+import { CompanyInfoRoutes } from './routes/CompanyInfo';
+import routes from '~pages';
+
+console.log('routes', routes);
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_APP_NGINX_VPATH_NAME),
   scrollBehavior: () => ({ left: 0, top: 0 }),
@@ -17,21 +21,13 @@ const router = createRouter({
       component: () => import('@/views/Use.vue'), // 懒加载
     },
     {
-      path: '/group-composition', // path路径名称小驼峰
-      name: 'GroupStructure', // name名称大驼峰
-      component: () => import('@/views/GroupStructure/index.vue'), // 懒加载
+      path: '/common-details',
+      name: 'commonDetails',
+      component: () => import('@/components/ClassDetails/index.vue'),
     },
-    {
-      path: '/history-version', // path路径名称小驼峰
-      name: 'HistoryVersion', // name名称大驼峰
-      component: () => import('@/views/HistoricalVersion/HistoricalVersion.vue'), // 懒加载
-    },
-    {
-      path: '/company-details',
-      name: 'companyDetails',
-      component: () => import('@/views/CompanyDetails/index.vue'),
-    },
-    ...WeComRoutes,
+    // 企业信息化相关路由
+    ...CompanyInfoRoutes,
+    ...routes,
   ],
 });
 

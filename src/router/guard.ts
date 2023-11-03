@@ -26,7 +26,7 @@ export function createRouterGuard(router: Router) {
       userStore.from = <string>to.query.from;
       appStore.lang = <string>to.query.lang;
       i18n.global.locale.value = <string>to.query.lang;
-      userStore.xGetUserInfo(<string>to.query.tk);
+      userStore.getUserInfo(<string>to.query.tk);
       // 获取语言包
       gvUtil.postMsg({
         type: 'gvUtil.getLanguage',
@@ -36,8 +36,6 @@ export function createRouterGuard(router: Router) {
       next();
       return;
     }
-
-    
 
     if (whiteList.indexOf(to.path) !== -1) {
       next();

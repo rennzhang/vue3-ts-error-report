@@ -15,9 +15,10 @@ module.exports = {
   },
   globals: {
     gvUtil: true,
-    ofRx: true,
   },
   rules: {
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
     'prefer-const': ['off'], // 要求使用 const 声明那些声明后不再被修改的变量
     'no-debugger': process.env.VUE_APP_ENV !== 'dev' ? 'error' : 'off', // 禁用 debugger
     'key-spacing': ['off'], // 强制在对象字面量的属性中键和值之间使用一致的间距

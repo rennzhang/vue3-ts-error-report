@@ -1,5 +1,5 @@
 <template>
-  <div class="p-20">
+  <div class="p-20px">
     <n-table :columns="columns" :data-source="tableData" :loading="loading" rowKey="companyCode">
       <template #headerCell="{ column }">
         <template v-if="column.dataIndex === 'operation'">
@@ -24,7 +24,7 @@
       </template>
       <template #bodyCell="{ column, text, record }">
         <template v-if="column.dataIndex === 'companyName'">
-          <span class="inline-flex items-center">
+          <span>
             <folder-outlined />
             <n-divider type="vertical" />
             {{ text }}
