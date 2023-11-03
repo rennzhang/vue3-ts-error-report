@@ -18,11 +18,15 @@
         :scroll="{ x: '100%', y: scrollY() }"
         style="word-break: break-all"
       >
-        <template #bodyCell="{ column, record }">
-          {{ console.log(record, 'record') }}
-          <template v-if="column.key === 'name'">
-            <a> 111 </a>
+        <template #bodyCell="{ column, record, index }">
+          <template v-if="record.isImg && column.dataIndex.includes('_')">
+            <n-image :src="record[column.dataIndex]" />
           </template>
+          <!-- <template v-else>
+            <div>
+              {{ record[column.key] }}
+            </div>
+          </template> -->
         </template>
       </n-table>
       <template #footer>
@@ -33,7 +37,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { message } from 'n-designv3';
 let props = defineProps({
   selectRowsData: {
     type: Array,

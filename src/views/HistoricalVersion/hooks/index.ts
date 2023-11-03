@@ -1,5 +1,6 @@
 import { requestCommonGetHistoryList, type HistoryRecord } from '@/api/common/index';
 import { cloneDeep, omit } from 'lodash-es';
+import { matchReg } from '@/utils';
 export type DataItem = {
   companyAddress?: string;
 };
@@ -65,6 +66,10 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
   let newObjArray = cloneDeep(objArray);
   const result = newObjArray.map((item) => {
     const newItem = omit(item, commonKeys);
+    if (item.companyLogo && JSON.parse(item.companyLogo).length) {
+      //暂时只处理一张图片
+      newItem.companyLogo = JSON.parse(item.companyLogo)[0].url;
+    }
     if (newItem.companyAddress) {
       const companyAddress = JSON.parse(newItem.companyAddress);
       if (companyAddress.length && Array.isArray(companyAddress)) {
@@ -72,8 +77,12 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
       } else {
         newItem.companyAddress = '';
       }
+      // console.log(item, 'item');
+      // if (matchReg(item.companyLogo, 'url')) {
+      //   newItem['isImg'] = matchReg(item.companyLogo);
+      //   console.log(newItem, 'neewItem');
+      // }
     }
-
     return newItem;
   });
   //------------
@@ -92,6 +101,7 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
         }
       });
     });
+    Object.keys(newItem).forEach((key, index) => {});
     return newItem;
   });
   const computeColunmsWidth = () => {
@@ -127,11 +137,30 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
       fixed: false,
     })
   );
+  const newComparDataSource = comparDataSource.map((item, index) => {
+    const newItem = cloneDeep(item);
+    Object.keys(item).forEach((key, ind) => {
+      //console.log(item[key], 'item[key]');
+      if (regImg(item[key])) {
+        newItem.isImg = item[key];
+      }
+    });
+    return newItem;
+  });
+
   return {
     comparColumns: columns,
     comparData: result,
-    comparDataSource: comparDataSource,
+    comparDataSource: newComparDataSource,
   };
+};
+const regImg = (url) => {
+  const reg = /https?:\/\/.*?\.(png|jpg|jpeg|gif|bmp|svg|tiff|webp)/gi;
+  if (reg.test(url)) {
+    return true;
+  } else {
+    return false;
+  }
 };
 const mapFields = (sourceObject: Partial<HistoryRecord>, fieldMaps: any) => {
   let result: { code: string; name: string }[] = [];
@@ -185,9 +214,6 @@ const findCommonKeys = (objects: any[]) => {
       } else {
         newItem.companyAddress = '';
       }
-    }
-    if (item.companyLogo && JSON.parse(item.companyAddress).length) {
-      newItem.companyLogo = JSON.parse(newItem.companyLogo)[0].url;
     }
     return newItem;
   });
