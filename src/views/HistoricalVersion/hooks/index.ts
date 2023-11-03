@@ -40,7 +40,7 @@ export const useTable = () => {
     const data = await requestCommonGetHistoryList({
       className: 'CompanyItem',
       thisObj: {
-        objId: objId,
+        objId: '1716302258997563392',
       },
     });
     tableData.value = data.data;
@@ -54,7 +54,6 @@ export const useTable = () => {
 };
 //比较版本之间的字段的差别
 export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<object>) => {
-  console.log(objArray, 'objArr-->.');
   if (objArray.length < 2) {
     return {
       comparColumns: [],
@@ -62,16 +61,6 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
       comparDataSource: [],
     };
   }
-  // const computeColumnsWidth = () => {
-  //   let domArr = document.getElementsByClassName('nl-table-cell-fix-left')
-  //     ? [...document.getElementsByClassName('nl-table-cell-fix-left')]
-  //     : [];
-  //   const width = 110;
-  //   // domArr.forEach((item, index) => {
-  //   //   console.log(item, '===========>>');
-  //   // });
-  // };
-  // computeColumnsWidth();
   const commonKeys = findCommonKeys(objArray);
   let newObjArray = cloneDeep(objArray);
   const result = newObjArray.map((item) => {
@@ -120,7 +109,6 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
     }
     return width;
   };
-  console.log(computeColunmsWidth(), 'computeColunmsWidth');
   let columns = [
     {
       title: '版本',
@@ -165,6 +153,7 @@ const mapFields = (sourceObject: Partial<HistoryRecord>, fieldMaps: any) => {
   ]);
   fieldMaps.forEach((fieldMap: any) => {
     const { code } = fieldMap;
+
     if (newSourceObject.hasOwnProperty(code)) {
       result.push({
         code: fieldMap['code'],
@@ -196,6 +185,9 @@ const findCommonKeys = (objects: any[]) => {
       } else {
         newItem.companyAddress = '';
       }
+    }
+    if (item.companyLogo && JSON.parse(item.companyAddress).length) {
+      newItem.companyLogo = JSON.parse(newItem.companyLogo)[0].url;
     }
     return newItem;
   });

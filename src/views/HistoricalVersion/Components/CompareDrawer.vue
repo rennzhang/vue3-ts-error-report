@@ -18,9 +18,10 @@
         :scroll="{ x: '100%', y: scrollY() }"
         style="word-break: break-all"
       >
-        <template #bodyCell="{ column, text }">
-          <template v-if="column.dataIndex === 'name'">
-            <a>{{ text }}</a>
+        <template #bodyCell="{ column, record }">
+          {{ console.log(record, 'record') }}
+          <template v-if="column.key === 'name'">
+            <a> 111 </a>
           </template>
         </template>
       </n-table>
