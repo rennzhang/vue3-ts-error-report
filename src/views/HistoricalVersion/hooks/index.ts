@@ -1,6 +1,5 @@
 import { requestCommonGetHistoryList, type HistoryRecord } from '@/api/common/index';
 import { cloneDeep, omit } from 'lodash-es';
-import { matchReg } from '@/utils';
 export type DataItem = {
   companyAddress?: string;
 };
@@ -41,7 +40,7 @@ export const useTable = () => {
     const data = await requestCommonGetHistoryList({
       className: 'CompanyItem',
       thisObj: {
-        objId: '1716302258997563392',
+        objId: objId,
       },
     });
     tableData.value = data.data;
