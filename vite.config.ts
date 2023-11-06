@@ -55,7 +55,7 @@ export default defineConfig(({ mode }) => {
         resolvers: [NDesignResolver({ importStyle: false, resolveIcons: true })],
       }),
       // 代码压缩
-      codeCompressPlugin(<ViteCompression>VITE_COMPRESSION),
+      codeCompressPlugin(VITE_COMPRESSION),
       // 打包分析
       lifecycle === 'report' ? visualizer({ open: true, brotliSize: true, filename: 'report.html' }) : null,
     ],
@@ -111,7 +111,7 @@ export default defineConfig(({ mode }) => {
 });
 
 // 代码压缩
-function codeCompressPlugin(compress: ViteCompression): Plugin | Plugin[] | null {
+function codeCompressPlugin(compress): Plugin | Plugin[] | null {
   if (compress === 'none') return null;
   const gz = {
     // 生成的压缩包后缀

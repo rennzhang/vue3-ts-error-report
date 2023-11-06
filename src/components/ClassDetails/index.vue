@@ -7,7 +7,10 @@
           <n-descriptions :labelStyle="{ 'white-space': 'normal' }" class="px-16px">
             <template v-for="opt in item.options">
               <n-descriptions-item :label="opt.label">
-                <template v-if="opt?.columns">
+                <template v-if="opt.isLov">
+                  {{ formLovValues[opt.key] }}
+                </template>
+                <template v-else-if="opt?.columns">
                   <n-table
                     bordered
                     :dataSource="opt.dataSource"
@@ -36,7 +39,7 @@
 </template>
 
 <script lang="ts" setup generic="T extends Record<string, any>">
-import { requestCommonSetUpGetInfoDialog } from '@/api/common';
+import { requestCommonSetUpGetInfoDialog, requestCommonGetLOV } from '@/api/common';
 import type { SetUpGetInfoScheme } from '@/api/common/model';
 import { matchReg } from '@/utils';
 import type { TableColumnProps } from 'n-designv3';
@@ -46,6 +49,7 @@ type DetailsItem = {
   label: string;
   value: string;
   imgUrls?: string[];
+  isLov?: boolean;
   dataSource?: any[];
   columns?: TableColumnProps[];
 };
@@ -66,6 +70,12 @@ const getClassName = computed(() => props.className || (route.query.className as
 const details = ref<DetailsGroupRecord[]>([]);
 const activeKey = ref<string[]>([]);
 const currentSchema = ref<SetUpGetInfoScheme<T>>();
+const formLovValues = reactive<Recordable>({});
+const getValueForLOV = async (code: string, field: string, val: string) => {
+  requestCommonGetLOV({ code }).then((res) => {
+    formLovValues[field] = res.data.details.find((c) => c.internalValue == val)?.externalValue;
+  });
+};
 
 const handleSchema = (schema: SetUpGetInfoScheme<T>) => {
   currentSchema.value = schema;
@@ -78,8 +88,12 @@ const handleSchema = (schema: SetUpGetInfoScheme<T>) => {
         value: schema.values[child.field] as string,
       };
 
+      if (child.lov?.code) {
+        result.isLov = true;
+        getValueForLOV(child.lov.code, child.field, result.value);
+      }
       // 处理表格数据
-      if (child.dataType.toLowerCase() === 'table') {
+      else if (child.dataType.toLowerCase() === 'table') {
         try {
           result.dataSource = JSON.parse(result.value);
           result.columns = child.props.lineAttribute?.map((col) => ({
@@ -100,6 +114,7 @@ const handleSchema = (schema: SetUpGetInfoScheme<T>) => {
       name: item.groupName,
       options,
     });
+
     activeKey.value.push(item.groupName);
   });
 };
