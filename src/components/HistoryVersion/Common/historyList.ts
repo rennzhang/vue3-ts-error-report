@@ -36,9 +36,9 @@ export const useTable = () => {
     const className = window.$wujie?.props.params.record.className;
     //'1704055851523801088'  ---'1714929505862160384, ---1714929505862160384'
     const data = await requestCommonGetHistoryList({
-      className: 'ActivityItem' || 'CompanyItem',
+      className: className || 'CompanyItem',
       thisObj: {
-        objId: '1720276011209211904',
+        objId: objId,
       },
     });
     tableData.value = data.data;

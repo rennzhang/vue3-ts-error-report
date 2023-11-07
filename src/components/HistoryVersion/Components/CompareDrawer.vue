@@ -53,7 +53,7 @@ const getLabelKey = async () => {
   const className = window.$wujie?.props.params.record.className;
   isLoading.value = true;
   let data: any = await requestCommonGetLabel({
-    classCode: 'ActivityItem',
+    classCode: className || 'ActivityItem',
     serviceCode: 'nalsvr',
   });
   labelKeyData.value = data.data;
