@@ -33,11 +33,12 @@ export const useTable = () => {
   const getList = async () => {
     const router = useRouter();
     const objId = window.$wujie?.props.params.record.objId;
+    const className = window.$wujie?.props.params.record.className;
     console.log(window.$wujie, 'window.$wujiewindow.$wujiewindow.$wujiewindow.$wujiewindow.$wujie');
     console.log(router, 'routerrouterrouterrouterrouter');
     //'1704055851523801088'  ---'1714929505862160384, ---1714929505862160384'
     const data = await requestCommonGetHistoryList({
-      className: router.query?.className || 'CompanyItem',
+      className: className || 'CompanyItem',
       thisObj: {
         objId: objId,
       },
