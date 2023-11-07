@@ -136,10 +136,9 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
       fixed: false,
     })
   );
-  const newComparDataSource = comparDataSource.map((item, index) => {
+  const newComparDataSource = comparDataSource.map((item) => {
     const newItem = cloneDeep(item);
     Object.keys(item).forEach((key, ind) => {
-      //console.log(item[key], 'item[key]');
       if (regImg(item[key])) {
         newItem.isImg = item[key];
       }

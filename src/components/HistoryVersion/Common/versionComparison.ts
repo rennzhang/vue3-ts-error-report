@@ -1,12 +1,14 @@
 import { cloneDeep, omit } from 'lodash-es';
+import { matchReg } from '@/utils';
 export const useTable = (selectData: any, labelData: any) => {
   /* 
     1. 组建动态表头
     2. 组装表头对应的dataSource
  */
   //dataSource
-  const data = filterCommonKey(selectData);
-  const dataSource = HandleSpecialValues(data);
+  const data = HandleSpecialValues(selectData);
+  const dataSource = filterCommonKey(data);
+
   //动态表头
   const keyName = getKeyLable(dataSource[0], labelData);
 
@@ -44,9 +46,19 @@ export const useTable = (selectData: any, labelData: any) => {
     });
     return newItem;
   });
+  const newComparDataSource = comparDataSource.map((item) => {
+    const newItem = cloneDeep(item);
+    Object.keys(item).forEach((key, ind) => {
+      if (Array.isArray(item[key])) {
+        newItem['isImg'] = true;
+      }
+    });
+    return newItem;
+  });
+  console.log(newComparDataSource, 'newComparDataSource');
   return {
     column: columns,
-    dataSource: comparDataSource,
+    dataSource: newComparDataSource,
   };
 };
 const filterCommonKey = (data: any) => {
@@ -88,10 +100,17 @@ const getKeyLable = (sourceObject: any, labelData: any) => {
   return result;
 };
 const HandleSpecialValues = (data: any) => {
+  console.log(data, 'data-->.');
   /*
     1. 处理特殊字段值，例如有些字段不是字符串，而是JSON。需要解析并展示字符串,
     2. 去除自定义字段
     */
+  const specialField = {
+    //后端字段值有返回null、undfined 与'',这样比较会出问题，所以 给这些特殊设置同意一个值
+    '': '',
+    null: '',
+    undefined: '',
+  };
   const dataSource = data.map((item: any) => {
     const newItem = omit(item, [
       'tenantId',
@@ -109,6 +128,29 @@ const HandleSpecialValues = (data: any) => {
       'superseded',
       'displayName',
     ]);
+    //对公司地址进行处理
+    if (item.companyAddress && JSON.parse(item.companyAddress).length) {
+      const companyAddress = JSON.parse(item.companyAddress);
+      if (companyAddress.length && Array.isArray(companyAddress)) {
+        newItem.companyAddress = companyAddress.map((item) => item.rel_officialAddress).join();
+      } else {
+        newItem.companyAddress = '';
+      }
+    } else {
+      newItem.companyAddress = '';
+    }
+    //对特殊字段进行处理
+    Object.keys(item).forEach((key) => {
+      //后端字段值有返回null、undfined 与'',这样比较会出问题，所以 给这些特殊设置同意一个值
+      if (specialField.hasOwnProperty(item[key])) {
+        newItem[key] = '';
+      }
+    });
+    //企业logo && 图片
+    if (item.companyLogo && JSON.parse(item.companyLogo).length) {
+      //暂时只处理一张图片
+      newItem.companyLogo = matchReg(item.companyLogo, 'imgUrl');
+    }
     return newItem;
   });
   return dataSource;

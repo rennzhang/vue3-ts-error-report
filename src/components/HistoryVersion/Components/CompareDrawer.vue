@@ -10,6 +10,11 @@
         :loading="isLoading"
         style="word-break: break-all"
       >
+        <template #bodyCell="{ column, record, index }">
+          <template v-if="record.isImg && column.dataIndex.includes('_')">
+            <n-image :src="record[column.dataIndex]" />
+          </template>
+        </template>
       </n-table>
       <template #footer>
         <div class="footer">
