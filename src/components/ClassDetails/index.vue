@@ -47,7 +47,7 @@ import type { TableColumnProps } from 'n-designv3';
 type DetailsItem = {
   key: string;
   label: string;
-  value: string;
+  value: string | null;
   imgUrls?: string[];
   isLov?: boolean;
   dataSource?: any[];
@@ -71,7 +71,8 @@ const details = ref<DetailsGroupRecord[]>([]);
 const activeKey = ref<string[]>([]);
 const currentSchema = ref<SetUpGetInfoScheme<T>>();
 const formLovValues = reactive<Recordable>({});
-const getValueForLOV = async (code: string, field: string, val: string) => {
+const getValueForLOV = async (code: string, field: string, val: string | null) => {
+  if (!val) return;
   requestCommonGetLOV({ code }).then((res) => {
     formLovValues[field] = res.data.details.find((c) => c.internalValue == val)?.externalValue;
   });
@@ -85,7 +86,7 @@ const handleSchema = (schema: SetUpGetInfoScheme<T>) => {
       const result: DetailsItem = {
         key: child.field,
         label: child.name,
-        value: schema.values[child.field] as string,
+        value: schema.values[child.field],
       };
 
       if (child.lov?.code) {
@@ -95,7 +96,7 @@ const handleSchema = (schema: SetUpGetInfoScheme<T>) => {
       // 处理表格数据
       else if (child?.dataType?.toLowerCase() === 'table') {
         try {
-          result.dataSource = JSON.parse(result.value);
+          result.dataSource = JSON.parse(result.value || '[]');
           result.columns = child.props.lineAttribute?.map((col) => ({
             title: col.name,
             dataIndex: col.field,
