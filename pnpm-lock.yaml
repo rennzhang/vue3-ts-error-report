@@ -103,6 +103,9 @@ devDependencies:
   vite:
     specifier: ^4.3.9
     version: 4.5.0(@types/node@18.18.6)(less@4.2.0)
+  vite-plugin-banner:
+    specifier: ^0.7.1
+    version: 0.7.1
   vite-plugin-compression:
     specifier: ^0.5.1
     version: 0.5.1(vite@4.5.0)
@@ -4013,6 +4016,10 @@ packages:
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+    dev: true
+
+  /vite-plugin-banner@0.7.1:
+    resolution: {integrity: sha512-Bww2Xd5tOGsZ1yZ9rQiGneryvsL1u86znPrqeQjCsXPsG72pnSdV5lcQA+cy8UNDguMqyTJiCevlNUbLnT85UA==}
     dev: true
 
   /vite-plugin-compression@0.5.1(vite@4.5.0):
