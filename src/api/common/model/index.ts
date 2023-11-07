@@ -1,4 +1,6 @@
 export * from './uncert';
+export type LOVParams = { code: string; thisObj: Recordable };
+
 export interface LOVDetail {
   externalValue: string;
   objId: string;
