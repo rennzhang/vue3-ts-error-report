@@ -49,10 +49,12 @@ const tableColumn = ref([]);
 const tableDataSource = ref([]);
 const getLabelKey = async () => {
   //获取比较时的key值
+  const objId = window.$wujie?.props.params.record.objId;
+  const className = window.$wujie?.props.params.record.className;
   isLoading.value = true;
   let data: any = await requestCommonGetLabel({
-    classCode: 'CompanyItem',
-    serviceCode: 'nalsvr',
+    classCode: className || 'CompanyItem',
+    serviceCode: objId,
   });
   console.log(data, 'data');
   labelKeyData.value = data.data;
