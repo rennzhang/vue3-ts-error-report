@@ -40,7 +40,7 @@
 
 <script lang="ts" setup generic="T extends Record<string, any>">
 import { requestCommonSetUpGetInfoDialog, requestCommonGetLOV } from '@/api/common';
-import type { SetUpGetInfoScheme } from '@/api/common/model';
+import type { LOVParams, SetUpGetInfoScheme } from '@/api/common/model';
 import { matchReg } from '@/utils';
 import type { TableColumnProps } from 'n-designv3';
 
@@ -71,9 +71,9 @@ const details = ref<DetailsGroupRecord[]>([]);
 const activeKey = ref<string[]>([]);
 const currentSchema = ref<SetUpGetInfoScheme<T>>();
 const formLovValues = reactive<Recordable>({});
-const getValueForLOV = async (code: string, field: string, val: string | null) => {
+const getValueForLOV = async (lov: LOVParams, field: string, val: string | null) => {
   if (!val) return;
-  requestCommonGetLOV({ code }).then((res) => {
+  requestCommonGetLOV(lov).then((res) => {
     formLovValues[field] = res.data.details.find((c) => c.internalValue == val)?.externalValue;
   });
 };
@@ -91,7 +91,7 @@ const handleSchema = (schema: SetUpGetInfoScheme<T>) => {
 
       if (child.lov?.code) {
         result.isLov = true;
-        getValueForLOV(child.lov.code, child.field, result.value);
+        getValueForLOV(child.lov, child.field, result.value);
       }
       // 处理表格数据
       else if (child?.dataType?.toLowerCase() === 'table') {
