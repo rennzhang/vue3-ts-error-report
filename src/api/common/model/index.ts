@@ -1,4 +1,9 @@
 export * from './uncert';
+export interface LOVDetail {
+  externalValue: string;
+  objId: string;
+  internalValue: string;
+}
 export interface SetUpGetInfoParams {
   className: string;
   thisObj: ThisObj;

@@ -7,6 +7,7 @@ import type {
   HistoryRecord,
   GetLabDataType,
   QueryAgentRes,
+  LOVDetail,
 } from './model/index';
 export * from './model';
 export * from './model/uncert';
@@ -22,3 +23,7 @@ export const requestCommonGetHistoryList = (params: any) =>
 // 根据历史列表id查询 对应的label
 export const requestCommonGetLabel = (params: any) =>
   http.post<GetLabDataType[]>(`${LCGETWAY}/agentdesigner/classAttribute/listData`, params);
+
+// 查询 LOV
+export const requestCommonGetLOV = (params: { code: string }) =>
+  http.post<{ details: LOVDetail[] }>(`${LCGETWAY}/lovsvr/Lov/GetLovByCode`, params);

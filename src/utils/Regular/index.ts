@@ -4,7 +4,8 @@ const REGULAR = {
 
 type RegularKeys = keyof typeof REGULAR;
 
-export const matchReg = (target: string, reg: RegularKeys) => {
+export const matchReg = (target: string | null | undefined, reg: RegularKeys) => {
+  if (!target) return [];
   return [...(target.match(REGULAR[reg]) || [])];
 };
 

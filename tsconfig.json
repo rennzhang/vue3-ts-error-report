@@ -28,6 +28,8 @@
   // ],
   "include": [
     "src/**/*",
+    "apps/**/*",
+    "apps/**/*.ts",
     "src/components/**/*",
     "build/**/*",
     "types/**/*",

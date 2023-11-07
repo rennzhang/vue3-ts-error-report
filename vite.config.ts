@@ -55,7 +55,7 @@ export default defineConfig(({ mode }) => {
         resolvers: [NDesignResolver({ importStyle: false, resolveIcons: true })],
       }),
       // 代码压缩
-      codeCompressPlugin(<ViteCompression>VITE_COMPRESSION),
+      codeCompressPlugin(VITE_COMPRESSION),
       // 打包分析
       lifecycle === 'report' ? visualizer({ open: true, brotliSize: true, filename: 'report.html' }) : null,
     ],
@@ -79,12 +79,19 @@ export default defineConfig(({ mode }) => {
           // bypass: () => {}
         },
         '/front-svr/levault/': {
-          target: `${VITE_BASE_API}/`,
+          // target: `${VITE_BASE_API}/`,
+          target: 'https://eip.nancalcloud.com',
           changeOrigin: true,
           rewrite: (url) => url.replace('/front-svr', ''),
           // bypass: () => {}
         },
-        '/levault': `${VITE_BASE_API}/`,
+        '/levault': {
+          // target: `${VITE_BASE_API}/`,
+          target: 'https://eip.nancalcloud.com',
+          changeOrigin: true,
+          // rewrite: (url) => url,
+          // bypass: () => {}
+        },
       },
     },
     optimizeDeps: {
@@ -111,7 +118,7 @@ export default defineConfig(({ mode }) => {
 });
 
 // 代码压缩
-function codeCompressPlugin(compress: ViteCompression): Plugin | Plugin[] | null {
+function codeCompressPlugin(compress): Plugin | Plugin[] | null {
   if (compress === 'none') return null;
   const gz = {
     // 生成的压缩包后缀
