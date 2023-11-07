@@ -12,7 +12,7 @@
       >
         <template #bodyCell="{ column, record, index }">
           <template v-if="record.isImg && column.dataIndex.includes('_')">
-            <n-image :src="record[column.dataIndex]" />
+            <n-image v-for="item in record[column.dataIndex]" :src="item" />
           </template>
         </template>
       </n-table>
@@ -53,10 +53,9 @@ const getLabelKey = async () => {
   const className = window.$wujie?.props.params.record.className;
   isLoading.value = true;
   let data: any = await requestCommonGetLabel({
-    classCode: className,
+    classCode: 'ActivityItem',
     serviceCode: 'nalsvr',
   });
-  console.log(data, 'data');
   labelKeyData.value = data.data;
   isLoading.value = false;
 };

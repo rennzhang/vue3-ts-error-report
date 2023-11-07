@@ -56,4 +56,8 @@ const handCompare = () => {
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.btn-compare {
+  margin: 10px;
+}
+</style>

@@ -55,7 +55,6 @@ export const useTable = (selectData: any, labelData: any) => {
     });
     return newItem;
   });
-  console.log(newComparDataSource, 'newComparDataSource');
   return {
     column: columns,
     dataSource: newComparDataSource,
@@ -100,7 +99,6 @@ const getKeyLable = (sourceObject: any, labelData: any) => {
   return result;
 };
 const HandleSpecialValues = (data: any) => {
-  console.log(data, 'data-->.');
   /*
     1. 处理特殊字段值，例如有些字段不是字符串，而是JSON。需要解析并展示字符串,
     2. 去除自定义字段
@@ -147,11 +145,39 @@ const HandleSpecialValues = (data: any) => {
       }
     });
     //企业logo && 图片
-    if (item.companyLogo && JSON.parse(item.companyLogo).length) {
+    if (item.activityPictures && JSON.parse(item.activityPictures).length) {
       //暂时只处理一张图片
-      newItem.companyLogo = matchReg(item.companyLogo, 'imgUrl');
+      console.log(JSON.parse(item.activityPictures), 'JSON.parse(item.activityPictures)');
+      newItem.activityPictures = matchReg(item.activityPictures, 'imgUrl');
     }
+    //活动成员
+    if (item.activityMembers && JSON.parse(item.activityMembers).length) {
+      const activityMembers = JSON.parse(item.activityMembers);
+      if (activityMembers.length && Array.isArray(activityMembers)) {
+        newItem.activityMembers = activityMembers.map((item) => item.rel_activityPersonnel).join();
+      } else {
+        newItem.activityMembers = '';
+      }
+    } else {
+      newItem.activityMembers = '';
+    }
+
     return newItem;
   });
   return dataSource;
+};
+const computeColunmsWidth = (comparDataSource: any) => {
+  let width = 110;
+  let strNum = comparDataSource.map((item) => {
+    return item.compareItem.length;
+  });
+  let maxLength = Math.max(...strNum);
+  if (maxLength >= 2 && maxLength <= 4) {
+    width = 100;
+  } else if (maxLength > 4 && maxLength <= 6) {
+    width = 110;
+  } else {
+    width = 150;
+  }
+  return width;
 };
