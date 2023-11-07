@@ -33,16 +33,31 @@ export default defineComponent({
         }
         return [null, undefined].includes(props.value) ? null : props.value;
       },
-      set: val => emit('update:value', val),
+      set: (val) => emit('update:value', val),
     });
 
     const options = computed(() => {
       return unref(props.formItem.options);
     }) as ComputedRef<OptionItem[]>;
+
+    const filterOption = (input: string, option: any) => {
+      const labelField = (props.formItem.props as SelectProps)?.fieldNames?.label || 'label';
+      return option[labelField].toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    };
+
+    const getMergeProps = () => {
+      const showSearch = (props.formItem.props as SelectProps)?.showSearch;
+      const mergeProps = {
+        showSearch: showSearch ?? true,
+        filterOption: showSearch === false ? undefined : filterOption,
+      };
+      return mergeProps;
+    };
+
     return {
       modelValue,
       options,
-      binds: getComponentProps(props?.formItem),
+      binds: getComponentProps(props?.formItem, getMergeProps()),
     };
   },
 });

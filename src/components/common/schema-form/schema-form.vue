@@ -37,7 +37,8 @@
                 </div>
               </template>
               <GvTips v-if="formItem.tips" end :title="handleFnAttr(formItem, 'tips')" />
-              <slot name="itemBottom" v-bind="{ ...formItem, value: formModel[formItem.field], ...exposeFormState }"> </slot>
+              <slot name="itemBottom" v-bind="{ ...formItem, value: formModel[formItem.field], ...exposeFormState }">
+              </slot>
             </n-form-item>
           </n-spin>
         </template>
@@ -62,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, getCurrentInstance, ref, type PropType, type ComponentInternalInstance } from 'vue';
+import { defineComponent, reactive, getCurrentInstance, ref, type PropType } from 'vue';
 import { Form, Spin, type FormInstance } from 'n-designv3';
 // 源码调试
 // import { Spin } from "n-designv3";
@@ -176,7 +177,7 @@ export default defineComponent({
       if (isClear) {
         clearForm();
       }
-      Object.keys(formData).forEach(key => {
+      Object.keys(formData).forEach((key) => {
         formModel[key] = formData[key];
       });
     };
@@ -218,11 +219,13 @@ export default defineComponent({
       const field = formItem.field;
       if (Array.isArray(formItem.rules)) {
         // 如果是数组
-        formItem.rules.forEach(ruleItem => {
+        formItem.rules.forEach((ruleItem) => {
           if (!ruleItem.trigger) ruleItem.trigger = 'change';
 
           if (Array.isArray(ruleItem.trigger)) {
-            ruleItem.trigger.forEach(triggerItem => (events[triggerItem] = setTriggerEvent({ field, trigger: triggerItem })));
+            ruleItem.trigger.forEach(
+              (triggerItem) => (events[triggerItem] = setTriggerEvent({ field, trigger: triggerItem }))
+            );
           } else if (isString(ruleItem.trigger)) {
             events[ruleItem.trigger] = setTriggerEvent({ field, trigger: ruleItem.trigger });
           }
@@ -232,7 +235,7 @@ export default defineComponent({
         const trigger: any = formItem.rules?.['trigger'];
         events[trigger] = setTriggerEvent({ field, trigger });
         if (Array.isArray(trigger)) {
-          trigger.forEach(triggerItem => (events[triggerItem] = setTriggerEvent({ field, trigger: triggerItem })));
+          trigger.forEach((triggerItem) => (events[triggerItem] = setTriggerEvent({ field, trigger: triggerItem })));
         } else if (isString(trigger)) {
           events[trigger] = setTriggerEvent({ field, trigger: trigger });
         }
