@@ -93,7 +93,7 @@ const handleSchema = (schema: SetUpGetInfoScheme<T>) => {
         getValueForLOV(child.lov.code, child.field, result.value);
       }
       // 处理表格数据
-      else if (child.dataType.toLowerCase() === 'table') {
+      else if (child?.dataType?.toLowerCase() === 'table') {
         try {
           result.dataSource = JSON.parse(result.value);
           result.columns = child.props.lineAttribute?.map((col) => ({
