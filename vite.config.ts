@@ -79,12 +79,19 @@ export default defineConfig(({ mode }) => {
           // bypass: () => {}
         },
         '/front-svr/levault/': {
-          target: `${VITE_BASE_API}/`,
+          // target: `${VITE_BASE_API}/`,
+          target: 'https://eip.nancalcloud.com',
           changeOrigin: true,
           rewrite: (url) => url.replace('/front-svr', ''),
           // bypass: () => {}
         },
-        '/levault': `${VITE_BASE_API}/`,
+        '/levault': {
+          // target: `${VITE_BASE_API}/`,
+          target: 'https://eip.nancalcloud.com',
+          changeOrigin: true,
+          // rewrite: (url) => url,
+          // bypass: () => {}
+        },
       },
     },
     optimizeDeps: {
