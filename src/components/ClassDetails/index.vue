@@ -141,6 +141,6 @@ getDetailSchema();
 
 <style scoped lang="less">
 .nl-collapse-borderless {
-  background: #fafafa;
+  background: #fff;
 }
 </style>
