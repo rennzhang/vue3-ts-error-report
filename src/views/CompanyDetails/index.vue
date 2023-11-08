@@ -1,5 +1,5 @@
 <template>
-  <ClassDetails :className="props.className">
+  <ClassDetails :className="props.className" :class="isWeCom">
     <template #header="{ currentSchema }">
       <div v-if="isWeCom" class="text-18px font-bold text-black mb-8px">
         <span>{{ route.query.pushType }}：</span>
@@ -24,7 +24,9 @@ const isWeCom = computed(() => route.fullPath?.includes('wecom'));
 </script>
 
 <style scoped lang="less">
-.nl-collapse-borderless {
-  background: #fafafa;
+.isWeCom {
+  .nl-collapse-borderless {
+    background: #fafafa;
+  }
 }
 </style>
