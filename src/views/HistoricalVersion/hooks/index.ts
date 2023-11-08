@@ -36,7 +36,7 @@ export const useTable = () => {
   const tableData = ref<DataItem[]>([]);
   const getList = async () => {
     const objId = window.$wujie?.props.params.record.objId;
-    //'1704055851523801088'  '1714929505862160384'
+    //'1704055851523801088'  ---'1714929505862160384, ---1714929505862160384'
     const data = await requestCommonGetHistoryList({
       className: 'CompanyItem',
       thisObj: {
@@ -61,19 +61,14 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
       comparDataSource: [],
     };
   }
-  let columns = [
-    {
-      title: '版本',
-      dataIndex: 'compareItem',
-      key: 'compareItem',
-      width: 110,
-      fixed: true,
-    },
-  ];
   const commonKeys = findCommonKeys(objArray);
   let newObjArray = cloneDeep(objArray);
   const result = newObjArray.map((item) => {
     const newItem = omit(item, commonKeys);
+    if (item.companyLogo && JSON.parse(item.companyLogo).length) {
+      //暂时只处理一张图片
+      newItem.companyLogo = JSON.parse(item.companyLogo)[0].url;
+    }
     if (newItem.companyAddress) {
       const companyAddress = JSON.parse(newItem.companyAddress);
       if (companyAddress.length && Array.isArray(companyAddress)) {
@@ -81,20 +76,15 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
       } else {
         newItem.companyAddress = '';
       }
+      // console.log(item, 'item');
+      // if (matchReg(item.companyLogo, 'url')) {
+      //   newItem['isImg'] = matchReg(item.companyLogo);
+      //   console.log(newItem, 'neewItem');
+      // }
     }
-
     return newItem;
   });
   //------------
-  result.forEach((item: any) =>
-    columns.push({
-      title: item.sequence,
-      dataIndex: `sequence_${item.sequence}`,
-      key: 'sequence',
-      width: 120,
-      fixed: false,
-    })
-  );
   let compareItem = mapFields(result[0], labelData);
   const comparDataSource: any = compareItem.map((item) => {
     let newItem: {
@@ -110,13 +100,65 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
         }
       });
     });
+    Object.keys(newItem).forEach((key, index) => {});
     return newItem;
   });
+  const computeColunmsWidth = () => {
+    let width = 110;
+    let strNum = comparDataSource.map((item) => {
+      return item.compareItem.length;
+    });
+    let maxLength = Math.max(...strNum);
+    if (maxLength >= 2 && maxLength <= 4) {
+      width = 100;
+    } else if (maxLength > 4 && maxLength <= 6) {
+      width = 110;
+    } else {
+      width = 150;
+    }
+    return width;
+  };
+  let columns = [
+    {
+      title: '版本',
+      dataIndex: 'compareItem',
+      key: 'compareItem',
+      fixed: true,
+      width: computeColunmsWidth(),
+    },
+  ];
+  result.forEach((item: any) =>
+    columns.push({
+      title: item.sequence,
+      dataIndex: `sequence_${item.sequence}`,
+      key: 'sequence',
+      width: 120,
+      fixed: false,
+    })
+  );
+  const newComparDataSource = comparDataSource.map((item) => {
+    const newItem = cloneDeep(item);
+    Object.keys(item).forEach((key, ind) => {
+      if (regImg(item[key])) {
+        newItem.isImg = item[key];
+      }
+    });
+    return newItem;
+  });
+
   return {
     comparColumns: columns,
     comparData: result,
-    comparDataSource: comparDataSource,
+    comparDataSource: newComparDataSource,
   };
+};
+const regImg = (url) => {
+  const reg = /https?:\/\/.*?\.(png|jpg|jpeg|gif|bmp|svg|tiff|webp)/gi;
+  if (reg.test(url)) {
+    return true;
+  } else {
+    return false;
+  }
 };
 const mapFields = (sourceObject: Partial<HistoryRecord>, fieldMaps: any) => {
   let result: { code: string; name: string }[] = [];
@@ -138,6 +180,7 @@ const mapFields = (sourceObject: Partial<HistoryRecord>, fieldMaps: any) => {
   ]);
   fieldMaps.forEach((fieldMap: any) => {
     const { code } = fieldMap;
+
     if (newSourceObject.hasOwnProperty(code)) {
       result.push({
         code: fieldMap['code'],
@@ -148,11 +191,22 @@ const mapFields = (sourceObject: Partial<HistoryRecord>, fieldMaps: any) => {
   return result;
 };
 const findCommonKeys = (objects: any[]) => {
-  let newObjects = objects.map((item, index) => {
+  const specialField = {
+    //后端字段值有返回null、undfined 与'',这样比较会出问题，所以 给这些特殊设置同意一个值
+    '': '',
+    null: '',
+    undefined: '',
+  };
+  let newObjects = objects.map((item) => {
     let newItem = cloneDeep(item);
+    Object.keys(item).forEach((key) => {
+      //后端字段值有返回null、undfined 与'',这样比较会出问题，所以 给这些特殊设置同意一个值
+      if (specialField.hasOwnProperty(item[key])) {
+        newItem[key] = '';
+      }
+    });
     if (item.companyAddress && JSON.parse(item.companyAddress).length) {
       const companyAddress = JSON.parse(item.companyAddress);
-
       if (companyAddress.length && Array.isArray(companyAddress)) {
         newItem.companyAddress = companyAddress.map((item) => item.rel_officialAddress).join();
       } else {
@@ -161,6 +215,7 @@ const findCommonKeys = (objects: any[]) => {
     }
     return newItem;
   });
+
   const commonKeys: Record<string, any> = {};
   // 遍历第一个对象的所有键
   Object.keys(newObjects[0]).forEach((key) => {

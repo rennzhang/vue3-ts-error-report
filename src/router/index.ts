@@ -25,6 +25,11 @@ const router = createRouter({
       name: 'commonDetails',
       component: () => import('@/components/ClassDetails/index.vue'),
     },
+    {
+      path: '/common-history',
+      name: 'commonHistory',
+      component: () => import('@/components/HistoryVersion/index.vue'),
+    },
     // 企业信息化相关路由
     ...CompanyInfoRoutes,
     ...routes,

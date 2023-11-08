@@ -1,5 +1,5 @@
 const REGULAR = {
-  imgUrl: /https?:\/\/.*?\.(webp|png|jpg|jpeg|gif|bmp|svg|tiff)/gi,
+  imgUrl: /https?:\/\/.*?\.(png|jpg|jpeg|gif|bmp|svg|tiff|webp)/gi,
 };
 
 type RegularKeys = keyof typeof REGULAR;

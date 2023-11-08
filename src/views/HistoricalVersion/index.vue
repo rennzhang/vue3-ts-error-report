@@ -84,6 +84,7 @@ const handCompare = async () => {
     selectRowsData.value = comparData;
     comparColumnsData.value = comparColumns;
     comparDataSourceData.value = comparDataSource;
+    console.log(comparDataSource, 'comparDataSource');
   }
 };
 
@@ -102,6 +103,9 @@ const rowSelectionConfig: TableRowSelection<HistoryRecord> = {
 <style lang="less" scoped>
 .btn-compare {
   margin: 10px 20px 10px 20px;
+}
+.nl-table-cell {
+  background-color: red !important;
 }
 .history-version {
   width: 100%;

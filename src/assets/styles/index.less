@@ -10,7 +10,9 @@ body {
 
 // 修复table cell 文字没有垂直居中对齐的问题
 .nl-table-cell {
-  line-height: 40px;
+  // line-height: 40px;
+  display: table-cell;
+  vertical-align: middle; /* 垂直居中 */
 }
 span.nl-table-row-indent + .nl-table-row-expand-icon {
   margin-top: 0;
