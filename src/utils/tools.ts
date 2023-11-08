@@ -13,6 +13,13 @@ export const downloadFileForStr = (fileName: string, data: string) => {
   URL.revokeObjectURL(eLink.href); // 释放URL 对象
   document.body.removeChild(eLink);
 };
+export function downloadFileForUrl(url: string, fileName: string) {
+  let xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.responseType = 'blob';
+  xhr.send();
+  downloadFileForStr(fileName, xhr.response);
+}
 
 interface UrlParams {
   [key: string]: string;
