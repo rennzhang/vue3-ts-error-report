@@ -1,6 +1,6 @@
 <template>
   <div class="history-version">
-    <div><n-button type="primary" class="btn-compare" @click="handCompare">比较</n-button></div>
+    <span><span type="primary" class="btn-compare" @click="handCompare">比较</span></span>
     <n-table
       :columns="columns"
       :data-source="dataSource"
@@ -58,6 +58,9 @@ const handCompare = () => {
 
 <style lang="less" scoped>
 .btn-compare {
+  display: inline-block;
   margin: 10px;
+  color: #447dfd;
+  cursor: pointer;
 }
 </style>

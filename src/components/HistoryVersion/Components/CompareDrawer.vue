@@ -6,6 +6,7 @@
         :columns="tableColumn"
         :data-source="tableDataSource"
         :pagination="false"
+        :closable="true"
         :scroll="{ x: '100%' }"
         :loading="isLoading"
         style="word-break: break-all"
@@ -17,7 +18,7 @@
         </template>
       </n-table>
       <template #footer>
-        <div class="footer">
+        <!-- <div class="footer">
           <n-button
             style="margin-right: 8px"
             @click="
@@ -28,7 +29,7 @@
             >取消</n-button
           >
           <n-button type="primary">确定</n-button>
-        </div>
+        </div> -->
       </template>
     </n-drawer>
   </div>
