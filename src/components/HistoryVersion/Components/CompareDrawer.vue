@@ -1,12 +1,11 @@
 <template>
   <div class="drawer-container">
-    <n-drawer v-model:visible="isDrawer" width="40%" :closable="false" :mask="false" class="drawer-container-box">
+    <n-drawer v-model:visible="isDrawer" :closable="true" width="40%" :mask="false" class="drawer-container-box">
       <template #title> 版本比较 </template>
       <n-table
         :columns="tableColumn"
         :data-source="tableDataSource"
         :pagination="false"
-        :closable="true"
         :scroll="{ x: '100%' }"
         :loading="isLoading"
         style="word-break: break-all"
@@ -43,7 +42,7 @@ const props = defineProps({
 });
 import { requestCommonGetLabel } from '@/api/common/index';
 import { useTable } from '../Common/versionComparison';
-const isDrawer = ref(false);
+const isDrawer = ref(true);
 const isLoading = ref(false);
 const labelKeyData = ref([]);
 const tableColumn = ref([]);
@@ -96,6 +95,9 @@ defineExpose({
 .footer {
   display: flex;
   justify-content: flex-end;
+}
+.nl-drawer-close {
+  margin-right: 0px !important;
 }
 .drawer-style .nl-drawer-footer {
   border: none !important;

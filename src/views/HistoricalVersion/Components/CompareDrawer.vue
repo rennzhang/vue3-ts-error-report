@@ -92,6 +92,9 @@ defineExpose({
 .nl-drawer {
   position: absolute !important;
 }
+.nl-drawer-close {
+  margin-right: 0px !important;
+}
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
