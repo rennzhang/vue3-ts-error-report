@@ -13,10 +13,14 @@ import Components from '@nancal/nancal-unplugin-vue-components/vite';
 import { NDesignResolver } from '@nancal/nancal-unplugin-vue-components/resolvers';
 import UnoCSS from 'unocss/vite';
 import Pages from 'vite-plugin-pages';
+import Banner from 'vite-plugin-banner';
+import dayjs from 'dayjs';
+import { version } from './package.json';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  const { VITE_APP_NGINX_VPATH_NAME, VITE_BASE_API, VITE_COMPRESSION } = loadEnv(mode, process.cwd());
+  const env = loadEnv(mode, process.cwd()) as ImportMetaEnv;
+  const { VITE_APP_NGINX_VPATH_NAME, VITE_BASE_API, VITE_COMPRESSION } = env;
   const lifecycle = process.env.npm_lifecycle_event;
   return {
     base: `/${VITE_APP_NGINX_VPATH_NAME}/`,
@@ -56,6 +60,7 @@ export default defineConfig(({ mode }) => {
       }),
       // 代码压缩
       codeCompressPlugin(VITE_COMPRESSION),
+      generateVersionInfo(env),
       // 打包分析
       lifecycle === 'report' ? visualizer({ open: true, brotliSize: true, filename: 'report.html' }) : null,
     ],
@@ -80,11 +85,18 @@ export default defineConfig(({ mode }) => {
         },
         '/front-svr/levault/': {
           target: `${VITE_BASE_API}/`,
+          // target: 'https://eip.nancalcloud.com',
           changeOrigin: true,
           rewrite: (url) => url.replace('/front-svr', ''),
           // bypass: () => {}
         },
-        '/levault': `${VITE_BASE_API}/`,
+        '/levault': {
+          target: `${VITE_BASE_API}/`,
+          // target: 'https://eip.nancalcloud.com',
+          changeOrigin: true,
+          // rewrite: (url) => url,
+          // bypass: () => {}
+        },
       },
     },
     optimizeDeps: {
@@ -111,7 +123,7 @@ export default defineConfig(({ mode }) => {
 });
 
 // 代码压缩
-function codeCompressPlugin(compress): Plugin | Plugin[] | null {
+function codeCompressPlugin(compress: string): Plugin | Plugin[] | null {
   if (compress === 'none') return null;
   const gz = {
     // 生成的压缩包后缀
@@ -160,3 +172,12 @@ function codeCompressPlugin(compress): Plugin | Plugin[] | null {
 
   return plugins;
 }
+
+const generateVersionInfo = (env: ImportMetaEnv) => {
+  const versionInfo = [
+    `version: ${version}`,
+    `env Type: ${env.VITE_APP_APPCODE}`,
+    `Build Time: ${dayjs().format('YYYY-MM-DD HH:mm:ss')}`,
+  ];
+  return Banner('\n' + versionInfo.join('\n') + '\n');
+};

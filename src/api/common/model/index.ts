@@ -1,4 +1,14 @@
 export * from './uncert';
+export type LOVParams = { code: string; thisObj: Recordable };
+
+export interface DetailsFile {
+  status: string;
+  name: string;
+  className: string;
+  uid: string;
+  objId: string;
+  url: string;
+}
 export interface LOVDetail {
   externalValue: string;
   objId: string;
@@ -246,6 +256,7 @@ interface LineAttribute {
   isSort: string;
   field: string;
   isLov: boolean;
+  lov?: Lov;
   isTotal?: any;
   name: string;
   bmSort: string;
