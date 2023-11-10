@@ -42,7 +42,7 @@ const props = defineProps({
 });
 import { requestCommonGetLabel } from '@/api/common/index';
 import { useTable } from '../Common/versionComparison';
-const isDrawer = ref(true);
+const isDrawer = ref(false);
 const isLoading = ref(false);
 const labelKeyData = ref([]);
 const tableColumn = ref([]);
