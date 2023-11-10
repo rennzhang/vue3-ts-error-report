@@ -59,7 +59,7 @@ const handCompare = () => {
 <style lang="less" scoped>
 .btn-compare {
   display: inline-block;
-  margin: 10px;
+  margin: 10px 10px 10px 20px;
   color: #447dfd;
   cursor: pointer;
 }
