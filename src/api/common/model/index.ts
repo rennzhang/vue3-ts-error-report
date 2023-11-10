@@ -83,7 +83,7 @@ export interface HistoryRecord {
 }
 interface ThisObj {
   objId: string;
-  className: string;
+  className?: string;
   code?: string;
   companyName?: string;
   companyAlias?: any;
@@ -250,8 +250,14 @@ interface Props2 {
   lineButton?: any[];
   headButton?: any[];
   type: string;
+  otherClassCode: string;
+  relationShip: string;
+  otherClassName: string;
+  relationShipName: string;
+  relation: string;
 }
 
+interface Props {}
 interface LineAttribute {
   isSort: string;
   field: string;
