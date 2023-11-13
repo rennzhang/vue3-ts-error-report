@@ -8,11 +8,11 @@ type IProps = {
 };
 export const useFormEvents = ({ updateFormItem, schemaFormState }: IProps) => {
   const handleEvents = () => {
-    schemaFormState.getAllFormItem().forEach(item => {
+    schemaFormState.getAllFormItem().forEach((item) => {
       item.events ??= {};
       // 如果已经初始化过事件，则不再初始化
       if (item.__INIT_EVENTS__) return;
-      Object.keys(item.events).forEach(key => {
+      Object.keys(item.events).forEach((key) => {
         const _events = item.events as SchemaFormItemEvents;
         const fn = _events[key];
         const eventName = lowerFirst(key.replace('on', ''));

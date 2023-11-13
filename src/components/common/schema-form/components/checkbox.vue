@@ -1,5 +1,10 @@
 <template>
-  <n-checkbox v-if="!options.length && !formItem.asyncOptions" v-model:checked="modelValue" v-bind="binds" v-on="{ ...formItem.events }" />
+  <n-checkbox
+    v-if="!options.length && !formItem.asyncOptions"
+    v-model:checked="modelValue"
+    v-bind="binds"
+    v-on="{ ...formItem.events }"
+  />
   <n-checkbox-group v-else v-model:value="modelValue" style="width: 100%" v-on="{ ...formItem.events }">
     <template v-for="option in options" :key="option.value">
       <n-checkbox :value="option.value" :disabled="option.disabled">
@@ -38,7 +43,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const modelValue = computed({
       get: () => props.value || (props.formItem.options ? [] : false),
-      set: val => emit('update:value', val),
+      set: (val) => emit('update:value', val),
     });
 
     const options = computed(() => {

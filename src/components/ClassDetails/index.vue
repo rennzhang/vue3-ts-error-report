@@ -4,8 +4,8 @@
       <slot name="header" v-bind="{ currentSchema }"></slot>
       <n-collapse v-model:activeKey="activeKey" :bordered="false" class="!bg-white">
         <n-collapse-panel v-for="item in details" :key="item.name" :header="item.name">
-          <n-descriptions :labelStyle="{ 'white-space': 'normal' }" class="pt-16px px-12px">
-            <template v-for="opt in item.options">
+          <n-descriptions :label-style="{ 'white-space': 'normal' }" class="pt-16px px-12px">
+            <template v-for="opt in item.options" :key="opt.key">
               <n-descriptions-item :label="opt.label" :style="{ display: opt.fullLine ? 'block' : '' }">
                 <template v-if="opt.isLov">
                   {{ formLovValues[opt.key] || opt.value }}
@@ -13,7 +13,7 @@
                 <template v-else-if="opt?.type === 'table'">
                   <n-table
                     bordered
-                    :dataSource="opt.dataSource"
+                    :data-source="opt.dataSource"
                     :columns="opt.columns"
                     class="w-full mr-24px"
                     :pagination="false"
@@ -34,21 +34,16 @@
                 <template v-else-if="opt.type === 'image'">
                   <n-empty v-if="!opt?.imgUrls?.length" description="暂无封面" />
                   <template v-else>
-                    <n-image :width="200" v-for="src in opt?.imgUrls" :src="src" />
+                    <n-image v-for="src in opt?.imgUrls" :key="src" :width="200" :src="src" />
                   </template>
                 </template>
                 <template v-else-if="opt.type === 'file'">
                   <n-empty v-if="!opt?.fileList?.length" description="暂无文件" />
                   <template v-else>
                     <div>
-                      <div v-for="file in opt?.fileList" class="mb-4px">
+                      <div v-for="file in opt?.fileList" :key="file.uid" class="mb-4px">
                         <file-outlined />
-                        <a
-                          :key="file.uid"
-                          target="_blank"
-                          class="mx-8px"
-                          @click="downloadFileForUrl(file.url, file.name)"
-                        >
+                        <a target="_blank" class="mx-8px" @click="downloadFileForUrl(file.url, file.name)">
                           {{ file.name }}
                         </a>
                       </div>
@@ -129,9 +124,8 @@ const handleSchema = (schema: SetUpGetInfoScheme<T>) => {
       if (child.isLov) {
         result.isLov = true;
         getValueForLOV(child.lov!, child.field, result.value);
-      }
-      // 处理表格数据
-      else if (['RELATION_TABLE', 'TABLE'].includes(child?.dataType)) {
+      } else if (['RELATION_TABLE', 'TABLE'].includes(child?.dataType)) {
+        // 处理表格数据
         result.fullLine = true;
         result.type = 'table';
 

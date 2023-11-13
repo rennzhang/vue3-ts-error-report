@@ -28,7 +28,9 @@ export const useFormValues = (schemaFormState: SchemaFormCompState) => {
       //   });
       // }
       // 异步默认值
-      schemaFormState.formModel[item.field] = await item.asyncValue({ formModel: schemaFormState.formModel, formItem: item }).finally(() => (item.loading = false));
+      schemaFormState.formModel[item.field] = await item
+        .asyncValue({ formModel: schemaFormState.formModel, formItem: item })
+        .finally(() => (item.loading = false));
     }
   });
 
@@ -55,7 +57,7 @@ export const useFormValues = (schemaFormState: SchemaFormCompState) => {
   // 将传入的formData合并到表单
   watch(
     () => schemaFormState.formSchema.formData,
-    val => {
+    (val) => {
       val && Object.assign(schemaFormState.formModel, val);
       startClearValidate();
     },

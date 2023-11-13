@@ -29,6 +29,7 @@ declare global {
     };
     __POWERED_BY_WUJIE__?: boolean;
     gvUtil: any;
+    postTileMsg: (data: { type: 'refreshList' | 'closePop'; data?: any }) => void;
   }
 
   /**

@@ -1,7 +1,7 @@
-public
-dist
-*.d.ts
-/src/assets
+public/
+dist/
+**/*.d.ts
+/src/assets/
 package.json
 .eslintrc.cjs
 .prettierrc.json

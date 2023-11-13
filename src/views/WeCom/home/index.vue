@@ -2,27 +2,27 @@
   <div class="h-[100vh] p-8px flex flex-col">
     <div class="flex">
       <n-input
-        class="w-full mb-6px bg-white mr-4px"
         v-model:value="companyName"
+        class="w-full mb-6px bg-white mr-4px"
         placeholder="输入企业名称搜索"
+        allow-clear
+        size="large"
         @change="onChange"
         @pressEnter="onSearch"
-        allowClear
-        size="large"
       />
 
-      <n-button class="min-w-min !px-4px" size="large" @click="onSearch" :loading="loading">
+      <n-button class="min-w-min !px-4px" size="large" :loading="loading" @click="onSearch">
         <template #icon><SearchOutlined /></template>
       </n-button>
       <!-- <n-button type="primary" ghost size="large" @click="reset" :loading="loading">重置</n-button> -->
     </div>
     <div class="overflow-auto h-full py-6px">
       <n-spin :spinning="loading">
-        <div class="item" v-for="item in dataList" :key="item.code" @click="viewDetails(item)">
+        <div v-for="item in dataList" :key="item.code" class="item" @click="viewDetails(item)">
           {{ item.companyName }}
         </div>
-        <div class="text-center py-8px" v-if="!isAllLoaded">
-          <n-button type="primary" ghost size="small" @click="loadMore" v-if="!loading">点击加载更多数据</n-button>
+        <div v-if="!isAllLoaded" class="text-center py-8px">
+          <n-button v-if="!loading" type="primary" ghost size="small" @click="loadMore">点击加载更多数据</n-button>
         </div>
         <div v-else class="text-slate-300 text-center py-8px">
           {{ dataList.length ? '已加载全部数据~' : '暂无数据~' }}

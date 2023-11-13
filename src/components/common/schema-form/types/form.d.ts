@@ -1,4 +1,12 @@
-import { VNode, ComponentInternalInstance, HTMLAttributes, CSSProperties, ComputedRef, Ref, UnwrapNestedRefs } from 'vue';
+import {
+  VNode,
+  ComponentInternalInstance,
+  HTMLAttributes,
+  CSSProperties,
+  ComputedRef,
+  Ref,
+  UnwrapNestedRefs,
+} from 'vue';
 
 import { FormProps, ValidationRule, validateInfos } from 'n-designv3/lib/form/Form';
 import type { FormItem as SchemaFormItem } from './formItem';
@@ -46,7 +54,12 @@ declare global {
     validateInfos: validateInfos;
     validate: (names?: namesType, option?: validateOptions) => Promise<T>;
     resetFields: (newValues?: Props) => void;
-    validateField: (name: string, value: any, rules: Record<string, unknown>[], option?: validateOptions) => Promise<RuleError[]>;
+    validateField: (
+      name: string,
+      value: any,
+      rules: Record<string, unknown>[],
+      option?: validateOptions
+    ) => Promise<RuleError[]>;
     clearValidate: (names?: namesType) => void;
     clearForm: () => void;
     updateFormModel: (formData: Recordable, isClear?: boolean) => void;

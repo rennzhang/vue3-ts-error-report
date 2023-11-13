@@ -1,6 +1,6 @@
 <template>
-  <n-modal title="添加企业" v-model:visible="showAddDrawer" width="40%">
-    <schema-form ref="schemaFormRef" :formSchema="formSchema" v-if="showAddDrawer" />
+  <n-modal v-model:visible="showAddDrawer" title="添加企业" width="40%">
+    <schema-form v-if="showAddDrawer" ref="schemaFormRef" :form-schema="formSchema" />
     <template #footer>
       <div class="flex justify-end">
         <n-button style="margin-right: 8px" @click="showAddDrawer = false">取消</n-button>

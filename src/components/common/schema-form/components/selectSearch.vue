@@ -1,5 +1,13 @@
 <template>
-  <n-select v-model:value="modelValue" :filter-option="false" :not-found-content="searching ? undefined : null" :options="options" v-bind="binds" showSearch @search="onSearch">
+  <n-select
+    v-model:value="modelValue"
+    :filter-option="false"
+    :not-found-content="searching ? undefined : null"
+    :options="options"
+    v-bind="binds"
+    show-search
+    @search="onSearch"
+  >
     <template v-if="searching" #notFoundContent>
       <n-spin size="small" />
     </template>
@@ -40,7 +48,7 @@ export default defineComponent({
         }
         return [null, undefined].includes(props.value) ? null : props.value;
       },
-      set: val => emit('update:value', val),
+      set: (val) => emit('update:value', val),
     });
 
     const searching = ref(false);

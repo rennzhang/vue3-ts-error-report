@@ -1,7 +1,17 @@
 import type { FormItemProps } from 'n-designv3/lib/form/FormItem';
 import type { Component } from 'vue';
 
-import type { InputProps, TextAreaProps, SelectProps, TreeSelectProps, RadioProps, CheckboxProps, InputNumberProps, SwitchProps, TimePickerProps } from 'n-designv3';
+import type {
+  InputProps,
+  TextAreaProps,
+  SelectProps,
+  TreeSelectProps,
+  RadioProps,
+  CheckboxProps,
+  InputNumberProps,
+  SwitchProps,
+  TimePickerProps,
+} from 'n-designv3';
 import type { DatePickerProps, RangePickerProps } from 'n-designv3/lib/date-picker';
 
 type Without<FirstType, SecondType> = { [KeyType in Exclude<keyof FirstType, keyof SecondType>]?: null };
@@ -50,7 +60,9 @@ export interface SchemaFormItemEvents {
 }
 type FormItemTypes = 'slotName' | 'component' | 'type';
 
-type GetCombiFormItem<T extends Recordable = {}, ET extends FormItemTypes = 'type'> = ET extends FormItemTypes ? FormItemTypeMap<T>[ET] : never;
+type GetCombiFormItem<T extends Recordable = {}, ET extends FormItemTypes = 'type'> = ET extends FormItemTypes
+  ? FormItemTypeMap<T>[ET]
+  : never;
 
 type FormItemTypeMap<T extends Recordable = {}> = {
   type: FormItemMergeProps<T> & FormItemBase<T>;
@@ -74,9 +86,14 @@ export interface FormItemBase<T extends Recordable = {}> extends Partial<FormIte
 
   loading?: ProxyData<boolean>; // 异步数据是否加载
   // props?: FormItemMergeProps['props'] | ((formState: SchemaFormState<T>) => FormItemMergeProps['props']);
-  searchRequest?: (val: string, formState: Pick<SchemaFormState<T>, 'formModel' | 'formItem'>) => Promise<ProxyData<OptionItem[]>>;
+  searchRequest?: (
+    val: string,
+    formState: Pick<SchemaFormState<T>, 'formModel' | 'formItem'>
+  ) => Promise<ProxyData<OptionItem[]>>;
   asyncValue?: (formState: Pick<SchemaFormState<T>, 'formModel' | 'formItem'>) => Promise<any>; // 异步数据
-  asyncOptions?: (formState: Pick<SchemaFormState<T>, 'formModel' | 'formItem'>) => Promise<ProxyData<OptionItem[]>> | ProxyData<OptionItem[]>; // 异步选项的数据
+  asyncOptions?: (
+    formState: Pick<SchemaFormState<T>, 'formModel' | 'formItem'>
+  ) => Promise<ProxyData<OptionItem[]>> | ProxyData<OptionItem[]>; // 异步选项的数据
   isShow?: ((formState: Pick<SchemaFormState<T>, 'formModel' | 'formItem'>) => boolean) | boolean; // 是否隐藏表单项
   prefixText?: ((formState: SchemaFormState<T>) => string | null) | (string | null); // 前置文本
   suffixText?: ((formState: SchemaFormState<T>) => string | null) | (string | null);
@@ -87,4 +104,7 @@ export interface FormItemBase<T extends Recordable = {}> extends Partial<FormIte
   __INIT_EVENTS__?: boolean;
 }
 
-export type FormItem<T extends Recordable = {}> = MergeExclusive<MergeExclusive<GetCombiFormItem<T, 'type'>, GetCombiFormItem<T, 'slotName'>>, GetCombiFormItem<T, 'component'>>;
+export type FormItem<T extends Recordable = {}> = MergeExclusive<
+  MergeExclusive<GetCombiFormItem<T, 'type'>, GetCombiFormItem<T, 'slotName'>>,
+  GetCombiFormItem<T, 'component'>
+>;

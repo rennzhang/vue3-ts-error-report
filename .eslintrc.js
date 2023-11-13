@@ -1,36 +1,46 @@
-/* eslint-env node */
-require('@rushstack/eslint-patch/modern-module-resolution');
+// @ts-check
+const { defineConfig } = require('eslint-define-config');
 
-module.exports = {
+module.exports = defineConfig({
   root: true,
-  extends: [
-    'plugin:vue/vue3-essential',
-    'eslint:recommended',
-    '@vue/eslint-config-typescript',
-    '@vue/eslint-config-prettier/skip-formatting',
-    '.eslintrc-auto-import.json',
-  ],
-  parserOptions: {
-    ecmaVersion: 'latest',
+  env: {
+    node: true,
+    es6: true,
+    browser: true,
   },
+  parser: 'vue-eslint-parser',
+  parserOptions: {
+    parser: '@typescript-eslint/parser',
+    ecmaVersion: 2020,
+    sourceType: 'module',
+    jsxPragma: 'React',
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
+  extends: [
+    'plugin:vue/vue3-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+    'plugin:prettier/recommended',
+    './.eslintrc-auto-import.json',
+  ],
   globals: {
     gvUtil: true,
   },
   rules: {
-    'simple-import-sort/imports': 'error',
-    'simple-import-sort/exports': 'error',
     'prefer-const': ['off'], // 要求使用 const 声明那些声明后不再被修改的变量
     'no-debugger': process.env.VUE_APP_ENV !== 'dev' ? 'error' : 'off', // 禁用 debugger
     'key-spacing': ['off'], // 强制在对象字面量的属性中键和值之间使用一致的间距
     'eol-last': ['off'], // 要求或禁止文件末尾存在空行
     semi: ['off'], // 要求或禁止使用分号代替 ASI
-    'no-unused-vars': ['warn'], // 禁止出现未使用过的变量
     'no-var': 2, // 禁止使用var
     quotes: ['off'], // 强制使用一致的反勾号、双引号或单引号
     // indent: ['error', 2, { SwitchCase: 1, ignoredNodes: ['TemplateLiteral'] }], // 设置缩进为4,临时
     'arrow-spacing': ['off'], // 强制箭头函数的箭头前后使用一致的空格
     'object-curly-spacing': ['off'], // 强制在大括号中使用一致的空格
-    'comma-dangle': ['off'], // 要求或禁止末尾逗号
+    // 不允许末尾逗号
+    'comma-dangle': ['off', 'never'],
     'comma-spacing': ['off'], // 强制在逗号前后使用一致的空格
     'no-multiple-empty-lines': ['off'], // 禁止出现多行空行
     // 禁止出现未使用过的表达式
@@ -41,6 +51,27 @@ module.exports = {
         allowShortCircuit: true,
       },
     ],
+    '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/ban-types': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      },
+    ],
+    'no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      },
+    ],
     'global-require': 0, // 强制在模块顶部调用 require()
     'import/no-dynamic-require': 0,
     'linebreak-style': 0, // 	强制使用一致的换行风格
@@ -48,7 +79,7 @@ module.exports = {
     'no-restricted-syntax': 0, // 禁用特定的语法
     eqeqeq: 0, // 要求使用 === 和 !==
     'no-underscore-dangle': 0, // 禁止标识符中有悬空下划线
-    'arrow-parens': 'always', // 要求箭头函数的参数使用圆括号
+    'arrow-parens': 'error', // 要求箭头函数的参数使用圆括号
     'object-curly-newline': 0, // 强制大括号内换行符的一致性
     'no-plusplus': 0, // 禁用一元操作符 ++ 和 --
     'no-lonely-if': 0, // 禁止 if 作为唯一的语句出现在 else 语句中
@@ -67,9 +98,13 @@ module.exports = {
     'array-callback-return': 0, // 箭头函数可以不返回
     'no-console': 0, // 禁用 console
     'prettier/prettier': ['error', { tabWidth: 2 }], // 设置prettier/prettier缩进为4,临时
+
     'no-case-declarations': ['off'],
     'vue/comment-directive': 0,
+    'vue/v-on-event-hyphenation': 'off',
     'vue/multi-word-component-names': 0,
+    'vue/script-setup-uses-vars': 'error',
+    'vue/html-closing-bracket-newline': 'off',
     'vue/html-self-closing': [
       'error',
       {
@@ -83,4 +118,4 @@ module.exports = {
       },
     ],
   },
-};
+});
