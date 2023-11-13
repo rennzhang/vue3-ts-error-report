@@ -38,7 +38,7 @@ export const useTable = () => {
     const data = await requestCommonGetHistoryList({
       className: className || 'CompanyItem',
       thisObj: {
-        objId: '1720276011209211904',
+        objId: objId,
       },
     });
     tableData.value = data.data;
