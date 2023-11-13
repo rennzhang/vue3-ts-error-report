@@ -67,11 +67,13 @@ declare global {
   /**
    * 全局工具类的类型声明
    */
-  var gvUtil: any;
+  let gvUtil: any;
 
   declare type Nullable<T> = T | null;
 
   declare type NonNullable<T> = T extends null | undefined ? never : T;
 
   declare type Recordable<T = {}> = T & Record<string, any>;
+
+  type Fn<T = any, R = T> = (...arg: T[]) => R;
 }
