@@ -5,7 +5,7 @@
       :columns="columns"
       :data-source="dataSource"
       :row-selection="rowSelectionConfig"
-      rowKey="objId"
+      row-key="objId"
       :pagination="false"
       :scroll="{ x: '100%' }"
     >
@@ -27,7 +27,7 @@
         </template>
       </template>
     </n-table>
-    <CompareDrawer ref="CompareDrawerRef" :selectTableData="selectTableData" />
+    <CompareDrawer ref="CompareDrawerRef" :select-table-data="selectTableData" />
   </div>
 </template>
 

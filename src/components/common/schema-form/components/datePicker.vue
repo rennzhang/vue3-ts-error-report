@@ -26,7 +26,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const modelValue = computed({
       get: () => props.value || '',
-      set: val => emit('update:value', val),
+      set: (val) => emit('update:value', val),
     });
 
     const valueFormat = (props?.formItem?.props as any)?.showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';

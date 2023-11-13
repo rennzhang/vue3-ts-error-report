@@ -15,4 +15,6 @@ type IsAny<T> = '1' extends '2' & T ? true : false;
 // 是否为无效值
 type IsValid<T> = T extends null | '' | undefined ? false : true;
 
-type RequiredByKeys<T extends object, K extends keyof any = keyof T> = Copy<Required<Pick<T, Extract<keyof T, K>>> & Omit<T, K>>;
+type RequiredByKeys<T extends object, K extends keyof any = keyof T> = Copy<
+  Required<Pick<T, Extract<keyof T, K>>> & Omit<T, K>
+>;

@@ -7,7 +7,7 @@
       <n-descriptions-item
         v-for="item in listData"
         :label="item.name"
-        :labelStyle="{
+        :label-style="{
           'white-space': 'normal',
           'text-align': 'right',
         }"

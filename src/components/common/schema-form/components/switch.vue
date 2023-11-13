@@ -27,7 +27,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const modelValue = computed({
       get: () => props.value,
-      set: val => emit('update:value', val),
+      set: (val) => emit('update:value', val),
     });
 
     const binds = getComponentProps(props?.formItem);
@@ -38,7 +38,7 @@ export default defineComponent({
       const { checkedValue, unCheckedValue } = props?.formItem.props || ({} as any);
       const defaultValue = props.value ?? props.formItem.value;
       if ([defaultValue, checkedValue, unCheckedValue].includes(undefined)) return;
-      if (![typeof checkedValue, typeof unCheckedValue].every(t => t == typeof defaultValue)) {
+      if (![typeof checkedValue, typeof unCheckedValue].every((t) => t == typeof defaultValue)) {
         console.warn(
           '[schema-form-switch]: 请确保传入的默认值和 checkedValue/unCheckedValue 的值数据类型一致!\n',
           '[schema-form-switch props:]',

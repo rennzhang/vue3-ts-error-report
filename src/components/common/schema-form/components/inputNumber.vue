@@ -1,5 +1,10 @@
 <template>
-  <n-input-number v-model:value="modelValue" v-bind="binds" class="dnt-schema-input-number" v-on="{ ...formItem.events }" />
+  <n-input-number
+    v-model:value="modelValue"
+    v-bind="binds"
+    class="dnt-schema-input-number"
+    v-on="{ ...formItem.events }"
+  />
 </template>
 
 <script lang="ts">
@@ -35,7 +40,7 @@ export default defineComponent({
     }
     const modelValue = computed({
       get: () => props.value || binds?.value.min || 0,
-      set: val => emit('update:value', val),
+      set: (val) => emit('update:value', val),
     });
 
     if (binds?.value.min) {

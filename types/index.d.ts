@@ -6,7 +6,7 @@ declare module '*.vue' {
   export default component;
 }
 
-declare module '@/assets/iconfont/iconfont';
+// declare module '@/assets/iconfont/iconfont';
 declare module 'vue-i18n';
 
 declare module '~pages' {

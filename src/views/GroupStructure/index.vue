@@ -1,6 +1,6 @@
 <template>
   <div class="p-20px">
-    <n-table :columns="columns" :data-source="tableData" :loading="loading" rowKey="companyCode">
+    <n-table :columns="columns" :data-source="tableData" :loading="loading" row-key="companyCode">
       <template #headerCell="{ column }">
         <template v-if="column.dataIndex === 'operation'">
           <span>
@@ -9,14 +9,14 @@
               <n-tooltip v-if="!tableData?.length">
                 <template #title>添加</template>
                 <plus-square-outlined
-                  @click="AddCompanyModalRef?.openDrawer()"
                   class="align-middle"
                   style="vertical-align: middle"
+                  @click="AddCompanyModalRef?.openDrawer()"
                 />
               </n-tooltip>
               <n-tooltip>
                 <template #title>刷新</template>
-                <sync-outlined @click="getList()" class="align-middle" style="vertical-align: middle" />
+                <sync-outlined class="align-middle" style="vertical-align: middle" @click="getList()" />
               </n-tooltip>
             </n-space>
           </span>

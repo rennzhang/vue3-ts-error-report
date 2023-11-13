@@ -34,7 +34,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const modelValue = computed({
       get: () => props.value || 0,
-      set: val => emit('update:value', val),
+      set: (val) => emit('update:value', val),
     });
     const options = computed(() => {
       return unref(props.formItem.options);

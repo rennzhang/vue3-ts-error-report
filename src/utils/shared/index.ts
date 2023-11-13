@@ -1,2 +1,2 @@
-export * from "./mergeLessObject";
-export * from "./clearObject";
+export * from './mergeLessObject';
+export * from './clearObject';
