@@ -3,7 +3,7 @@
     <n-drawer
       v-model:visible="visible"
       width="40%"
-      :closable="false"
+      :closable="true"
       :mask="false"
       class="drawer-container-box"
       @close="closeDrawer"
@@ -29,10 +29,10 @@
           </template> -->
         </template>
       </n-table>
-      <template #footer>
+      <!-- <template #footer>
         <n-button style="margin-right: 8px" @click="closeDrawer">取消</n-button>
         <n-button type="primary" @click="closeDrawer">确定</n-button>
-      </template>
+      </template> -->
     </n-drawer>
   </div>
 </template>
@@ -91,6 +91,9 @@ defineExpose({
 }
 .nl-drawer {
   position: absolute !important;
+}
+.nl-drawer-close {
+  margin-right: 0px !important;
 }
 ::-webkit-scrollbar {
   width: 4px;

@@ -125,6 +125,7 @@ const HandleSpecialValues = (data: any) => {
       'lastUpdate',
       'superseded',
       'displayName',
+      'activityAnnex',
     ]);
     //对公司地址进行处理
     if (item.companyAddress && JSON.parse(item.companyAddress).length) {

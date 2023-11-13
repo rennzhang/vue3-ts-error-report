@@ -1,6 +1,6 @@
 <template>
   <div class="drawer-container">
-    <n-drawer v-model:visible="isDrawer" width="40%" :closable="false" :mask="false" class="drawer-container-box">
+    <n-drawer v-model:visible="isDrawer" :closable="true" width="40%" :mask="false" class="drawer-container-box">
       <template #title> 版本比较 </template>
       <n-table
         :columns="tableColumn"
@@ -17,7 +17,7 @@
         </template>
       </n-table>
       <template #footer>
-        <div class="footer">
+        <!-- <div class="footer">
           <n-button
             style="margin-right: 8px"
             @click="
@@ -28,7 +28,7 @@
             >取消</n-button
           >
           <n-button type="primary">确定</n-button>
-        </div>
+        </div> -->
       </template>
     </n-drawer>
   </div>
@@ -95,6 +95,9 @@ defineExpose({
 .footer {
   display: flex;
   justify-content: flex-end;
+}
+.nl-drawer-close {
+  margin-right: 0px !important;
 }
 .drawer-style .nl-drawer-footer {
   border: none !important;

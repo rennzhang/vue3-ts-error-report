@@ -1,6 +1,6 @@
 <template>
   <div class="history-version">
-    <div><n-button type="primary" class="btn-compare" :disabled="isLoading" @click="handCompare">比较</n-button></div>
+    <span><span type="primary" class="btn-compare" @click="handCompare">比较</span></span>
     <n-table
       :row-selection="rowSelectionConfig"
       :columns="columns"
@@ -102,6 +102,9 @@ const rowSelectionConfig: TableRowSelection<HistoryRecord> = {
 
 <style lang="less" scoped>
 .btn-compare {
+  display: inline-block;
+  color: #447dfd;
+  cursor: pointer;
   margin: 10px 20px 10px 20px;
 }
 .nl-table-cell {
