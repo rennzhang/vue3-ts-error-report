@@ -16,7 +16,7 @@ import {
   validateInsertCompanyTreePre,
   type GroupCompanyRecord,
   type ValidateCompanyParams,
-} from '@/api/GroupStructure';
+} from '@/api/CompanyItem';
 import { requestCommonQueryAgent } from '@/api/common';
 import { message } from 'n-designv3';
 type FormData = {

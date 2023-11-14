@@ -1,6 +1,9 @@
 export * from './uncert';
 export type LOVParams = { code: string; thisObj: Recordable };
-
+export interface CommonParams<T extends Recordable = {}> {
+  className: string;
+  thisObj: T;
+}
 export interface DetailsFile {
   status: string;
   name: string;

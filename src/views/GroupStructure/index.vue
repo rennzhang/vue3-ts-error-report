@@ -52,7 +52,7 @@
   <AddCompanyModal ref="AddCompanyModalRef" @refresh="getList" />
 </template>
 <script lang="ts" setup>
-import { deleteCompanyForGroup, type GroupCompanyRecord } from '@/api/GroupStructure';
+import { deleteCompanyForGroup, type GroupCompanyRecord } from '@/api/CompanyItem';
 import AddCompanyModal from './Components/AddCompanyModal.vue';
 import { Modal, message } from 'n-designv3';
 
