@@ -1,4 +1,4 @@
-import type { VueComponent } from 'vue';
+import type { Component } from 'vue';
 import type { UserType } from '../src/types/user';
 /**
  * 全局类型声明，无需引入直接在 `.vue` 、`.ts` 、`.tsx` 文件使用即可获得类型提示
@@ -9,11 +9,11 @@ declare global {
    */
   interface Window {
     $wujie?: {
-      bus: EventBus;
-      location: Proxy;
+      bus: any;
+      location: Location;
       props: {
         level: number;
-        parentVue: VueComponent;
+        parentVue: Component;
         util: any;
         params: AppParams;
         setting: {
@@ -70,11 +70,9 @@ declare global {
    */
   let gvUtil: any;
 
-  declare type Nullable<T> = T | null;
+  type Nullable<T> = T | null;
 
-  declare type NonNullable<T> = T extends null | undefined ? never : T;
-
-  declare type Recordable<T = {}> = T & Record<string, any>;
+  type Recordable<T = {}> = T & Record<string, any>;
 
   type Fn<T = any, R = T> = (...arg: T[]) => R;
 }

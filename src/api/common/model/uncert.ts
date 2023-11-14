@@ -1,3 +1,5 @@
+import { CommonParams } from '.';
+
 export interface CompanyDetailsValues {
   companyAlias?: any;
   companyParent?: any;
@@ -44,3 +46,8 @@ export interface QueryAgentCompanyRecord {
   displayCreator: string;
   displayModifier: string;
 }
+
+export type GroupAllocationParams = CommonParams<{
+  objIdList: string[] | undefined;
+  deptId: any;
+}>;

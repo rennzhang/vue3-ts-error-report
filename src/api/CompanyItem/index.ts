@@ -7,6 +7,7 @@ import type {
   DeleteCompanyParams,
 } from './model';
 import { GETWAY } from '@/config/api';
+import { GroupAllocationParams } from '../common';
 export * from './model';
 
 //* 集团结构-api */
@@ -25,3 +26,11 @@ export const insertCompanyTree = (params: AddCompanyParams) =>
 // 从集团结构树中删除公司
 export const deleteCompanyForGroup = (params: DeleteCompanyParams) =>
   http.post<GroupCompanyRecord>(`${GETWAY}/CompanyItemRelation/DeleteCompanyTree`, params);
+
+/* 集团客户池管理 */
+
+/**
+ * @description: 集团客户池-分配操作
+ */
+export const GroupAllocation = (params: GroupAllocationParams) =>
+  http.post(`${GETWAY}/CompanyItem/GroupAllocation`, params);
