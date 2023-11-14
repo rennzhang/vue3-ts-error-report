@@ -1,4 +1,3 @@
-//* 集团结构-api */
 import { http } from '@/utils/request';
 import type {
   QueryGroupParams,
@@ -10,6 +9,7 @@ import type {
 import { GETWAY } from '@/config/api';
 export * from './model';
 
+//* 集团结构-api */
 // 查询集团树结构
 export const getGroupTree = (params: QueryGroupParams) =>
   http.post<GroupCompanyRecord[]>(`${GETWAY}/CompanyItemRelation/QueryCompanyTree`, params);
