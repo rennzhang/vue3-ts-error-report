@@ -18,7 +18,7 @@
         :scroll="{ x: '100%', y: scrollY() }"
         style="word-break: break-all"
       >
-        <template #bodyCell="{ column, record, index }">
+        <template #bodyCell="{ column, record }">
           <template v-if="record.isImg && column.dataIndex.includes('_')">
             <n-image :src="record[column.dataIndex]" />
           </template>
