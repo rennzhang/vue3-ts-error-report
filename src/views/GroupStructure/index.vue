@@ -23,7 +23,7 @@
         </template>
       </template>
       <template #bodyCell="{ column, text, record }">
-        <template v-if="column.dataIndex === 'companyName'">
+        <template v-if="column.dataIndex === 'name'">
           <span>
             <folder-outlined />
             <n-divider type="vertical" />
@@ -69,7 +69,7 @@ const showDeleteConfirm = (record: GroupCompanyRecord) => {
     content: createVNode(
       'span',
       { style: { color: 'red' } },
-      `该操作会同时删除【${record.companyName || '选中公司'}】以及所有子公司，是否确认删除？`
+      `该操作会同时删除【${record.name || '选中公司'}】以及所有子公司，是否确认删除？`
     ),
     okText: '确定',
     cancelText: '取消',

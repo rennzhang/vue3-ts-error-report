@@ -52,6 +52,6 @@ export interface GroupCompanyRecord {
   tenantId?: any;
   companyCode: string;
   treeId: string;
-  companyName: string;
+  name: string;
   children: GroupCompanyRecord[];
 }

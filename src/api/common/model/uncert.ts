@@ -36,7 +36,7 @@ export interface CompanyDetailsValues {
 
 export interface QueryAgentCompanyRecord {
   code: string;
-  companyName: string;
+  name: string;
   companyAlias?: string;
   companyLevel: string;
   objId: string;
