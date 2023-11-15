@@ -1,6 +1,5 @@
 // `uno.config.ts`
 import { defineConfig, presetUno, presetAttributify, UserConfig } from 'unocss';
-// import transformerDirectives from '@unocss/transformer-directives';
 
 export default defineConfig({
   presets: [presetUno(), presetAttributify()],
@@ -20,4 +19,4 @@ export default defineConfig({
     'text-overflow': 'overflow-hidden whitespace-nowrap text-ellipsis', // 文本溢出显示省略号
     'text-break': 'whitespace-normal break-all break-words', // 文本溢出换行
   },
-});
+} as UserConfig);

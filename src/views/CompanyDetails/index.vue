@@ -1,9 +1,9 @@
 <template>
-  <ClassDetails :className="props.className" :class="isWeCom">
+  <ClassDetails :class-name="props.className" :class="isWeCom">
     <template #header="{ currentSchema }">
       <div v-if="isWeCom" class="text-18px font-bold text-black mb-8px">
         <span>{{ route.query.pushType }}：</span>
-        <span>{{ currentSchema?.values?.companyName }}</span>
+        <span>{{ currentSchema?.values?.name }}</span>
       </div>
     </template>
   </ClassDetails>

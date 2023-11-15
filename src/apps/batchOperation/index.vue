@@ -1,7 +1,7 @@
 <template>
   <div class="card-container p-8 bg-gray-100 h-full">
     <n-card title="乐仓批量操作工具" class="shadow-gray" :tab-list="tabList" :active-tab-key="activeKey">
-      <component :is="tabsMap[activeKey]"></component>
+      <component :is="tabsMap[activeKey]" />
     </n-card>
   </div>
 </template>

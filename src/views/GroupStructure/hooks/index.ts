@@ -1,4 +1,4 @@
-import { getGroupTree, type GroupCompanyRecord } from '@/api/GroupStructure';
+import { getGroupTree, type GroupCompanyRecord } from '@/api/CompanyItem';
 
 export const useTable = () => {
   console.log('window?.$wujie?.props', window?.$wujie?.props);
@@ -24,7 +24,7 @@ export const useTable = () => {
   const getList = async () => {
     loading.value = true;
     const { record } = params || {};
-    const res = await getGroupTree({
+    await getGroupTree({
       className: 'CompanyItemRelation',
       thisObj: {
         companyCode: record.code,

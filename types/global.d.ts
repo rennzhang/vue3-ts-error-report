@@ -1,4 +1,4 @@
-import type { VueComponent } from 'vue';
+import type { Component } from 'vue';
 import type { UserType } from '../src/types/user';
 /**
  * 全局类型声明，无需引入直接在 `.vue` 、`.ts` 、`.tsx` 文件使用即可获得类型提示
@@ -9,11 +9,11 @@ declare global {
    */
   interface Window {
     $wujie?: {
-      bus: EventBus;
-      location: Proxy;
+      bus: any;
+      location: Location;
       props: {
         level: number;
-        parentVue: VueComponent;
+        parentVue: Component;
         util: any;
         params: AppParams;
         setting: {
@@ -29,20 +29,21 @@ declare global {
     };
     __POWERED_BY_WUJIE__?: boolean;
     gvUtil: any;
+    postTileMsg: (data: { type: 'refreshList' | 'closePop'; data?: any }) => void;
   }
 
   /**
    * 全局自定义环境变量的类型声明
    */
-  interface ViteEnv {
-    VITE_APP_BASE_API: string;
-    VITE_APP_NGINX_VPATH_NAME: string;
-    VITE_APP_APPCODE: string;
-  }
+  // interface ViteEnv {
+  //   VITE_APP_BASE_API: string;
+  //   VITE_APP_NGINX_VPATH_NAME: string;
+  //   VITE_APP_APPCODE: string;
+  // }
   /**
    * 打包压缩格式的类型声明
    */
-  type ViteCompression = 'none' | 'gzip' | 'brotli' | 'both' | 'gzip-clear' | 'brotli-clear' | 'both-clear';
+  // type ViteCompression = 'none' | 'gzip' | 'brotli' | 'both' | 'gzip-clear' | 'brotli-clear' | 'both-clear';
 
   /**
    * 应用通信参数类型声明
@@ -67,11 +68,11 @@ declare global {
   /**
    * 全局工具类的类型声明
    */
-  var gvUtil: any;
+  let gvUtil: any;
 
-  declare type Nullable<T> = T | null;
+  type Nullable<T> = T | null;
 
-  declare type NonNullable<T> = T extends null | undefined ? never : T;
+  type Recordable<T = {}> = T & Record<string, any>;
 
-  declare type Recordable<T = {}> = T & Record<string, any>;
+  type Fn<T = any, R = T> = (...arg: T[]) => R;
 }

@@ -1,6 +1,6 @@
 <template>
-  <n-modal title="添加企业" v-model:visible="showAddDrawer" width="40%">
-    <schema-form ref="schemaFormRef" :formSchema="formSchema" v-if="showAddDrawer" />
+  <n-modal v-model:visible="showAddDrawer" title="添加企业" width="40%">
+    <schema-form v-if="showAddDrawer" ref="schemaFormRef" :form-schema="formSchema" />
     <template #footer>
       <div class="flex justify-end">
         <n-button style="margin-right: 8px" @click="showAddDrawer = false">取消</n-button>
@@ -16,7 +16,7 @@ import {
   validateInsertCompanyTreePre,
   type GroupCompanyRecord,
   type ValidateCompanyParams,
-} from '@/api/GroupStructure';
+} from '@/api/CompanyItem';
 import { requestCommonQueryAgent } from '@/api/common';
 import { message } from 'n-designv3';
 type FormData = {
@@ -42,12 +42,12 @@ const formSchema = reactive<FormSchema<FormData>>({
       searchRequest: async (value) => {
         return requestCommonQueryAgent({
           queryArgs: {
-            condition: [{ key: 'companyName', value: value, compare: 'LIKE' }],
+            condition: [{ key: 'name', value: value, compare: 'LIKE' }],
             page: { pageNo: 1, pageSize: 9999 },
             sort: { sortBy: 'createAt', sortOrder: 'desc' },
             attrSet: [
               'code',
-              'companyName',
+              'name',
               'companyAlias',
               'companyLevel',
               'companyCategory',
@@ -61,12 +61,12 @@ const formSchema = reactive<FormSchema<FormData>>({
               'className',
             ],
           },
-          condition: { companyName: value },
+          condition: { name: value },
           className: 'CompanyItem',
         }).then((res) => {
           return (
             res?.data?.data?.map((item: any) => ({
-              label: item.companyName,
+              label: item.name,
               value: item.code,
               ...item,
             })) || []

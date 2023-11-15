@@ -1,4 +1,3 @@
-import { cloneDeep, omit } from 'lodash-es';
 export const getDownloadPath = (fileName: string, data: string) => {
   const blob = new Blob([data]); //处理文档流
   return URL.createObjectURL(blob);

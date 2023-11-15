@@ -1,5 +1,5 @@
 <template>
-  <n-select v-model:value="modelValue" v-bind="binds" v-on="{ ...formItem.events }" :options="options" />
+  <n-select v-model:value="modelValue" v-bind="binds" :options="options" v-on="{ ...formItem.events }" />
 </template>
 <script lang="ts">
 import { defineComponent, type PropType, computed, type ComputedRef } from 'vue';

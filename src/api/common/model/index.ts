@@ -1,6 +1,9 @@
 export * from './uncert';
 export type LOVParams = { code: string; thisObj: Recordable };
-
+export interface CommonParams<T extends Recordable = {}> {
+  className: string;
+  thisObj: T;
+}
 export interface DetailsFile {
   status: string;
   name: string;
@@ -257,7 +260,6 @@ interface Props2 {
   relation: string;
 }
 
-interface Props {}
 interface LineAttribute {
   isSort: string;
   field: string;
@@ -305,13 +307,6 @@ interface Page {
   pageSize: number;
 }
 
-interface Condition {
-  key: string;
-  value: string;
-  compare: string;
-}
-
-interface ThisObj {}
 export interface QueryAgentRes<T = any> {
   total: string;
   data: T;

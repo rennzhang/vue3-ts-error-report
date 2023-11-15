@@ -12,9 +12,18 @@ export const useFormRules = ({ isShowFormItem, getFormItem, schemaFormState }: F
       const rules: any = reactive({});
       ruleItems.map((item: FormItem) => {
         rules[item.field] =
-          (item?.dynamicRules && item?.dynamicRules?.({ formModel: schemaFormState.formModel, ...((schemaFormState.formInstance?.exposeProxy as any) || {}) })) || item.rules;
+          (item?.dynamicRules &&
+            item?.dynamicRules?.({
+              formModel: schemaFormState.formModel,
+              ...((schemaFormState.formInstance?.exposeProxy as any) || {}),
+            })) ||
+          item.rules;
 
-        const isRequired = isBoolean(item.required) ? item.required : isBoolean(schemaFormState.formSchema.required) ? schemaFormState.formSchema.required : undefined;
+        const isRequired = isBoolean(item.required)
+          ? item.required
+          : isBoolean(schemaFormState.formSchema.required)
+          ? schemaFormState.formSchema.required
+          : undefined;
         if (isRequired && !rules[item.field]) {
           const _rule: Rule = {
             required: true,

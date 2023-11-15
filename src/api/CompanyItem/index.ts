@@ -1,4 +1,3 @@
-//* 集团结构-api */
 import { http } from '@/utils/request';
 import type {
   QueryGroupParams,
@@ -6,10 +5,13 @@ import type {
   AddCompanyParams,
   ValidateCompanyParams,
   DeleteCompanyParams,
+  GroupAllocationParams,
+  DivisionAllocationParams,
 } from './model';
 import { GETWAY } from '@/config/api';
 export * from './model';
 
+//* 集团结构-api */
 // 查询集团树结构
 export const getGroupTree = (params: QueryGroupParams) =>
   http.post<GroupCompanyRecord[]>(`${GETWAY}/CompanyItemRelation/QueryCompanyTree`, params);
@@ -25,3 +27,19 @@ export const insertCompanyTree = (params: AddCompanyParams) =>
 // 从集团结构树中删除公司
 export const deleteCompanyForGroup = (params: DeleteCompanyParams) =>
   http.post<GroupCompanyRecord>(`${GETWAY}/CompanyItemRelation/DeleteCompanyTree`, params);
+
+/* 集团客户池管理 */
+
+/**
+ * @description: 集团客户池-分配操作
+ */
+export const GroupAllocation = (params: GroupAllocationParams) =>
+  http.post(`${GETWAY}/CompanyItem/GroupAllocation`, params);
+
+/* 事业部客户池管理 */
+
+/**
+ * @description: 事业部客户池-分配操作
+ */
+export const DivisionAllocation = (params: DivisionAllocationParams) =>
+  http.post(`${GETWAY}/CompanyItem/DivisionAllocation`, params);

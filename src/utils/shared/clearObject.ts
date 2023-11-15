@@ -3,7 +3,7 @@ import { isObject, isArray, isNumber, isString, isBoolean } from '@/utils/is';
 export const clearObject = <T extends Record<string, any> = any>(source?: T): T | null => {
   if (source && typeof source === 'object') {
     const res = source as any;
-    Object.keys(source).forEach(key => {
+    Object.keys(source).forEach((key) => {
       const val = source[key];
       if (isObject(val)) {
         res[key] = {};

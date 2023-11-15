@@ -1,3 +1,14 @@
+import { CommonParams } from '@/api/common';
+
+export type GroupAllocationParams = CommonParams<{
+  objIdList: string[] | undefined;
+  deptId: any;
+}>;
+export type DivisionAllocationParams = CommonParams<{
+  objIdList: string[] | undefined;
+  salesPersonId: any;
+}>;
+
 type DefaultThisObj = {
   code?: string;
   objId?: string;
@@ -7,11 +18,6 @@ type DefaultThisObj = {
   [key: string]: any;
 };
 
-interface GroupCommonParams<T extends DefaultThisObj> {
-  className: string;
-  thisObj: T;
-}
-
 interface AddCompanyThisObj {
   curCompanyCode: string;
   companyCode: string;
@@ -19,10 +25,10 @@ interface AddCompanyThisObj {
   userId: string;
 }
 
-export type AddCompanyParams = GroupCommonParams<AddCompanyThisObj>;
-export type QueryGroupParams = GroupCommonParams<DefaultThisObj>;
-export type ValidateCompanyParams = GroupCommonParams<AddCompanyThisObj>;
-export type DeleteCompanyParams = GroupCommonParams<{ objId: string }>;
+export type AddCompanyParams = CommonParams<AddCompanyThisObj>;
+export type QueryGroupParams = CommonParams<DefaultThisObj>;
+export type ValidateCompanyParams = CommonParams<AddCompanyThisObj>;
+export type DeleteCompanyParams = CommonParams<{ objId: string }>;
 
 export interface GroupCompanyRecord {
   code?: string;
@@ -46,6 +52,6 @@ export interface GroupCompanyRecord {
   tenantId?: any;
   companyCode: string;
   treeId: string;
-  companyName: string;
+  name: string;
   children: GroupCompanyRecord[];
 }

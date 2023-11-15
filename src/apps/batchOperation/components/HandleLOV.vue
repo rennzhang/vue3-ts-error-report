@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <schema-form ref="schemaFormRef" :formSchema="formSchema" @submit="onSubmit" />
+    <schema-form ref="schemaFormRef" :form-schema="formSchema" @submit="onSubmit" />
     <!-- <div>预览</div> -->
   </div>
 </template>

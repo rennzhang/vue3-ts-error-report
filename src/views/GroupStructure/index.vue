@@ -1,6 +1,6 @@
 <template>
   <div class="p-20px">
-    <n-table :columns="columns" :data-source="tableData" :loading="loading" rowKey="companyCode">
+    <n-table :columns="columns" :data-source="tableData" :loading="loading" row-key="companyCode">
       <template #headerCell="{ column }">
         <template v-if="column.dataIndex === 'operation'">
           <span>
@@ -9,21 +9,21 @@
               <n-tooltip v-if="!tableData?.length">
                 <template #title>添加</template>
                 <plus-square-outlined
-                  @click="AddCompanyModalRef?.openDrawer()"
                   class="align-middle"
                   style="vertical-align: middle"
+                  @click="AddCompanyModalRef?.openDrawer()"
                 />
               </n-tooltip>
               <n-tooltip>
                 <template #title>刷新</template>
-                <sync-outlined @click="getList()" class="align-middle" style="vertical-align: middle" />
+                <sync-outlined class="align-middle" style="vertical-align: middle" @click="getList()" />
               </n-tooltip>
             </n-space>
           </span>
         </template>
       </template>
       <template #bodyCell="{ column, text, record }">
-        <template v-if="column.dataIndex === 'companyName'">
+        <template v-if="column.dataIndex === 'name'">
           <span>
             <folder-outlined />
             <n-divider type="vertical" />
@@ -52,7 +52,7 @@
   <AddCompanyModal ref="AddCompanyModalRef" @refresh="getList" />
 </template>
 <script lang="ts" setup>
-import { deleteCompanyForGroup, type GroupCompanyRecord } from '@/api/GroupStructure';
+import { deleteCompanyForGroup, type GroupCompanyRecord } from '@/api/CompanyItem';
 import AddCompanyModal from './Components/AddCompanyModal.vue';
 import { Modal, message } from 'n-designv3';
 
@@ -69,7 +69,7 @@ const showDeleteConfirm = (record: GroupCompanyRecord) => {
     content: createVNode(
       'span',
       { style: { color: 'red' } },
-      `该操作会同时删除【${record.companyName || '选中公司'}】以及所有子公司，是否确认删除？`
+      `该操作会同时删除【${record.name || '选中公司'}】以及所有子公司，是否确认删除？`
     ),
     okText: '确定',
     cancelText: '取消',

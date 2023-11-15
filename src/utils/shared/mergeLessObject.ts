@@ -6,7 +6,11 @@ type MergeObject<T, U, P extends unknown[] = []> = U extends {
 }
   ? T
   : {
-      [K in P[number] | keyof T as K extends keyof U ? K : never]: K extends keyof U ? U[K] : K extends keyof T ? T[K] : never;
+      [K in P[number] | keyof T as K extends keyof U ? K : never]: K extends keyof U
+        ? U[K]
+        : K extends keyof T
+        ? T[K]
+        : never;
     };
 
 /**
@@ -36,15 +40,19 @@ type MergeObject<T, U, P extends unknown[] = []> = U extends {
  * mergeLess(object, other, keys);
  * // => { 'fruits': "banana", 'vegetables': "tomato", 'dimSum': "eggTart" }
  */
-export const mergeLess = <T extends object, U extends object, P extends (keyof U & string)[]>(source: T | undefined, target: U, keys?: P): MergeObject<T, U, P> => {
+export const mergeLess = <T extends object, U extends object, P extends (keyof U & string)[]>(
+  source: T | undefined,
+  target: U,
+  keys?: P
+): MergeObject<T, U, P> => {
   if (isEmpty(target) || !target) return source as any;
   if (isEmpty(source) || !source) return null as any;
-  Object.keys(source).forEach(key => {
+  Object.keys(source).forEach((key) => {
     (source as any)[key] = cloneDeep(target[key]);
   });
 
   if (keys?.length) {
-    keys.forEach(key => {
+    keys.forEach((key) => {
       if (!has(target, key)) {
         console.warn(`在${(target as any).toString()}中未找到 ${key}！`);
       }

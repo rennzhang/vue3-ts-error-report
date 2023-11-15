@@ -1,5 +1,11 @@
 <template>
-  <n-range-picker v-model:value="modelValue" :value-format="valueFormat" v-bind="binds" class="schema-form-range-picker" v-on="{ ...formItem.events }" />
+  <n-range-picker
+    v-model:value="modelValue"
+    :value-format="valueFormat"
+    v-bind="binds"
+    class="schema-form-range-picker"
+    v-on="{ ...formItem.events }"
+  />
 </template>
 <script lang="ts">
 import { defineComponent, type PropType, computed } from 'vue';
@@ -26,7 +32,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const modelValue = computed({
       get: () => props.value || [],
-      set: val => emit('update:value', val),
+      set: (val) => emit('update:value', val),
     });
 
     const valueFormat = (props?.formItem?.props as any)?.showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';

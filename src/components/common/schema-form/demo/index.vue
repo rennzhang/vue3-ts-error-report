@@ -58,7 +58,7 @@ const formSchema = reactive<FormSchema>({
         // return getXXXVal().then(res => {
         //   return res.data;
         // });
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           setTimeout(() => {
             resolve(formModel.projectId);
           }, 1000);
@@ -68,7 +68,7 @@ const formSchema = reactive<FormSchema>({
         // return getXXXOptions().then(res => {
         //   return res.data;
         // });
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           setTimeout(() => {
             resolve([
               {

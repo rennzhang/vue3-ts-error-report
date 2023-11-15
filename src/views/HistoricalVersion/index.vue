@@ -5,7 +5,7 @@
       :row-selection="rowSelectionConfig"
       :columns="columns"
       :data-source="tableData"
-      rowKey="objId"
+      row-key="objId"
       :pagination="false"
       :scroll="{ x: '100%' }"
     >
@@ -29,10 +29,10 @@
     </n-table>
     <CompareDrawer
       ref="CompareDrawerRef"
-      :selectRowsData="selectRowsData"
-      :comparColumns="comparColumnsData"
-      :comparDataSource="comparDataSourceData"
-      :isLoading="isLoading"
+      :select-rows-data="selectRowsData"
+      :compar-columns="comparColumnsData"
+      :compar-data-source="comparDataSourceData"
+      :is-loading="isLoading"
     />
   </div>
 </template>
