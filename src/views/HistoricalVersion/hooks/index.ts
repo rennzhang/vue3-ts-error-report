@@ -13,8 +13,8 @@ export const useTable = () => {
     },
     {
       title: '企业名称',
-      dataIndex: 'companyName',
-      key: 'companyName',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: '版本记录',
