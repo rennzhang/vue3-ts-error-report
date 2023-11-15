@@ -19,7 +19,7 @@
     <div class="overflow-auto h-full py-6px">
       <n-spin :spinning="loading">
         <div v-for="item in dataList" :key="item.code" class="item" @click="viewDetails(item)">
-          {{ item.companyName }}
+          {{ item.name }}
         </div>
         <div v-if="!isAllLoaded" class="text-center py-8px">
           <n-button v-if="!loading" type="primary" ghost size="small" @click="loadMore">点击加载更多数据</n-button>
@@ -86,7 +86,7 @@ const getList = () => {
       },
       attrSet: [
         'code',
-        'companyName',
+        'name',
         'companyAlias',
         'companyLevel',
         'displayCreator',
