@@ -1,15 +1,14 @@
 import { getGroupTree, type GroupCompanyRecord } from '@/api/CompanyItem';
 
 export const useTable = () => {
-  console.log('window?.$wujie?.props', window?.$wujie?.props);
   const { params } = window?.$wujie?.props || {};
 
   const loading = ref(false);
   const columns = [
     {
       title: '企业名称',
-      dataIndex: 'companyName',
-      key: 'companyName',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: '操作',
