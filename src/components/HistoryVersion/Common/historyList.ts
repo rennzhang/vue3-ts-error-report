@@ -34,7 +34,7 @@ export const useTable = () => {
     const router = useRouter();
     const objId = window.$wujie?.props.params.record.objId;
     const className = window.$wujie?.props.params.record.className;
-    //'1704055851523801088'  ---'1714929505862160384, ---1714929505862160384'
+    //'1704055851523801088'  ---'1714929505862160384, ---1714929505862160384--1'
     const data = await requestCommonGetHistoryList({
       className: className || 'CompanyItem',
       thisObj: {
