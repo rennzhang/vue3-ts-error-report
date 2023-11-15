@@ -58,16 +58,13 @@ const onSubmit = async () => {
     .then((res) => {
       if (res?.mfail == '0') {
         window.gvUtil.success('分配成功');
-        // setTimeout(() => {
-        //   window?.postTileMsg({ type: 'closePop' });
-        // }, 400);
       }
     })
     .finally(() => {
       setTimeout(() => {
         window?.postTileMsg({ type: 'closePop' });
         window?.postTileMsg({ type: 'refreshList' });
-      }, 2000);
+      }, 400);
     });
 };
 </script>
