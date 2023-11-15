@@ -1,7 +1,6 @@
 import { getGroupTree, type GroupCompanyRecord } from '@/api/CompanyItem';
 
 export const useTable = () => {
-  console.log('window?.$wujie?.props', window?.$wujie?.props);
   const { params } = window?.$wujie?.props || {};
 
   const loading = ref(false);
