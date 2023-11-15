@@ -1,5 +1,14 @@
 import { CommonParams } from '@/api/common';
 
+export type GroupAllocationParams = CommonParams<{
+  objIdList: string[] | undefined;
+  deptId: any;
+}>;
+export type DivisionAllocationParams = CommonParams<{
+  objIdList: string[] | undefined;
+  salesPersonId: any;
+}>;
+
 type DefaultThisObj = {
   code?: string;
   objId?: string;
