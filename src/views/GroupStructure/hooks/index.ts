@@ -8,8 +8,8 @@ export const useTable = () => {
   const columns = [
     {
       title: '企业名称',
-      dataIndex: 'companyName',
-      key: 'companyName',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: '操作',

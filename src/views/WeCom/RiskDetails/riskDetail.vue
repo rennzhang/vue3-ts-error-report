@@ -33,8 +33,8 @@ import { getUrlParams } from '@/utils';
 const companyName: any = ref('');
 console.log(useRoute, 'useRoute');
 const route = useRoute();
-companyName.value = route.query.companyName || '华为技术有限公司';
-console.log(route.query.companyName, 'toutee');
+companyName.value = route.query.name || '华为技术有限公司';
+console.log(route.query.name, 'toutee');
 const listData = ref<Array<ListItem>>([]);
 type renderList = {
   value: string;

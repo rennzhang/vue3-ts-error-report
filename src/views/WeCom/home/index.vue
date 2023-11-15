@@ -75,7 +75,7 @@ const getList = () => {
     queryArgs: {
       condition: [
         {
-          key: 'companyName',
+          key: 'name',
           value: companyName.value,
           compare: 'LIKE',
         },
