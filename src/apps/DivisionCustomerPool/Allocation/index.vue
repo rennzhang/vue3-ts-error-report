@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { GroupAllocation, GroupAllocationParams } from '@/api/CompanyItem';
+import { DivisionAllocation, DivisionAllocationParams } from '@/api/CompanyItem';
 import { requestCommonGetLOV } from '@/api/common';
 
 const route = useRoute();
@@ -13,12 +13,12 @@ const schemaFormRef = ref<SchemaFormRef>();
 const formSchema = reactive<FormSchema>({
   formItem: [
     {
-      field: 'deptId',
+      field: 'id',
       type: 'select',
-      label: '事业部名称',
+      label: '销售姓名',
       asyncOptions: () =>
         requestCommonGetLOV({
-          code: route.query.LOVCode as string,
+          code: (route.query.LOVCode as string) || 'curDeptUserList',
           thisObj: {},
         }).then((res) => {
           return res?.data?.details?.map((item) => {
@@ -38,14 +38,15 @@ const formSchema = reactive<FormSchema>({
     wrapperCol: { span: 19 },
   },
 });
+
 const onSubmit = async () => {
   const data = await schemaFormRef.value?.validate();
   const { parentSelectedRows } = window.$wujie?.props.params || {};
-  const params: GroupAllocationParams = {
+  const params: DivisionAllocationParams = {
     className: 'CompanyItem',
     thisObj: {
       objIdList: parentSelectedRows?.map((item) => item.objId as string),
-      deptId: data.deptId,
+      salesPersonId: data.id,
     },
   };
   if (!params.thisObj.objIdList?.length) {
@@ -53,15 +54,18 @@ const onSubmit = async () => {
     return;
   }
 
-  GroupAllocation(params).then((res) => {
-    if (res?.mfail == '0') {
-      window.gvUtil.success('分配成功');
+  DivisionAllocation(params)
+    .then((res) => {
+      if (res?.mfail == '0') {
+        window.gvUtil.success('分配成功');
+      }
+    })
+    .finally(() => {
       setTimeout(() => {
-        window?.postTileMsg({ type: 'refreshList' });
         window?.postTileMsg({ type: 'closePop' });
+        window?.postTileMsg({ type: 'refreshList' });
       }, 400);
-    }
-  });
+    });
 };
 </script>
 

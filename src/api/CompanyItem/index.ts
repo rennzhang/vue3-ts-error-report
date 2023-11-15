@@ -5,9 +5,10 @@ import type {
   AddCompanyParams,
   ValidateCompanyParams,
   DeleteCompanyParams,
+  GroupAllocationParams,
+  DivisionAllocationParams,
 } from './model';
 import { GETWAY } from '@/config/api';
-import { GroupAllocationParams } from '../common';
 export * from './model';
 
 //* 集团结构-api */
@@ -34,3 +35,11 @@ export const deleteCompanyForGroup = (params: DeleteCompanyParams) =>
  */
 export const GroupAllocation = (params: GroupAllocationParams) =>
   http.post(`${GETWAY}/CompanyItem/GroupAllocation`, params);
+
+/* 事业部客户池管理 */
+
+/**
+ * @description: 事业部客户池-分配操作
+ */
+export const DivisionAllocation = (params: DivisionAllocationParams) =>
+  http.post(`${GETWAY}/CompanyItem/DivisionAllocation`, params);

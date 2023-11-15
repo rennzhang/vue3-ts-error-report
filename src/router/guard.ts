@@ -9,12 +9,17 @@ const whiteList = ['/404', '/error', '/login'];
 const isWujie = window?.__POWERED_BY_WUJIE__;
 const util = window?.$wujie?.props?.util || {};
 export function createRouterGuard(router: Router) {
-  router.beforeEach(async (to, from, next) => {
+  router.beforeEach(async (to, _, next) => {
     // wujie接入
     if (isWujie) {
       const res = await util.getLanguage(import.meta.env.VITE_APP_NGINX_VPATH_NAME, langCodes);
       i18n.global.setLocaleMessage('en_us', res.en_us);
       i18n.global.setLocaleMessage('zh_cn', res.zh_cn);
+
+      console.group('[[wujie接入]]');
+      console.log('>>> $wujie.props', window.$wujie?.props);
+      console.log('>>> $wujie', window.$wujie);
+      console.groupEnd();
       next();
       return;
     }
