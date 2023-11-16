@@ -64,7 +64,28 @@ const onSubmit = async () => {
       setTimeout(() => {
         window?.postTileMsg({ type: 'closePop' });
         // window?.postTileMsg({ type: 'refreshList' });
-        window?.postTileMsg({ type: 'refreshList', data: { customPoolType: 1 } });
+        window?.postTileMsg({
+          type: 'refreshList',
+          data: {
+            queryArgs: {
+              attrSet: [
+                'code',
+                'departmentName',
+                'salesPersonName',
+                'companyCeditNo',
+                'companyMarket',
+                'name',
+                'objId',
+                'className',
+              ],
+              condition: [{ key: 'customPoolType', value: '1', compare: 'LIKE' }],
+              page: { pageNo: 1, pageSize: 10 },
+              sort: { sortBy: 'createAt', sortOrder: 'desc' },
+            },
+            condition: { customPoolType: '1' },
+            className: 'CompanyItem',
+          },
+        });
       }, 400);
     });
 };
