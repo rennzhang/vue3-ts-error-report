@@ -42,6 +42,7 @@ export interface HistoryRecord {
   companyNational?: string;
   companyParent?: string;
   companyProperty?: string;
+  companyLogo: string;
   container?: any;
   createAt: string;
   creator: string;

@@ -76,11 +76,6 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
       } else {
         newItem.companyAddress = '';
       }
-      // console.log(item, 'item');
-      // if (matchReg(item.companyLogo, 'url')) {
-      //   newItem['isImg'] = matchReg(item.companyLogo);
-      //   console.log(newItem, 'neewItem');
-      // }
     }
     return newItem;
   });
@@ -100,7 +95,6 @@ export const useDataCompare = (objArray: HistoryRecord[], labelData: Array<objec
         }
       });
     });
-    Object.keys(newItem).forEach((key, index) => {});
     return newItem;
   });
   const computeColunmsWidth = () => {
