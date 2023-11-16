@@ -63,7 +63,8 @@ const onSubmit = async () => {
     .finally(() => {
       setTimeout(() => {
         window?.postTileMsg({ type: 'closePop' });
-        window?.postTileMsg({ type: 'refreshList' });
+        // window?.postTileMsg({ type: 'refreshList' });
+        window?.postTileMsg({ type: 'refreshList', data: { customPoolType: 1 } });
       }, 400);
     });
 };

@@ -57,7 +57,8 @@ const onSubmit = async () => {
     if (res?.mfail == '0') {
       window.gvUtil.success('分配成功');
       setTimeout(() => {
-        window?.postTileMsg({ type: 'refreshList' });
+        // window?.postTileMsg({ type: 'refreshList' });
+        window?.postTileMsg({ type: 'refreshList', data: { customPoolType: 1 } });
         window?.postTileMsg({ type: 'closePop' });
       }, 400);
     }
