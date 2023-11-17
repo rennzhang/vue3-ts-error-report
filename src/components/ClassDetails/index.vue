@@ -20,7 +20,7 @@
                   >
                     <template #bodyCell="{ column, value, record }">
                       <template v-if="column.lov"> {{ formLovValues[column.dataIndex] || value }}</template>
-                      <template v-if="column.dataIndex === 'code'">
+                      <template v-if="['name', 'code'].includes(column.dataIndex)">
                         <n-button
                           type="link"
                           class="!p-0"
