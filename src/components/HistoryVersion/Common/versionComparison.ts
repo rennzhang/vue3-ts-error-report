@@ -126,6 +126,7 @@ const HandleSpecialValues = (data: any) => {
       'superseded',
       'displayName',
       'activityAnnex',
+      'displayCreator',
     ]);
     //对公司地址进行处理
     if (item.companyAddress && JSON.parse(item.companyAddress).length) {
