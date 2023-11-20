@@ -12,8 +12,11 @@ import type {
 } from './model/index';
 export * from './model';
 export * from './model/uncert';
-export const requestCommonSetUpGetInfoDialog = (params: SetUpGetInfoParams) => {
-  return http.post<{ scheme: SetUpGetInfoScheme }>(`${LCGETWAY}/acnsvr/${params.className}/SetUpGetInfoDialog`, params);
+export const requestCommonSetUpGetInfoDialog = (params: SetUpGetInfoParams, methodName?: string) => {
+  return http.post<{ scheme: SetUpGetInfoScheme }>(
+    `${LCGETWAY}/acnsvr/${params.className}/${methodName || 'SetUpGetInfoDialog'}`,
+    params
+  );
 };
 
 export const requestCommonQueryAgent = <T = any>(params: QueryAgentParams) =>
