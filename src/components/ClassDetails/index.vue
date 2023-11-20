@@ -180,7 +180,11 @@ const handleSchema = (schema: SetUpGetInfoScheme<T>) => {
 
 const queryDetailSchema = async (params: SetUpGetInfoParams) => {
   spinning.value = true;
-  const res = await requestCommonSetUpGetInfoDialog(params);
+  const className = route.query.className as string;
+  const methodsMap = {
+    LeaderboardItem: 'LeaderboardSetUpGetInfoDialog',
+  };
+  const res = await requestCommonSetUpGetInfoDialog(params, methodsMap[className]);
   spinning.value = false;
   return res?.data?.scheme || null;
 };
