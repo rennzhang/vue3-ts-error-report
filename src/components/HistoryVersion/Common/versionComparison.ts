@@ -55,9 +55,13 @@ export const useTable = (selectData: any, labelData: any) => {
     });
     return newItem;
   });
+  console.log(newComparDataSource, 'newComparDataSource');
+  const tableDataSource = newComparDataSource.filter((item) => {
+    return item.compareItem !== '版次';
+  });
   return {
     column: columns,
-    dataSource: newComparDataSource,
+    dataSource: tableDataSource,
   };
 };
 const filterCommonKey = (data: any) => {
