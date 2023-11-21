@@ -19,7 +19,7 @@
                     :pagination="false"
                   >
                     <template #bodyCell="{ column, value, record }">
-                      <template v-if="column.lov"> {{ formLovValues[column.dataIndex] || value }}</template>
+                      <template v-if="column.lov"> {{ getTableLovLabel(column.dataIndex, value) }}</template>
                       <template v-if="['name', 'code'].includes(column.dataIndex)">
                         <n-button
                           type="link"
@@ -65,7 +65,7 @@
 
 <script lang="ts" setup generic="T extends Record<string, any>">
 import { requestCommonSetUpGetInfoDialog, requestCommonGetLOV } from '@/api/common';
-import type { LOVParams, SetUpGetInfoScheme, DetailsFile, SetUpGetInfoParams } from '@/api/common/model';
+import type { LOVParams, SetUpGetInfoScheme, DetailsFile, SetUpGetInfoParams, LOVDetail } from '@/api/common/model';
 import { matchReg, downloadFileForUrl } from '@/utils';
 import type { TableColumnProps } from 'n-designv3';
 
@@ -100,6 +100,11 @@ const details = ref<DetailsGroupRecord[]>([]);
 const activeKey = ref<string[]>([]);
 const currentSchema = ref<SetUpGetInfoScheme<T>>();
 const formLovValues = reactive<Recordable>({});
+const tableLovValues = reactive<Record<string, LOVDetail[]>>({});
+
+const getTableLovLabel = (field: string, value: string) => {
+  return tableLovValues[field]?.find((c) => c.internalValue == value)?.externalValue || value;
+};
 
 const getValueForLOV = async (lov: LOVParams, field: string, val: string | null) => {
   if (!val) return;
@@ -123,24 +128,14 @@ const handleSchema = (schema: SetUpGetInfoScheme<T>) => {
 
       if (child.isLov) {
         result.isLov = true;
+
         getValueForLOV(child.lov!, child.field, result.value);
       } else if (['RELATION_TABLE', 'TABLE'].includes(child?.dataType)) {
         // 处理表格数据
-        result.fullLine = true;
         result.type = 'table';
+        result.fullLine = true;
 
-        result.otherClassCode = child.props.otherClassCode;
-        result.columns = child.props.lineAttribute?.map((col, index) => {
-          if (col.lov?.code) {
-            getValueForLOV(col.lov, col.field, result.dataSource?.[index]?.[col.field]);
-          }
-          console.log(' col', col);
-          return {
-            ...col,
-            title: col.name,
-            dataIndex: col.field,
-          };
-        });
+        // 表格数据是json字符串
         if (child?.dataType == 'TABLE') {
           try {
             result.dataSource = JSON.parse(result.value || '[]');
@@ -149,8 +144,23 @@ const handleSchema = (schema: SetUpGetInfoScheme<T>) => {
           }
         } else {
           result.dataSource = (result.value as any)?.data || [];
+          // 关联表格
+          result.otherClassCode = child.props.otherClassCode;
         }
 
+        // 处理表格列
+        result.columns = child.props.lineAttribute?.map((col) => {
+          if (col.lov?.code) {
+            requestCommonGetLOV(col.lov).then((res) => {
+              tableLovValues[col.field] = res.data.details;
+            });
+          }
+          return {
+            ...col,
+            title: col.name,
+            dataIndex: col.field,
+          };
+        });
         //
       } else if (child.props.type == 'image') {
         result.fullLine = true;
@@ -178,13 +188,10 @@ const handleSchema = (schema: SetUpGetInfoScheme<T>) => {
   });
 };
 
-const queryDetailSchema = async (params: SetUpGetInfoParams) => {
+const queryDetailSchema = async (params: SetUpGetInfoParams, methodName?: string) => {
   spinning.value = true;
-  const className = route.query.className as string;
-  const methodsMap = {
-    LeaderboardItem: 'LeaderboardSetUpGetInfoDialog',
-  };
-  const res = await requestCommonSetUpGetInfoDialog(params, methodsMap[className]);
+
+  const res = await requestCommonSetUpGetInfoDialog(params, methodName);
   spinning.value = false;
   return res?.data?.scheme || null;
 };
@@ -197,8 +204,10 @@ const initPage = async () => {
       className: getClassName.value,
     },
   };
-
-  const scheme = await queryDetailSchema(params);
+  const methodsMap = {
+    LeaderboardItem: 'LeaderboardSetUpGetInfoDialog',
+  };
+  const scheme = await queryDetailSchema(params, methodsMap[getClassName.value]);
   handleSchema(scheme);
 };
 
