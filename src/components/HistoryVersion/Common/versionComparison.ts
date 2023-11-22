@@ -130,6 +130,7 @@ const HandleSpecialValues = (data: any) => {
       'displayName',
       'activityAnnex',
       'displayCreator',
+      'createAt',
     ]);
     //对公司地址进行处理
     if (item.companyAddress && JSON.parse(item.companyAddress).length) {
