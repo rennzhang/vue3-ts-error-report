@@ -1,14 +1,14 @@
 import { cloneDeep, omit } from 'lodash-es';
 import { matchReg } from '@/utils';
-export const useTable = (selectData: any, labelData: any) => {
+export const useTable = (selectData: any, labelData: any, useNameData: any) => {
   /* 
     1. 组建动态表头
     2. 组装表头对应的dataSource
  */
   //dataSource
-  const data = HandleSpecialValues(selectData);
+  let newSelectData = activityPersonnel(selectData, useNameData);
+  const data = HandleSpecialValues(newSelectData);
   const dataSource = filterCommonKey(data);
-
   //动态表头
   const keyName = getKeyLable(dataSource[0], labelData);
 
@@ -48,14 +48,13 @@ export const useTable = (selectData: any, labelData: any) => {
   });
   const newComparDataSource = comparDataSource.map((item) => {
     const newItem = cloneDeep(item);
-    Object.keys(item).forEach((key, ind) => {
+    Object.keys(item).forEach((key) => {
       if (Array.isArray(item[key])) {
         newItem['isImg'] = true;
       }
     });
     return newItem;
   });
-  console.log(newComparDataSource, 'newComparDataSource');
   const tableDataSource = newComparDataSource.filter((item) => {
     return item.compareItem !== '版次';
   });
@@ -153,14 +152,13 @@ const HandleSpecialValues = (data: any) => {
     //企业logo && 图片
     if (item.activityPictures && JSON.parse(item.activityPictures).length) {
       //暂时只处理一张图片
-      console.log(JSON.parse(item.activityPictures), 'JSON.parse(item.activityPictures)');
       newItem.activityPictures = matchReg(item.activityPictures, 'imgUrl');
     }
     //活动成员
     if (item.activityMembers && JSON.parse(item.activityMembers).length) {
       const activityMembers = JSON.parse(item.activityMembers);
       if (activityMembers.length && Array.isArray(activityMembers)) {
-        newItem.activityMembers = activityMembers.map((item) => item.rel_activityPersonnel).join();
+        newItem.activityMembers = activityMembers.map((item) => item.name).join();
       } else {
         newItem.activityMembers = '';
       }
@@ -186,4 +184,20 @@ const computeColunmsWidth = (comparDataSource: any) => {
     width = 150;
   }
   return width;
+};
+//活动人员单独处理
+const activityPersonnel = (dataSource, useName) => {
+  let data = dataSource.map((item, index) => {
+    const newItem = cloneDeep(item);
+    const activityMembers = JSON.parse(item.activityMembers);
+    if (activityMembers && activityMembers.length) {
+      let membersDataId = activityMembers.map((members) => {
+        return members.rel_activityPersonnel;
+      });
+      const result = membersDataId.map((id) => ({ name: useName.find((user) => user.objId === id).externalValue }));
+      newItem.activityMembers = JSON.stringify(result); // 因为 后面有处理，这里转成字符串先，有些多余，以后在改
+    }
+    return newItem;
+  });
+  return data;
 };

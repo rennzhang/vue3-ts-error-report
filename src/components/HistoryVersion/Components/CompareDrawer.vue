@@ -16,20 +16,6 @@
           </template>
         </template>
       </n-table>
-      <template #footer>
-        <!-- <div class="footer">
-          <n-button
-            style="margin-right: 8px"
-            @click="
-              () => {
-                handDrawer(false);
-              }
-            "
-            >取消</n-button
-          >
-          <n-button type="primary">确定</n-button>
-        </div> -->
-      </template>
     </n-drawer>
   </div>
 </template>
@@ -42,11 +28,14 @@ const props = defineProps({
 });
 import { requestCommonGetLabel } from '@/api/common/index';
 import { useTable } from '../Common/versionComparison';
+import { requestCommonGetLOV } from '@/api/common';
+const route = useRoute();
 const isDrawer = ref(false);
 const isLoading = ref(false);
 const labelKeyData = ref([]);
 const tableColumn = ref([]);
 const tableDataSource = ref([]);
+const useNameData = ref([]);
 const getLabelKey = async () => {
   //获取比较时的key值
   // const objId = window.$wujie?.props.params.record.objId;
@@ -56,19 +45,27 @@ const getLabelKey = async () => {
     classCode: className || 'ActivityItem',
     serviceCode: 'nalsvr',
   });
+  await getActivityPersonnel();
   labelKeyData.value = data.data;
   isLoading.value = false;
 };
 const getTableData = (selectTableData: any) => {
   if (labelKeyData.value.length) {
-    const { column, dataSource } = useTable(selectTableData, labelKeyData.value);
+    const { column, dataSource } = useTable(selectTableData, labelKeyData.value, useNameData.value);
     tableColumn.value = column;
     tableDataSource.value = dataSource;
   }
 };
+const getActivityPersonnel = async () => {
+  let data: any = await requestCommonGetLOV({
+    code: (route.query.LOVCode as string) || 'usrName',
+    thisObj: {},
+  });
+  useNameData.value = data.data.details;
+};
 watch(
   () => props.selectTableData,
-  (newVal, oldVal) => {
+  (newVal) => {
     getTableData(newVal);
   }
 );
