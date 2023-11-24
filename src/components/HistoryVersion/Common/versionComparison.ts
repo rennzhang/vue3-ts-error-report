@@ -6,6 +6,9 @@ export const useTable = (selectData: any, labelData: any, useNameData: any) => {
     2. 组装表头对应的dataSource
  */
   //dataSource
+  if (selectData.length < 2) {
+    return selectData;
+  }
   let newSelectData = activityPersonnel(selectData, useNameData);
   const data = HandleSpecialValues(newSelectData);
   const dataSource = filterCommonKey(data);
@@ -49,8 +52,11 @@ export const useTable = (selectData: any, labelData: any, useNameData: any) => {
   const newComparDataSource = comparDataSource.map((item) => {
     const newItem = cloneDeep(item);
     Object.keys(item).forEach((key) => {
-      if (Array.isArray(item[key])) {
+      if (Array.isArray(item[key]) && typeof item[key][0] === 'string') {
         newItem['isImg'] = true;
+      }
+      if (Array.isArray(item[key]) && item[key][0] instanceof Object) {
+        newItem['isFile'] = true;
       }
     });
     return newItem;
@@ -166,7 +172,10 @@ const HandleSpecialValues = (data: any) => {
     } else {
       newItem.activityMembers = '';
     }
-
+    //活动成员
+    if (item.activityAnnex && JSON.parse(item.activityAnnex)) {
+      newItem.activityAnnex = JSON.parse(item.activityAnnex);
+    }
     return newItem;
   });
   return dataSource;
@@ -188,7 +197,7 @@ const computeColunmsWidth = (comparDataSource: any) => {
 };
 //活动人员单独处理
 const activityPersonnel = (dataSource, useName) => {
-  let data = dataSource.map((item, index) => {
+  let data = dataSource.map((item) => {
     const newItem = cloneDeep(item);
     const activityMembers = JSON.parse(item.activityMembers);
     if (activityMembers && activityMembers.length) {

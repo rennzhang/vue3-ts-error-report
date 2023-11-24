@@ -14,6 +14,12 @@
           <template v-if="record.isImg && column.dataIndex.includes('_')">
             <n-image v-for="item in record[column.dataIndex]" :src="item" />
           </template>
+          <template v-if="record.isFile && column.dataIndex.includes('_')">
+            <!-- <n-image v-for="item in record[column.dataIndex]" :src="item" /> -->
+            <a v-for="item in record[column.dataIndex]" :title="item.name" class="common-file" :href="item.url">{{
+              item.name
+            }}</a>
+          </template>
         </template>
       </n-table>
     </n-drawer>
@@ -105,6 +111,15 @@ defineExpose({
 }
 .nl-drawer {
   position: absolute !important;
+}
+.common-file {
+  display: block;
+  text-decoration: none;
+  font-size: 14px;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 ::-webkit-scrollbar {
   width: 4px;
