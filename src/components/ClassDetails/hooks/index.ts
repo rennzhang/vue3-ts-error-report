@@ -1,5 +1,4 @@
 import { SetUpGetInfoScheme, requestCommonSetUpGetInfoDialog } from '@/api/common';
-import { matchReg } from '@/utils';
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { DetailsItem } from '../types';
@@ -14,7 +13,7 @@ type IProps = {
   className?: string;
 };
 
-export const useDetails = <T extends Record<string, any>>(props?: IProps) => {
+export const useDetails = <T extends Record<string, any> = any>(props?: IProps) => {
   const route = useRoute();
   const store = useDetailsStore();
 
@@ -40,65 +39,40 @@ export const useDetails = <T extends Record<string, any>>(props?: IProps) => {
           type: 'Text',
         };
 
+        const typeMap = {
+          IMAGE: 'Image',
+          FILE: 'File',
+        };
+
+        result.type = typeMap[child.props.type?.toLocaleUpperCase()] || 'Text';
+        result.fullLine = ['image', 'file', 'table'].includes(result.type.toLocaleLowerCase());
+
         if (child.isLov && result.value) {
           result.isLov = true;
           store.queryLovOptions(child.lov!, child.field, result.value);
         } else if (['RELATION_TABLE', 'TABLE'].includes(child?.dataType)) {
           // 处理表格数据
           result.type = 'Table';
-          result.fullLine = true;
-          result.columns = [];
-          result.dataSource = [];
+          // 关联表格
+          result.otherClassCode = child.props?.otherClassCode;
 
-          // 表格数据是json字符串
-          if (child?.dataType == 'TABLE') {
-            try {
-              result.dataSource = JSON.parse(result.value || '[]');
-            } catch (error) {
-              console.log(error);
-            }
-          } else {
-            result.dataSource = (result.value as any)?.data || [];
-            // 关联表格
-            result.otherClassCode = child.props.otherClassCode;
-          }
-
-          if (result.otherClassCode) {
-            result.columns?.push({
-              dataIndex: 'action',
-              width: 30,
-            });
-          }
+          result.columns = result.otherClassCode ? [{ dataIndex: 'action', width: 30 }] : [];
 
           // 处理表格列
-          result.columns = [
-            ...result.columns,
-            ...child.props.lineAttribute?.map((col) => {
+          const handelColumns =
+            child.props.lineAttribute?.map((col) => {
               col.lov?.code && store.queryLovOptions(col.lov!, col.field, result.value as string);
               return {
                 ...col,
                 title: col.name,
                 dataIndex: col.field,
               };
-            }),
-          ];
-        } else if (child.props.type == 'image') {
-          result.fullLine = true;
-          result.type = 'Image';
-          result.imgUrls = matchReg(result.value, 'imgUrl');
-        } else if (child.props.type == 'file') {
-          result.fullLine = true;
-          result.type = 'File';
+            }) || [];
 
-          try {
-            result.fileList = JSON.parse(result.value || '[]');
-          } catch (error) {
-            result.fileList = [];
-          }
+          result.columns = [...result.columns, ...handelColumns];
         }
 
         result.component = markRaw(CompMap[result.type]);
-
         return result;
       });
 
@@ -144,8 +118,8 @@ export const useDetails = <T extends Record<string, any>>(props?: IProps) => {
     };
 
     const res = await requestCommonSetUpGetInfoDialog(_params, methodsMap[getClassName.value]);
-    const _detailsList = handleSchema(res?.data?.scheme, params?.objId);
     spinning.value = false;
+    const _detailsList = handleSchema(res?.data?.scheme, params?.objId);
     return _detailsList;
   };
 
