@@ -34,15 +34,14 @@
 <script setup lang="ts">
 import { message } from 'n-designv3';
 import CompareDrawer from './Components/CompareDrawer.vue';
+import { useTable } from './Common/HistoryList';
 const CompareDrawerRef = ref<typeof CompareDrawer>();
-import { useTable } from './Common/historyList';
 const selectTableData = ref([]);
 const { columns, dataSource } = useTable();
 const rowSelectionConfig = {
   type: 'checkbox',
-  onChange: (selectedRowKeys: any, selectedRows: any) => {
+  onChange: (_selectedRowKeys, selectedRows) => {
     selectTableData.value = selectedRows;
-    console.log(selectTableData, 'selectTableData');
   },
 };
 const handCompare = () => {
@@ -64,3 +63,4 @@ const handCompare = () => {
   cursor: pointer;
 }
 </style>
+./Common/HistoryList
