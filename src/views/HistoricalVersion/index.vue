@@ -90,7 +90,7 @@ const handCompare = async () => {
 
 const rowSelectionConfig: TableRowSelection<HistoryRecord> = {
   type: 'checkbox',
-  onChange: (selectedRowKeys: any, selectedRows) => {
+  onChange: (_selectedRowKeys: any, selectedRows) => {
     const { comparColumns, comparData, comparDataSource } = useDataCompare(selectedRows, labelData.value);
     tableRowSelectData.value = selectedRows;
     selectRowsData.value = comparData;

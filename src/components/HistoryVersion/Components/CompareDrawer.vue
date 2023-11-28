@@ -6,14 +6,16 @@
         :columns="tableColumn"
         :data-source="tableDataSource"
         :pagination="false"
-        :scroll="{ x: '100%' }"
         :loading="isLoading"
         style="word-break: break-all"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex.includes('_')">
-            <!-- {{ console.log(record[column.dataIndex], 'record================>>>>') }} -->
-            <component :is="record[column.dataIndex]" />
+            <component
+              v-if="record[column.dataIndex]"
+              :is="record[column.dataIndex].component"
+              :details="record[column.dataIndex]"
+            />
           </template>
         </template>
       </n-table>
@@ -27,22 +29,25 @@ const props = defineProps({
     default: <any>[],
   },
 });
-// import { requestCommonGetLabel } from '@/api/common/index';
+interface Column {
+  title: string;
+  dataIndex: string;
+  key: string;
+  fixed: boolean;
+}
+interface DataSource<T> {
+  value: T;
+  [key: string]: any;
+}
 import { useTable } from '../hooks/versionComparisonTable';
 import { useDetails } from '../../ClassDetails/hooks/index';
-// import { requestCommonGetLOV } from '@/api/common';
 const { queryDetailSchema } = useDetails();
-// const route = useRoute();
-const isDrawer = ref(false);
-const isLoading = ref(false);
-const labelKeyData = ref({});
-const tableColumn = ref([]);
-const tableDataSource = ref([]);
-const useNameData = ref([]);
+const isDrawer = ref<boolean>(false);
+const isLoading = ref<boolean>(false);
+const labelKeyData = ref<object>({});
+const tableColumn = ref<Column[]>([]);
+const tableDataSource = ref<DataSource<any>[]>([]);
 const getLabelKey = async () => {
-  //获取比较时的key值
-  // const objId = window.$wujie?.props.params.record.objId;
-  const className = window.$wujie?.props.params.record.className;
   isLoading.value = true;
   let data = await queryDetailSchema();
   isLoading.value = false;
@@ -61,12 +66,11 @@ watch(
     getTableData(newVal);
   }
 );
+getLabelKey();
 const handDrawer = async (isOpen: boolean) => {
   isDrawer.value = isOpen;
   if (isOpen) {
-    await getLabelKey();
     //首次调用
-
     getTableData(props.selectTableData);
   }
 };
@@ -107,14 +111,19 @@ defineExpose({
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.nl-table-cell {
+  white-space: nowrap !important;
+}
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
   border-radius: 4px;
+}
+.nl-table {
+  margin: 0 !important;
 }
 ::-webkit-scrollbar-thumb {
   background-color: #bfbfbf;
   border-radius: 4px;
 }
 </style>
-../Common/VersionComparison

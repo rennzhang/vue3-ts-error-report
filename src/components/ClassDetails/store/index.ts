@@ -14,8 +14,8 @@ export const useDetailsStore = () =>
       detailsMap: {} as Record<string, DetailsItem[]>,
     }),
     actions: {
-      async queryLovOptions(lov: LOVParams, field: string, val: string | null) {
-        if (!val || !lov || this.LOVMaps[field]) return;
+      async queryLovOptions(lov: LOVParams, field: string) {
+        if (!lov || this.LOVMaps[field]) return;
         requestCommonGetLOV(lov).then((res) => {
           this.LOVMaps[field] = res.data.details;
         });

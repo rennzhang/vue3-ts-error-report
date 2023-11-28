@@ -1,13 +1,8 @@
-import { cloneDeep, keys, omit } from 'lodash-es';
-// import { matchReg } from '@/utils';
-interface HistoryRecord {
-  [key: string]: any;
-}
-export const useTable = (selectData: HistoryRecord[], labelData) => {
+import { cloneDeep, omit } from 'lodash-es';
+export const useTable = (selectData, labelData) => {
   if (selectData.length < 2) {
     return selectData;
   }
-
   let cloneSelectData = cloneDeep(selectData);
   cloneSelectData = cloneSelectData.map((item) => {
     let newItem = {};
@@ -20,7 +15,6 @@ export const useTable = (selectData: HistoryRecord[], labelData) => {
     return newItem;
   });
   cloneSelectData = filterCommonKey(cloneSelectData);
-  console.log(cloneSelectData, 'cloneSelectData');
   //获取表头
   const generateColumn = () => {
     let columns = [
@@ -42,11 +36,10 @@ export const useTable = (selectData: HistoryRecord[], labelData) => {
     return columns;
   };
   const generateDataSource = () => {
-    let keyNameItems = {};
-    let keyNames = [];
+    let keyNames: Array<{ name: string; code: string; value: any }> = [];
     Object.keys(labelData).forEach((index) => {
       if (cloneSelectData[0].hasOwnProperty(labelData[index].key)) {
-        keyNameItems = {
+        const keyNameItems = {
           name: labelData[index].label,
           code: labelData[index].key,
           value: labelData[index],
@@ -66,34 +59,26 @@ export const useTable = (selectData: HistoryRecord[], labelData) => {
         Object.keys(ite).forEach((key) => {
           if (item.code === key) {
             component.value = (ite as any)[item.code];
-            newItem[`sequence_${ite.sequence}`] = component;
+            newItem[`sequence_${ite.sequence}`] = markRaw(component);
           }
         });
       });
       return newItem;
     });
-
     return dataSource;
   };
   const columns = generateColumn();
   const dataSource = generateDataSource();
-  console.log(dataSource, 'dataSource');
   return {
     column: columns,
     dataSource: dataSource,
   };
 };
 const filterCommonKey = (data: any) => {
-  /*
-    1. 筛选出值一样的key，并且过滤掉
-    data：历史列表选中的值
- */
+  /*筛选出值一样的key，并且过滤掉*/
   const commonKeys: Record<string, any> = {};
-  // 遍历第一个对象的所有键
   Object.keys(data[0]).forEach((key) => {
-    // 检查所有对象中该键的值是否相同
     if (data.every((obj: any) => obj[key] === data[0][key])) {
-      // 如果相同，将该键加入结果对象中
       commonKeys[key] = data[0][key];
     }
   });
@@ -102,6 +87,5 @@ const filterCommonKey = (data: any) => {
     const newItem = omit(item, Object.keys(commonKeys));
     return newItem;
   });
-  //去除无用字段
   return newData;
 };
