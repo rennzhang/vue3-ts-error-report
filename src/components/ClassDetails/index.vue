@@ -28,9 +28,9 @@ const props = defineProps<{
 const activeKey = ref<string[]>([]);
 
 const { spinning, currentSchema, detailsGroup, queryDetailSchema } = useDetails<T>({ className: props.className });
-
 onMounted(async () => {
-  queryDetailSchema();
+  const detailsList = await queryDetailSchema();
+  console.log(detailsList, 1);
 });
 watch(detailsGroup, (val) => {
   if (val.length) {
