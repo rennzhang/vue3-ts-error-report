@@ -1,7 +1,7 @@
 <template>
   <n-table
     bordered
-    :data-source="props.details?.dataSource"
+    :data-source="dataSource"
     :columns="props.details?.columns"
     class="w-full mr-24px"
     :pagination="false"
@@ -25,7 +25,6 @@ const props = defineProps<{
   details?: DetailsItem;
 }>();
 const store = useDetailsStore();
-console.log(props.details);
 
 const viewDetailsForId = async (record: Recordable, otherClassCode: string) => {
   if (!otherClassCode || !record.objId) return;
@@ -33,6 +32,25 @@ const viewDetailsForId = async (record: Recordable, otherClassCode: string) => {
     window?.gvUtil.h(res.data.scheme);
   });
 };
+
+const dataSource = ref<any>([]);
+
+const initData = () => {
+  const { value, otherClassCode } = props.details || {};
+
+  // 如果是关联表格
+  if (otherClassCode) {
+    dataSource.value = (value as any)?.data || [];
+  } else {
+    try {
+      dataSource.value = JSON.parse(value || '[]');
+    } catch (error) {
+      console.log(error);
+    }
+  }
+};
+
+initData();
 </script>
 
 <style scoped lang="less"></style>
