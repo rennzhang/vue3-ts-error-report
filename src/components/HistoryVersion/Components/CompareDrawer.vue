@@ -11,14 +11,9 @@
         style="word-break: break-all"
       >
         <template #bodyCell="{ column, record }">
-          <template v-if="record.isImg && column.dataIndex.includes('_')">
-            <n-image v-for="item in record[column.dataIndex]" :src="item" />
-          </template>
-          <template v-if="record.isFile && column.dataIndex.includes('_')">
-            <!-- <n-image v-for="item in record[column.dataIndex]" :src="item" /> -->
-            <a v-for="item in record[column.dataIndex]" :title="item.name" class="common-file" :href="item.url">{{
-              item.name
-            }}</a>
+          <template v-if="column.dataIndex.includes('_')">
+            <!-- {{ console.log(record[column.dataIndex], 'record================>>>>') }} -->
+            <component :is="record[column.dataIndex]" />
           </template>
         </template>
       </n-table>
@@ -32,13 +27,15 @@ const props = defineProps({
     default: <any>[],
   },
 });
-import { requestCommonGetLabel } from '@/api/common/index';
-import { useTable } from '../Common/versionComparison';
-import { requestCommonGetLOV } from '@/api/common';
-const route = useRoute();
+// import { requestCommonGetLabel } from '@/api/common/index';
+import { useTable } from '../hooks/versionComparisonTable';
+import { useDetails } from '../../ClassDetails/hooks/index';
+// import { requestCommonGetLOV } from '@/api/common';
+const { queryDetailSchema } = useDetails();
+// const route = useRoute();
 const isDrawer = ref(false);
 const isLoading = ref(false);
-const labelKeyData = ref([]);
+const labelKeyData = ref({});
 const tableColumn = ref([]);
 const tableDataSource = ref([]);
 const useNameData = ref([]);
@@ -47,27 +44,16 @@ const getLabelKey = async () => {
   // const objId = window.$wujie?.props.params.record.objId;
   const className = window.$wujie?.props.params.record.className;
   isLoading.value = true;
-  let data: any = await requestCommonGetLabel({
-    classCode: className || 'ActivityItem',
-    serviceCode: 'nalsvr',
-  });
-  await getActivityPersonnel();
-  labelKeyData.value = data.data;
+  let data = await queryDetailSchema();
   isLoading.value = false;
+  labelKeyData.value = data;
 };
 const getTableData = (selectTableData: any) => {
-  if (labelKeyData.value.length) {
-    const { column, dataSource } = useTable(selectTableData, labelKeyData.value, useNameData.value);
+  if (JSON.stringify(labelKeyData.value) !== '{}') {
+    const { column, dataSource } = useTable(selectTableData, labelKeyData.value);
     tableColumn.value = column;
     tableDataSource.value = dataSource;
   }
-};
-const getActivityPersonnel = async () => {
-  let data: any = await requestCommonGetLOV({
-    code: (route.query.LOVCode as string) || 'usrName',
-    thisObj: {},
-  });
-  useNameData.value = data.data.details;
 };
 watch(
   () => props.selectTableData,
@@ -131,3 +117,4 @@ defineExpose({
   border-radius: 4px;
 }
 </style>
+../Common/VersionComparison

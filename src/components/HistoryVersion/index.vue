@@ -13,18 +13,6 @@
         <template v-if="column.dataIndex === 'name'">
           <a>{{ text }}</a>
         </template>
-        <template v-if="column.dataIndex === 'operation'">
-          <n-space>
-            <n-tooltip>
-              <template #title>详情</template>
-              <eye-outlined class="icon" />
-            </n-tooltip>
-            <n-tooltip>
-              <template #title>删除</template>
-              <delete-outlined class="delete icon" />
-            </n-tooltip>
-          </n-space>
-        </template>
       </template>
     </n-table>
     <CompareDrawer ref="CompareDrawerRef" :select-table-data="selectTableData" />
@@ -33,17 +21,11 @@
 
 <script setup lang="ts">
 import { message } from 'n-designv3';
+import { useTable } from './hooks/historyListTable';
 import CompareDrawer from './Components/CompareDrawer.vue';
-import { useTable } from './Common/HistoryList';
+const { columns, dataSource } = useTable();
 const CompareDrawerRef = ref<typeof CompareDrawer>();
 const selectTableData = ref([]);
-const { columns, dataSource } = useTable();
-const rowSelectionConfig = {
-  type: 'checkbox',
-  onChange: (_selectedRowKeys, selectedRows) => {
-    selectTableData.value = selectedRows;
-  },
-};
 const handCompare = () => {
   if (selectTableData.value.length < 2) {
     message.warning({
@@ -52,6 +34,12 @@ const handCompare = () => {
     return;
   }
   CompareDrawerRef.value?.handDrawer(true);
+};
+const rowSelectionConfig = {
+  type: 'checkbox',
+  onChange: (_selectedRowKeys, selectedRows) => {
+    selectTableData.value = selectedRows;
+  },
 };
 </script>
 
