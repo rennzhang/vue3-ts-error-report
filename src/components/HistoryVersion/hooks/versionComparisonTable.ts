@@ -1,6 +1,6 @@
 import { cloneDeep, omit } from 'lodash-es';
-export const useTable = (selectData, labelData) => {
-  interface ColumnsItem {
+export const useTable = (selectData: any, labelData: any) => {
+  interface Item {
     [key: string]: any;
   }
   if (selectData.length < 2) {
@@ -8,7 +8,7 @@ export const useTable = (selectData, labelData) => {
   }
   let cloneSelectData = cloneDeep(selectData);
   cloneSelectData = cloneSelectData.map((item: any) => {
-    let newItem: ColumnsItem = {};
+    let newItem: Item = {};
     Object.keys(labelData).forEach((key) => {
       if (item[labelData[key].key]) {
         newItem['sequence'] = item.sequence;
@@ -28,7 +28,7 @@ export const useTable = (selectData, labelData) => {
         fixed: true,
       },
     ];
-    cloneSelectData.forEach((item) => {
+    cloneSelectData.forEach((item: Item) => {
       columns.push({
         title: item.sequence,
         dataIndex: `sequence_${item.sequence}`,
