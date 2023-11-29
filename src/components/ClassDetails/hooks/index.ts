@@ -47,9 +47,9 @@ export const useDetails = <T extends Record<string, any> = any>(props?: IProps) 
         result.type = typeMap[child.props.type?.toLocaleUpperCase()] || 'Text';
         result.fullLine = ['image', 'file', 'table'].includes(result.type.toLocaleLowerCase());
 
-        if (child.isLov && result.value) {
+        if (child.isLov) {
           result.isLov = true;
-          store.queryLovOptions(child.lov!, child.field, result.value);
+          store.queryLovOptions(child.lov!, child.field);
         } else if (['RELATION_TABLE', 'TABLE'].includes(child?.dataType)) {
           // 处理表格数据
           result.type = 'Table';
@@ -61,7 +61,7 @@ export const useDetails = <T extends Record<string, any> = any>(props?: IProps) 
           // 处理表格列
           const handelColumns =
             child.props.lineAttribute?.map((col) => {
-              col.lov?.code && store.queryLovOptions(col.lov!, col.field, result.value as string);
+              col.lov?.code && store.queryLovOptions(col.lov!, col.field);
               return {
                 ...col,
                 title: col.name,
