@@ -44,7 +44,7 @@ export const useDetails = <T extends Record<string, any> = any>(props?: IProps) 
           FILE: 'File',
         };
 
-        result.type = typeMap[child.props.type.toLocaleUpperCase()] || 'Text';
+        result.type = typeMap[child.props.type?.toLocaleUpperCase()] || 'Text';
         result.fullLine = ['image', 'file', 'table'].includes(result.type.toLocaleLowerCase());
 
         if (child.isLov && result.value) {

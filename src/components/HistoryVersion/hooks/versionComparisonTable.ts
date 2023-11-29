@@ -1,11 +1,14 @@
 import { cloneDeep, omit } from 'lodash-es';
 export const useTable = (selectData, labelData) => {
+  interface ColumnsItem {
+    [key: string]: any;
+  }
   if (selectData.length < 2) {
     return selectData;
   }
   let cloneSelectData = cloneDeep(selectData);
-  cloneSelectData = cloneSelectData.map((item) => {
-    let newItem = {};
+  cloneSelectData = cloneSelectData.map((item: any) => {
+    let newItem: ColumnsItem = {};
     Object.keys(labelData).forEach((key) => {
       if (item[labelData[key].key]) {
         newItem['sequence'] = item.sequence;
