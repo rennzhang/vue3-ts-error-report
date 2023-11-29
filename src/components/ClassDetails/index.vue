@@ -18,6 +18,7 @@
   </n-spin>
 </template>
 
+<!-- 这是通用的类详情组件，可以通过组件泛型传入模型的类型定义，从而在插槽数据中获取类型提示 -->
 <script lang="ts" setup generic="T extends Record<string, any>">
 import { useDetails } from './hooks';
 
@@ -28,10 +29,11 @@ const props = defineProps<{
 const activeKey = ref<string[]>([]);
 
 const { spinning, currentSchema, detailsGroup, queryDetailSchema } = useDetails<T>({ className: props.className });
+
 onMounted(async () => {
-  const detailsList = await queryDetailSchema();
-  console.log(detailsList, 1);
+  await queryDetailSchema();
 });
+
 watch(detailsGroup, (val) => {
   if (val.length) {
     activeKey.value = val.map((item) => item.name);

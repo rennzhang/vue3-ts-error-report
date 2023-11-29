@@ -90,11 +90,12 @@ export const useDetails = <T extends Record<string, any> = any>(props?: IProps) 
   const queryDetailSchema = async (params?: { className: string; objId: string }) => {
     spinning.value = true;
 
+    // ？ 目前没有需要使用缓存的地方，先注释掉
     // 从store中获取缓存
-    if (params?.objId && store.detailsMap[params?.objId]) {
-      spinning.value = false;
-      return store.detailsMap[params?.objId];
-    }
+    // if (params?.objId && store.detailsMap[params?.objId]) {
+    //   spinning.value = false;
+    //   return store.detailsMap[params?.objId];
+    // }
 
     let _params = {
       className: getClassName.value,
@@ -104,13 +105,14 @@ export const useDetails = <T extends Record<string, any> = any>(props?: IProps) 
       },
     };
 
-    if (params?.objId) {
-      _params.className = params.className || getClassName.value;
-      _params.thisObj = {
-        objId: params.objId,
-        className: params.className,
-      };
-    }
+    // ? 这里的逻辑暂时没有特别用处，先注释掉
+    // if (params?.objId) {
+    //   _params.className = params.className || getClassName.value;
+    //   _params.thisObj = {
+    //     objId: params.objId,
+    //     className: params.className,
+    //   };
+    // }
 
     // 个别的详情页需要调用不同的接口，例如排行榜中调用的是 LeaderboardSetUpGetInfoDialog 二开接口
     const methodsMap: Recordable = {
