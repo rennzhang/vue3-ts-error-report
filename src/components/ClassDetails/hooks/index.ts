@@ -39,12 +39,12 @@ export const useDetails = <T extends Record<string, any> = any>(props?: IProps) 
           type: 'Text',
         };
 
-        const typeMap = {
+        const typeMap: Recordable = {
           IMAGE: 'Image',
           FILE: 'File',
         };
 
-        result.type = typeMap[child.props.type?.toLocaleUpperCase()] || 'Text';
+        result.type = typeMap[child.props.type.toLocaleUpperCase()] || 'Text';
         result.fullLine = ['image', 'file', 'table'].includes(result.type.toLocaleLowerCase());
 
         if (child.isLov && result.value) {
@@ -113,7 +113,7 @@ export const useDetails = <T extends Record<string, any> = any>(props?: IProps) 
     }
 
     // 个别的详情页需要调用不同的接口，例如排行榜中调用的是 LeaderboardSetUpGetInfoDialog 二开接口
-    const methodsMap = {
+    const methodsMap: Recordable = {
       LeaderboardItem: 'LeaderboardSetUpGetInfoDialog',
     };
 
