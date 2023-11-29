@@ -1,8 +1,8 @@
 import { cloneDeep, omit } from 'lodash-es';
+interface Item {
+  [key: string]: any;
+}
 export const useTable = (selectData: any, labelData: any) => {
-  interface Item {
-    [key: string]: any;
-  }
   if (selectData.length < 2) {
     return selectData;
   }
@@ -87,9 +87,9 @@ const filterCommonKey = (data: any) => {
     }
   });
   // 找到值一样的key，进行过滤
-  const newData = data.map((item: any) => {
-    const newItem = omit(item, Object.keys(commonKeys));
-    return newItem;
+  const dataSource = data.map((item: any) => {
+    const filterItem = omit(item, Object.keys(commonKeys));
+    return filterItem;
   });
-  return newData;
+  return dataSource;
 };
