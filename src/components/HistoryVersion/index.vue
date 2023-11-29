@@ -67,4 +67,3 @@ const rowSelectionConfig: TableRowSelection<any> = {
   cursor: pointer;
 }
 </style>
-./Common/HistoryList

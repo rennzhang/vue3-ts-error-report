@@ -54,10 +54,11 @@ export const useTable = (selectData, labelData) => {
       } = {
         compareItem: item.name,
       };
-      const component = cloneDeep(item.value);
+
       cloneSelectData.forEach((ite: any) => {
         Object.keys(ite).forEach((key) => {
           if (item.code === key) {
+            const component = cloneDeep(item.value);
             component.value = (ite as any)[item.code];
             newItem[`sequence_${ite.sequence}`] = markRaw(component);
           }
