@@ -84,7 +84,6 @@ const handCompare = async () => {
     selectRowsData.value = comparData;
     comparColumnsData.value = comparColumns;
     comparDataSourceData.value = comparDataSource;
-    console.log(comparDataSource, 'comparDataSource');
   }
 };
 
