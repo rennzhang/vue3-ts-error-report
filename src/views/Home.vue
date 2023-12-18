@@ -1,10 +1,9 @@
 <template>
-  <h1>Vue3 脚手架--</h1>
-  <gv-text />
-  <div>{{ $t('aiwork_operation_success') }}</div>
-  <n-button type="primary">Primary Button</n-button>
-  <holder-outlined />
+  <div>Home</div>
 </template>
-<script lang="ts" setup></script>
 
-<style></style>
+<script lang="ts" setup>
+const a = ref(1);
+</script>
+
+<style scoped lang="less"></style>

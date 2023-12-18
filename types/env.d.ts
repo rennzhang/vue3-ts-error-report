@@ -9,7 +9,6 @@ interface ImportMetaEnv {
   readonly VUE_APP_NGINX_VPATH_NAME: string;
   readonly VITE_API_DNT_MC_LOGIN_URL: string;
 
-  readonly VITE_COMPRESSION: 'gzip' | 'brotli' | 'both' | 'none';
   // 更多环境变量...
 }
 
